@@ -1,21 +1,33 @@
 package com.example.orderingmanager;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BasicActivity {
 
     BottomNavigationView bottomNavigationView; //바텀네비뷰
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_guide);
+        (findViewById(R.id.button_right_in)).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GuidesActivity.class);
+                startActivity(intent);
+            }
+        });
+        ImageView eggGif = (ImageView)findViewById(R.id.gif_egg);
+        Glide.with(this).load(R.raw.egg).into(eggGif);
+
+        //임시 주석 처리 - 로그인기능 완성 시 주석제거할 예정
+        /*setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottomNavi);
 
@@ -43,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
             }
-        });
+        });*/
 
     }
 }
