@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,7 +19,8 @@ public class GuidesActivity extends BasicActivity {
         (findViewById(R.id.button_right_out)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FinishWithAnim();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
 
