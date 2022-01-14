@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "498165494362",
+    "project_id": "ordering-f880f",
+    "storage_bucket": "ordering-f880f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498165494362:android:48141a551c10bb3fb75e63",
+        "android_client_info": {
+          "package_name": "com.example.orderingmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498165494362-hgcvjoofo2p6qqgc0sj8jufm8uue8ur0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvOMgOr_Wl6ae4A7oAAqUU7tSd4t14kG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498165494362-hgcvjoofo2p6qqgc0sj8jufm8uue8ur0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

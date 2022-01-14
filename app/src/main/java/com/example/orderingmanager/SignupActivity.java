@@ -1,172 +1,310 @@
 package com.example.orderingmanager;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.example.orderingmanager.databinding.ActivitySignupBinding;
 import com.google.android.material.textfield.TextInputEditText;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 
-import java.io.IOException;
-import com.bumptech.glide.Glide;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import okhttp3.internal.tls.OkHostnameVerifier;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class SignupActivity extends BasicActivity {
+
+
+
+    //viewbinding
+    private ActivitySignupBinding binding;
+
+    //코드 전송에 실패하면 재전송 코드를 위해 선언
+    private PhoneAuthProvider.ForceResendingToken forceResendingToken;
+
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+
+    private String mVerificationId; // 코드를 담을 변수
+
+    private static final String TAG = "SIGNUP_TAG";
+
+    private FirebaseAuth firebaseAuth;
+
+    int minute, second;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        binding = ActivitySignupBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        String PhoneNum = ((TextInputEditText)findViewById(R.id.editTextPhoneSignup)).getText().toString();
-        (findViewById(R.id.btn_sendSMS)).setOnClickListener(new View.OnClickListener() {
+        binding.etPhoneSignup.setVisibility(View.VISIBLE);
+        binding.btnSendSMS.setVisibility(View.VISIBLE);
+        binding.etVerifyCode.setVisibility(View.GONE);
+        binding.btnVerifyCode.setVisibility(View.GONE);
+        binding.tvVerifyCode.setVisibility(View.GONE);
+        binding.tvResend.setVisibility(View.GONE);
+        binding.tvTimerLeft.setVisibility(View.GONE);
+        binding.tvTimer.setVisibility(View.GONE);
+        binding.tvTimerMin.setVisibility(View.GONE);
+        binding.tvTimerSec.setVisibility(View.GONE);
+        ButtonLock(binding.btnSendSMS);
+        ButtonLock(binding.btnVerifyCode);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
             @Override
-            public void onClick(View view) {
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential){
 
-                //int authNum = sendSMS("82",PhoneNum);
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e){
+
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+                binding.tvResend.setVisibility(View.VISIBLE);
+                binding.tvVerifyCode.setVisibility(View.VISIBLE);
+                binding.etVerifyCode.setVisibility(View.VISIBLE);
+                binding.btnVerifyCode.setVisibility(View.VISIBLE);
+                binding.btnSendSMS.setBackgroundColor(Color.parseColor("#5E5E5E"));
+                binding.btnSendSMS.setEnabled(false);
+                binding.etPhoneSignup.setEnabled(false);
+                binding.etPhoneSignup.setTextColor(Color.parseColor("#9A9A9A"));
+
+                binding.etVerifyCode.requestFocus();
+
+                // progressBar 실행
+                binding.progressBar.setVisibility(View.GONE);
+
+                //키보드 보이게 하는 부분
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+                TimerStart();
+            }
+        };
+
+        /* 전화번호 입력란 글자수 리스너 입니다 */
+        binding.etPhoneSignup.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int input = binding.etPhoneSignup.getText().toString().length();
+                if(input > 10){
+                    ButtonRelease(binding.btnSendSMS);
+                }
+                else ButtonLock(binding.btnSendSMS);
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
+        /* 인증번호 입력란 글자수 리스너 입니다 */
+        binding.etVerifyCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int input = binding.etVerifyCode.getText().toString().length();
+                if(input > 5){
+                    ButtonRelease(binding.btnVerifyCode);
+                }
+                else ButtonLock(binding.btnVerifyCode);
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        binding.ibClose.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // 키보드 내리기
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(),0);
+
+                FinishWithAnim();
+            }
+        });
+
+
+        binding.btnSendSMS.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // 010부터 받은 전화번호를 +8210... 으로 변환해준다.
+                String phoneNum = "+82" + binding.etPhoneSignup.getText().toString().trim().substring(1);
+                Toast.makeText(SignupActivity.this, phoneNum, Toast.LENGTH_SHORT).show();
+
+                // 키보드 내리기
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(),0);
+
+                // 문자 전송
+                startPhoneNumberVerification(phoneNum);
+
+                // progressBar 실행
+                binding.progressBar.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        binding.btnVerifyCode.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+            }
+        });
     }
+    private void TimerStart(){
+        String min = Integer.toString(2);
+        String sec = Integer.toString(0);
 
-// twilio는 따로 서버 구축하지 않는 이상 안되나봄...ㅠㅠ 파베 전화번호 인증으로 진행해야 할듯..
-/*
-    // Find your Account Sid and Token at twilio.com/user/account
-    public static final String ACCOUNT_SID = "AC1f66b388bd759d969e8970546bceabbb";
-    public static final String AUTH_TOKEN = "22519da7f71689053e9a7fd165f1b010";
-    // SMS 전송
+        binding.tvTimerMin.setText(min);
+        binding.tvTimerSec.setText(sec);
+        binding.tvTimerMin.setVisibility(View.VISIBLE);
+        binding.tvTimerSec.setVisibility(View.VISIBLE);
+        binding.tvTimer.setVisibility(View.VISIBLE);
+        binding.tvTimerLeft.setVisibility(View.VISIBLE);
 
-    private int sendSMS(String country, String phoneNum) {
-        int authNum = randomRange(100000, 999999);
-        String body = "<#>OrdeRing 본인인증 코드 [" + authNum + "] - 경상국립대 CS 오더링팀";
-        String from = "+19377779817";
-        String to = "+"+ country + phoneNum;
+        minute = Integer.parseInt(binding.tvTimerMin.getText().toString());
+        second = Integer.parseInt(binding.tvTimerSec.getText().toString());
 
-        String base64EncodedCredentials = "Basic " + Base64.encodeToString(
-                (ACCOUNT_SID + ":" + AUTH_TOKEN).getBytes(), Base64.NO_WRAP
-        );
-
-        Map<String, String> smsData = new HashMap<>();
-        smsData.put("From", from);
-        smsData.put("To", to);
-        smsData.put("Body", body);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.twilio.com/2010-04-01/")
-                .build();
-        TwilioApi api = retrofit.create(TwilioApi.class);
-
-        api.sendMessage(ACCOUNT_SID, base64EncodedCredentials, smsData).enqueue(new Callback<ResponseBody>() {
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Log.d("TAG", "onResponse->success");
-                }
-                else Log.d("TAG", "onResponse->failure");
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 반복실행할 구문
+
+                        // 0초 이상이면
+                        if(second != 0) {
+                            //1초씩 감소
+                            second--;
+
+                            // 0분 이상이면
+                        } else if(minute != 0) {
+                            // 1분 = 60초
+                            second = 60;
+                            second--;
+                            minute--;
+
+                        }
+
+                        // 분, 초가 10이하(한자리수) 라면
+                        // 숫자 앞에 0을 붙인다 ( 8 -> 08 )
+                        if(second <= 9){
+                            binding.tvTimerSec.setText("0" + second);
+                        } else {
+                            binding.tvTimerSec.setText(Integer.toString(second));
+                        }
+
+                        if(minute <= 9){
+                            binding.tvTimerMin.setText("0" + minute);
+                        } else {
+                            binding.tvTimerMin.setText(Integer.toString(minute));
+                        }
+
+                        // 분, 초가 다 0이라면 메세지를 출력한다.
+                        if(minute == 0 && second == 0) {
+
+                            timer.cancel();//타이머 종료
+
+                            binding.tvTimerMin.setVisibility(View.GONE);
+                            binding.tvTimer.setVisibility(View.GONE);
+                            binding.tvTimerLeft.setVisibility(View.GONE);
+
+                            binding.tvTimerSec.setText("(시간초과) 처음부터 다시 시작해주세요.");
+                            binding.tvTimerSec.setTextColor(Color.parseColor("#FF0000"));
+                            binding.etVerifyCode.setEnabled(false);
+                            ButtonLock(binding.btnVerifyCode);
+                        }
+                    }
+                });
             }
+        };
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("TAG", "onFailure");
-            }
-        });
-
-        return authNum;
-    }*/
-    /*public static int sendSMS(String country, String phoneNum) {
-        int authNum = randomRange(100000, 999999);
-        String postURL = "https://api.twilio.com/2010-04-01/Accounts/"+ACCOUNT_SID+"/Messages";
-        String body = "<#>OrdeRing 본인인증 코드 [" + authNum + "] - 경상국립대 CS 오더링팀";
-        String from = "+19377779817";
-        String to = "+"+ country + phoneNum;
-
-        try {
-            String base64EncodedCredentials = "Basic "
-                    + Base64.encodeToString(
-                    (ACCOUNT_SID + ":" + AUTH_TOKEN).getBytes(),
-                    Base64.NO_WRAP);
-
-            RequestBody formBody = new FormBody.Builder()
-                    .add("From", from)  // number we get from Twilio
-                    .add("To", to) //TODO  targetPhoneNumber
-                    .add("Body", body)
-                    .build();
-
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .header("Authorization ", base64EncodedCredentials)
-                    .url(postURL)
-                    .post(formBody)
-                    .build();
-
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    //print errors if code is not 200
-                }
-            });
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        //타이머를 실행
+        timer.schedule(timerTask, 0, 1000); //Timer 실행
+    }
+    /* 버튼 Lock거는 함수 */
+    private void ButtonLock(Button button){
+        if(button.equals(binding.btnSendSMS)){
+            binding.btnSendSMS.setBackgroundColor(Color.parseColor("#5E5E5E"));
+            binding.btnSendSMS.setEnabled(false);
         }
-        return authNum;
-    }
-    public static int randomRange(int n1, int n2) {
-        return (int) (Math.random() * (n2 - n1 + 1)) + n1;
-    }*/
-    /*public static int sendSMS (String country, String phoneNum) {
-
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-
-        // 휴대폰 인증번호 생성
-        int authNum = randomRange(100000, 999999);
-
-
-        // 전송대상 휴대폰 번호
-        String sendTarget = "+"+ country + phoneNum;
-
-        // 전송 메세지
-        String authMsg = "<#>OrdeRing 본인인증 코드 [" + authNum + "] - 경상국립대 CS 오더링팀" ;
-
-
-        Message message = Message.creator(
-                // to
-                new PhoneNumber(sendTarget),
-                // from
-                new PhoneNumber("+19377779817"),
-                // message
-                authMsg).create();
-
-        return authNum;
-
+        else if(button.equals(binding.btnVerifyCode)){
+            binding.btnVerifyCode.setBackgroundColor(Color.parseColor("#5E5E5E"));
+            binding.btnVerifyCode.setEnabled(false);
+        }
     }
 
-    // 인증번호 범위 지정
-    public static int randomRange(int n1, int n2) {
-        return (int) (Math.random() * (n2 - n1 + 1)) + n1;
-    }*/
+
+    /* 버튼 Lock푸는 함수 */
+    private void ButtonRelease(Button button){
+        if(button.equals(binding.btnSendSMS)){
+            binding.btnSendSMS.setBackgroundColor(Color.parseColor("#0D70E6"));
+            binding.btnSendSMS.setEnabled(true);
+        }
+        else if(button.equals(binding.btnVerifyCode)){
+            binding.btnVerifyCode.setBackgroundColor(Color.parseColor("#0D70E6"));
+            binding.btnVerifyCode.setEnabled(true);
+        }
+    }
+
+    private void startPhoneNumberVerification(String phoneNum){
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(firebaseAuth)
+                .setPhoneNumber(phoneNum)
+                .setTimeout(120L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(mCallbacks)
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+
+
+
 }
