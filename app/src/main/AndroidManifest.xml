@@ -3,6 +3,7 @@
     package="com.example.orderingmanager">
     <!-- twilio와의 retrofit 통신으로 인한 인터넷 권한 요구 -->
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -13,9 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".SignupActivity"
-            android:exported="false" />
         <!-- android:theme="@style/Theme.OrderingManager"> -->
         <activity
             android:name=".MainActivity"
@@ -26,24 +24,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".GuidesActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
+
         <activity
             android:name=".TempActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
+
         <activity
             android:name=".LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
+
         <activity
             android:name=".InfoActivity"
             android:exported="false" />
+
         <activity
             android:name=".AuthActivity"
-            android:exported="true"></activity>
-        <activity
-            android:name=".StartActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+
+        </activity><activity
+        android:name=".StartActivity"
+        android:exported="true">
+
+    </activity>
     </application>
 
 </manifest>
