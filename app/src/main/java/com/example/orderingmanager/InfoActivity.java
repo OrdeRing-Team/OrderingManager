@@ -141,13 +141,15 @@ public class InfoActivity extends AppCompatActivity {
     }
 
 
-    // 입력창이 비었거나, 비밀번호가 일치하지 않을 때 알림을 띄우는 함수 (다 차 있고 비밀번호 입력을 안 하면 오류 발생,,,)
+    // 입력창이 비었거나, 비밀번호가 일치하지 않을 때 알림을 띄우는 함수
     private void isEmpty() {
         String storeName = inputStoreName.getText().toString();
         String userName = inputUserName.getText().toString();
         String kategorie = inputKategorie.getText().toString();
         String nicName = inputNicname.getText().toString();
         String tableNum = tablenum.getText().toString();
+        psAfterCheck = psSecond.getText().toString(); // 오류 원인
+        psBeforeCheck = psFirst.getText().toString(); // 오류 원인
         RadioButton radio_button_only = findViewById(R.id.radio_button_onlydeliver);
         RadioButton radio_button_both = findViewById(R.id.radio_button_both);
 
@@ -160,7 +162,7 @@ public class InfoActivity extends AppCompatActivity {
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
         else if((radio_button_only.isChecked() == false) && (radio_button_both.isChecked() == false)) {
-            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주ㄷ세요.", Toast.LENGTH_SHORT).show();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
         else if(radio_button_both.isChecked() == true && tableNum.matches("")) {
