@@ -12,9 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".InfoActivity"
-            android:exported="false" />
+
         <!-- android:theme="@style/Theme.OrderingManager"> -->
         <activity
             android:name=".MainActivity"
@@ -33,6 +31,9 @@
             android:exported="true"></activity>
         <activity
             android:name=".SignupActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".InfoActivity"
             android:exported="true"></activity>
     </application>
 
