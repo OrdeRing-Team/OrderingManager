@@ -12,6 +12,8 @@
         android:layout_height="match_parent"
         android:text="qr_fragment"
         android:background="#B6D196"/>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -1,26 +1,19 @@
 package com.example.orderingmanager;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.orderingmanager.databinding.ActivitySignupBinding;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -33,9 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SignupActivity extends BasicActivity {
 
-
-
-    //viewbinding
+    //viewbinding ->  findViewById를 쓰지 않고 뷰 컴포넌트를 접근할수 있게 도와주는 기능
     private ActivitySignupBinding binding;
 
     //코드 전송에 실패하면 재전송 코드를 위해 선언
@@ -70,6 +61,7 @@ public class SignupActivity extends BasicActivity {
         ButtonLock(binding.btnSendSMS);
         ButtonLock(binding.btnVerifyCode);
         firebaseAuth = FirebaseAuth.getInstance();
+
 
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
             @Override
@@ -106,6 +98,16 @@ public class SignupActivity extends BasicActivity {
                 TimerStart();
             }
         };
+
+
+        // ******** 매장정보입력 버튼 클릭 이벤트 (임시) *************
+        binding.goInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
+                startActivity(intent);
+            }
+        });
 
         /* 전화번호 입력란 글자수 리스너 입니다 */
         binding.etPhoneSignup.addTextChangedListener(new TextWatcher() {
@@ -303,8 +305,6 @@ public class SignupActivity extends BasicActivity {
                 .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
-
-
 
 
 }
