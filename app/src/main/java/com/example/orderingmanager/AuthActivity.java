@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.orderingmanager.databinding.ActivitySignupBinding;
+import com.example.orderingmanager.databinding.ActivityAuthBinding;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -24,10 +24,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class SignupActivity extends BasicActivity {
+public class AuthActivity extends BasicActivity {
 
     //viewbinding ->  findViewById를 쓰지 않고 뷰 컴포넌트를 접근할수 있게 도와주는 기능
-    private ActivitySignupBinding binding;
+    private ActivityAuthBinding binding;
 
     //코드 전송에 실패하면 재전송 코드를 위해 선언
     private PhoneAuthProvider.ForceResendingToken forceResendingToken;
@@ -45,7 +45,7 @@ public class SignupActivity extends BasicActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySignupBinding.inflate(getLayoutInflater());
+        binding = ActivityAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         binding.etPhoneSignup.setVisibility(View.VISIBLE);
@@ -175,7 +175,7 @@ public class SignupActivity extends BasicActivity {
             public void onClick(View v){
                 // 010부터 받은 전화번호를 +8210... 으로 변환해준다.
                 String phoneNum = "+82" + binding.etPhoneSignup.getText().toString().trim().substring(1);
-                Toast.makeText(SignupActivity.this, phoneNum, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AuthActivity.this, phoneNum, Toast.LENGTH_SHORT).show();
 
                 // 키보드 내리기
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -50,13 +50,12 @@
         android:id="@+id/input_storeName"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="28dp"
         android:backgroundTint="#E1695E"
         android:ems="7"
         android:inputType="text"
         android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.313"
         app:layout_constraintStart_toEndOf="@+id/storeName"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -90,42 +89,28 @@
         android:id="@+id/input_userName"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginTop="28dp"
         android:backgroundTint="#E1695E"
         android:ems="7"
         android:inputType="text"
         android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.54"
         app:layout_constraintStart_toEndOf="@+id/userName"
-        app:layout_constraintTop_toBottomOf="@+id/input_storeName" />
+        app:layout_constraintTop_toBottomOf="@+id/storeName" />
 
     <TextView
         android:id="@+id/Kategorie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:text="사업 카테고리"
+        android:background="#FFFFFF"
+        android:text="음식 카테고리"
         android:textColor="#000000"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userName" />
-
-    <EditText
-        android:id="@+id/input_Kategorie"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#E1695E"
-        android:ems="7"
-        android:inputType="text"
-        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.329"
-        app:layout_constraintStart_toEndOf="@+id/Kategorie"
-        app:layout_constraintTop_toBottomOf="@+id/input_userName" />
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tablenum" />
 
     <TextView
         android:id="@+id/howtoeat"
@@ -133,36 +118,35 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="40dp"
-        android:text="식사 방법"
+        android:text="매장 종류"
         android:textColor="#000000"
         android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Kategorie" />
+        app:layout_constraintTop_toBottomOf="@+id/userName" />
 
     <RadioGroup
         android:id="@+id/radio_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="7dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#E1695E"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/howtoeat"
-        app:layout_constraintTop_toBottomOf="@+id/input_Kategorie"
-        app:layout_constraintVertical_bias="0.055"
-        android:backgroundTint="#E1695E">
+        app:layout_constraintTop_toBottomOf="@+id/input_userName">
 
         <RadioButton
             android:id="@+id/radio_button_onlydeliver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="배달만 가능"
+            android:buttonTint="#E1695E"
+            android:text="포장만 가능"
             android:textColor="@color/black"
-            android:textSize="13dp"
-            android:buttonTint="#E1695E"/>
+            android:textSize="13dp" />
 
         <RadioButton
             android:id="@+id/radio_button_both"
@@ -170,16 +154,42 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:buttonTint="#E1695E"
-            android:text="매장 식사, 배달 가능"
+            android:text="매장 식사, 포장 가능"
             android:textColor="@color/black"
             android:textSize="13dp" />
     </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:background="#AFAEAE"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/Kategorie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tablenum">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:background="#AFAEAE"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Kategorie"
+        app:layout_constraintTop_toBottomOf="@id/tablenum"></LinearLayout>
 
     <TextView
         android:id="@+id/tablenumtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="248dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="8dp"
         android:text="테이블 수"
         android:textColor="#000000"
@@ -189,32 +199,7 @@
         app:layout_constraintTop_toBottomOf="@+id/radio_group" />
 
 
-    <TextView
-        android:id="@+id/nicname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="72dp"
-        android:text="닉네임"
-        android:textColor="#000000"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/howtoeat" />
 
-    <EditText
-        android:id="@+id/input_nicname"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:backgroundTint="#E1695E"
-        android:ems="7"
-        android:inputType="text"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.598"
-        app:layout_constraintStart_toEndOf="@+id/nicname"
-        app:layout_constraintTop_toBottomOf="@+id/radio_group" />
 
     <EditText
         android:id="@+id/tablenum"
@@ -228,137 +213,143 @@
         android:textColor="#000000"
         android:textSize="13dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout_ps"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/tablenumtext"
         app:layout_constraintTop_toBottomOf="@+id/radio_group"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="48dp"
-        android:text="비밀번호"
-        android:textColor="#000000"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nicname" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_ps"
-        android:layout_width="210dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.214"
-        app:layout_constraintStart_toEndOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/input_nicname"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="#E1695E"
-        tools:ignore="MissingConstraints">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_ps1"
-            android:layout_width="210dp"
-            android:layout_height="50dp"
-            android:backgroundTint="#E1695E"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textColor="#636363"
-            android:textColorHint="#E1695E">
-
-        </com.google.android.material.textfield.TextInputEditText>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/psTrue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="일치"
-        android:textColor="#00C608"
-        android:textSize="12dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.851"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_psCheck" />
-
-    <TextView
-        android:id="@+id/psFalse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="불일치 (다시 입력해주세요.)"
-        android:textColor="#FF4B3E"
-        android:textSize="12dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.784"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_psCheck" />
-
-    <TextView
-        android:id="@+id/passwordCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="44dp"
-        android:text="비밀번호 확인"
-        android:textColor="#000000"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_psCheck"
-        android:layout_width="210dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/passwordCheck"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_ps"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="#E1695E"
-        tools:ignore="MissingConstraints">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_ps2"
-            android:layout_width="210dp"
-            android:layout_height="50dp"
-            android:backgroundTint="#E1695E"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textColor="#636363"
-            android:textColorHint="#E1695E"
-            app:passwordToggleEnabled="true">
-
-        </com.google.android.material.textfield.TextInputEditText>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
 
     <Button
         android:id="@+id/startApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:backgroundTint="#C85C5C"
         android:text="START"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_psCheck"
-        app:layout_constraintVertical_bias="0.565" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="410dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Kategorie">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutInScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:id="@+id/btn_code1"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:background="#FFFFFF"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/food_code_1_name" />
+
+            <ImageView
+                android:id="@+id/btn_code2"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/btn_code1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/food_code_2_name" />
+
+            <ImageView
+                android:id="@+id/btn_code3"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/btn_code2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/food_code_3_name" />
+
+            <ImageView
+                android:id="@+id/btn_code4"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/btn_code3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/food_code_4_name" />
+
+            <ImageView
+                android:id="@+id/btn_code5"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/btn_code4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/food_code_5_name" />
+
+            <ImageView
+                android:id="@+id/btn_code6"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_code1"
+                app:srcCompat="@drawable/food_code_6_name" />
+
+            <ImageView
+                android:id="@+id/btn_code7"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/btn_code6"
+                app:layout_constraintTop_toBottomOf="@+id/btn_code1"
+                app:srcCompat="@drawable/food_code_7_name" />
+
+            <ImageView
+                android:id="@+id/btn_code8"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/btn_code7"
+                app:layout_constraintTop_toBottomOf="@+id/btn_code1"
+                app:srcCompat="@drawable/food_code_8_name" />
+
+            <ImageView
+                android:id="@+id/btn_code9"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/btn_code8"
+                app:layout_constraintTop_toBottomOf="@+id/btn_code1"
+                app:srcCompat="@drawable/food_code_9_name" />
+
+            <ImageView
+                android:id="@+id/btn_code10"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toEndOf="@+id/btn_code9"
+                app:layout_constraintTop_toBottomOf="@+id/btn_code1"
+                app:srcCompat="@drawable/food_code_10_name" />
+
+            <ImageView
+                android:id="@+id/btn_code11"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_code6"
+                app:srcCompat="@drawable/food_code_11_name" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

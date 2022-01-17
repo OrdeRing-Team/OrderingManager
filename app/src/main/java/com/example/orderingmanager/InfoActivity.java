@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,9 +15,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.orderingmanager.databinding.ActivityInfoBinding;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class InfoActivity extends AppCompatActivity {
+
+    //viewbinding
+    private ActivityInfoBinding binding;
 
     RadioGroup radioGroup;
     TextView tablenumtext;
@@ -24,11 +32,11 @@ public class InfoActivity extends AppCompatActivity {
 
     EditText inputStoreName;
     EditText inputUserName;
-    EditText inputKategorie;
-    EditText inputNicname;
+    //EditText inputKategorie;
+    //EditText inputNicname;
     EditText tablenum;
-    TextInputEditText psFirst;
-    TextInputEditText psSecond;
+    //TextInputEditText psFirst;
+    //TextInputEditText psSecond;
 
     TextView psTrue;
     TextView psFalse;
@@ -36,22 +44,26 @@ public class InfoActivity extends AppCompatActivity {
     String psBeforeCheck;
     String psAfterCheck;
 
+    boolean[] codeStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+        binding = ActivityInfoBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         radioGroup = findViewById(R.id.radio_group);
         tablenumtext = findViewById(R.id.tablenumtext);
         tablenum = findViewById(R.id.tablenum);
         inputStoreName = findViewById(R.id.input_storeName);
         inputUserName = findViewById(R.id.input_userName);
-        inputKategorie = findViewById(R.id.input_Kategorie);
-        inputNicname = findViewById(R.id.input_nicname);
+        //inputNicname = findViewById(R.id.input_nicname);
         btnStartApp = findViewById(R.id.startApp);
 
-        psFirst = findViewById(R.id.textInputEditText_ps1);
-        psSecond = findViewById(R.id.textInputEditText_ps2);
+        //psFirst = findViewById(R.id.textInputEditText_ps1);
+        //psSecond = findViewById(R.id.textInputEditText_ps2);
 
         psTrue = findViewById(R.id.psTrue);
         psFalse = findViewById(R.id.psFalse);
@@ -62,15 +74,33 @@ public class InfoActivity extends AppCompatActivity {
         tablenum.setVisibility(View.GONE);
 
         // 비밀번호 일치, 불일치를 알리기 위해 알림 메시지는 가려놓는다.
-        psTrue.setVisibility(View.GONE);
-        psFalse.setVisibility(View.GONE);
+        //psTrue.setVisibility(View.GONE);
+        //psFalse.setVisibility(View.GONE);
 
+        // 카테고리 선택여부 초기화
+        int categotyNum = binding.constraintLayoutInScrollView.getChildCount();
+        codeStatus = new boolean[categotyNum];
+        for(int i = 0; i < categotyNum; i++){
+            codeStatus[i] = false;
+        }
+
+        findViewById(R.id.btn_code1).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code2).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code3).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code4).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code5).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code6).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code7).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code8).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code9).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code10).setOnClickListener(onClickListener);
+        findViewById(R.id.btn_code11).setOnClickListener(onClickListener);
 
         // 라디오 버튼 클릭 이벤트
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.radio_button_onlydeliver:
                         tablenumtext.setVisibility(View.GONE);
                         tablenum.setVisibility(View.GONE);
@@ -85,7 +115,7 @@ public class InfoActivity extends AppCompatActivity {
         });
 
         // 비밀번호 일치, 불일치 확인하기
-        psFirst.addTextChangedListener(new TextWatcher() {
+        /*psFirst.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -129,7 +159,7 @@ public class InfoActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
 
             }
-        });
+        });*/
 
         btnStartApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,26 +170,27 @@ public class InfoActivity extends AppCompatActivity {
 
     }
 
-
     // 입력창이 비었거나, 비밀번호가 일치하지 않을 때 알림을 띄우는 함수 (다 차 있고 비밀번호 입력을 안 하면 오류 발생,,,)
     private void isEmpty() {
         String storeName = inputStoreName.getText().toString();
         String userName = inputUserName.getText().toString();
-        String kategorie = inputKategorie.getText().toString();
-        String nicName = inputNicname.getText().toString();
+        //String kategorie = inputKategorie.getText().toString();
+        //String nicName = inputNicname.getText().toString();
         String tableNum = tablenum.getText().toString();
         RadioButton radio_button_only = findViewById(R.id.radio_button_onlydeliver);
         RadioButton radio_button_both = findViewById(R.id.radio_button_both);
 
-        if(storeName.matches("") || userName.matches("") || kategorie.matches("") || nicName.matches("")) {
+        /*if(storeName.matches("") || userName.matches("") || kategorie.matches("") || nicName.matches("")) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
-        else if(psBeforeCheck.equals(psAfterCheck) == false) {
-            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
-            Log.d("isEmpty", "입력칸을 모두 채워라.");
-        }
-        else if((radio_button_only.isChecked() == false) && (radio_button_both.isChecked() == false)) {
+        else if(!psBeforeCheck.isEmpty() || !psAfterCheck.isEmpty()) {
+            if (psBeforeCheck.equals(psAfterCheck) == false) {
+                Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+                Log.d("isEmpty", "입력칸을 모두 채워라.");
+            }
+        }*/
+        if((radio_button_only.isChecked() == false) && (radio_button_both.isChecked() == false)) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
@@ -167,14 +198,67 @@ public class InfoActivity extends AppCompatActivity {
                 Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
                 Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
-        else if(psBeforeCheck.isEmpty() == true || psAfterCheck.isEmpty() == true) {
+        /*else if(psBeforeCheck.isEmpty() == true || psAfterCheck.isEmpty() == true) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
-        }
+        }*/
         else {
             Toast.makeText(InfoActivity.this, "오더링 START", Toast.LENGTH_SHORT).show();
             Log.d("isn'tEmpty", "입력칸 모두 채워짐.");
             //디비에 데이터 저장하기. (차후에 추가할 부분)
         }
     }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()){
+                case R.id.btn_code1:
+                    if(!codeStatus[0]) {binding.btnCode1.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[0] = true;}
+                    else {binding.btnCode1.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[0] = false;}
+                    break;
+                case R.id.btn_code2:
+                    if(!codeStatus[1]) {binding.btnCode2.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[1] = true;}
+                    else {binding.btnCode2.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[1] = false;}
+                    break;
+                case R.id.btn_code3:
+                    if(!codeStatus[2]) {binding.btnCode3.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[2] = true;}
+                    else {binding.btnCode3.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[2] = false;}
+                    break;
+                case R.id.btn_code4:
+                    if(!codeStatus[3]) {binding.btnCode4.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[3] = true;}
+                    else {binding.btnCode4.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[3] = false;}
+                    break;
+                case R.id.btn_code5:
+                    if(!codeStatus[4]) {binding.btnCode5.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[4] = true;}
+                    else {binding.btnCode5.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[4] = false;}
+                    break;
+                case R.id.btn_code6:
+                    if(!codeStatus[5]) {binding.btnCode6.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[5] = true;}
+                    else {binding.btnCode6.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[5] = false;}
+                    break;
+                case R.id.btn_code7:
+                    if(!codeStatus[6]) {binding.btnCode7.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[6] = true;}
+                    else {binding.btnCode7.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[6] = false;}
+                    break;
+                case R.id.btn_code8:
+                    if(!codeStatus[7]) {binding.btnCode8.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[7] = true;}
+                    else {binding.btnCode8.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[7] = false;}
+                    break;
+                case R.id.btn_code9:
+                    if(!codeStatus[8]) {binding.btnCode9.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[8] = true;}
+                    else {binding.btnCode9.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[8] = false;}
+                    break;
+                case R.id.btn_code10:
+                    if(!codeStatus[9]) {binding.btnCode10.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[9] = true;}
+                    else {binding.btnCode10.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[9] = false;}
+                    break;
+                case R.id.btn_code11:
+                    if(!codeStatus[10]) {binding.btnCode11.setBackgroundColor(Color.parseColor("#E1695E")); codeStatus[10] = true;}
+                    else {binding.btnCode11.setBackgroundColor(Color.parseColor("#FFFFFF")); codeStatus[10] = false;}
+                    break;
+            }
+        }
+    };
 }
