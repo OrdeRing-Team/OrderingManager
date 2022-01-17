@@ -10,10 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.orderingmanager.databinding.ActivityTempBinding;
 import com.example.orderingmanager.databinding.FragmentQrBinding;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,7 +27,6 @@ public class QrFragment extends Fragment {
 
     //viewbinding
     private FragmentQrBinding binding;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,24 +48,10 @@ public class QrFragment extends Fragment {
         binding.tvEmail.setText(user.getEmail());
         binding.tvPhoneNum.setText(user.getPhoneNumber());
 
-
-        /* 로그아웃 버튼 메서드 */
-        binding.btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("btnLogout  ","로그아웃 클릭");
-                logout();
-            }
-        });
+        view.findViewById(R.id.btn_logout).setOnClickListener(onClickListener);
+        view.findViewById(R.id.btn_deleteAccount).setOnClickListener(onClickListener);
 
 
-        /* 회원탈퇴 버튼 메서드 */
-        binding.btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteAccount();
-            }
-        });
         return view;
     }
 
@@ -74,6 +60,20 @@ public class QrFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch(view.getId()){
+                case R.id.btn_logout:
+                    logout();
+                    break;
+                case R.id.btn_deleteAccount:
+                    deleteAccount();
+                    break;
+            }
+        }
+    };
 
     /* 로그아웃 함수입니다. */
     public void logout() {
@@ -87,9 +87,15 @@ public class QrFragment extends Fragment {
     /* 회원탈퇴 함수입니다. */
     public void deleteAccount() {
         FirebaseAuth.getInstance().getCurrentUser().delete();
-
-        startActivity(new Intent(getActivity(), StartActivity.class));
-        Toast.makeText(getActivity(), "회원탈퇴 처리되었습니다.", Toast.LENGTH_SHORT).show();
-        getActivity().finish();
+        AuthUI.getInstance()
+                .delete(getActivity())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getActivity(), "회원탈퇴가 정상적으로 처리되었습니다.", Toast.LENGTH_LONG).show();
+                        getActivity().finish();
+                        startActivity(new Intent(getActivity(), StartActivity.class));
+                    }
+                });
     }
 }

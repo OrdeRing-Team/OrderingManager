@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.Glide;
-import com.example.orderingmanager.databinding.ActivityAuthBinding;
 import com.example.orderingmanager.databinding.ActivityTempBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,6 +24,8 @@ import java.util.Map;
 
 public class TempActivity extends BasicActivity {
 
+    Intent intent;
+
     //viewbinding
     private ActivityTempBinding binding;
 
@@ -34,6 +34,7 @@ public class TempActivity extends BasicActivity {
 
     private static final String TAG = "TempActivity_TAG";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +42,16 @@ public class TempActivity extends BasicActivity {
         binding = ActivityTempBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        intent = getIntent();
+        String phoneNum = intent.getStringExtra("phoneNum");
+        binding.etPhoneNum.setText(phoneNum);
 
         mAuth = FirebaseAuth.getInstance();
 
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAccount();
+                createAccount(phoneNum);
             }
         });
     }
@@ -62,7 +66,7 @@ public class TempActivity extends BasicActivity {
 
 
     /* 이메일 계정 생성 */
-    private void createAccount() {
+    private void createAccount(String phoneNum) {
         String Email = binding.editTextEmail.getText().toString();
         String Password = binding.editTextPassword.getText().toString();
 
@@ -77,26 +81,26 @@ public class TempActivity extends BasicActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "계정 생성 성공");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                updateUI(user);
+                                updateUI(user, phoneNum);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                updateUI(null);
+                                updateUI(null, phoneNum);
                             }
                         }
                     });
         }
     }
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(FirebaseUser user, String phoneNum) {
 
-        updateDB(user);
+        updateDB(user, phoneNum);
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         FinishWithAnim();
     }
 
-    private void updateDB(FirebaseUser user) {
+    private void updateDB(FirebaseUser user, String phoneNum) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -104,7 +108,7 @@ public class TempActivity extends BasicActivity {
 
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("이메일", user.getEmail());
-        userInfo.put("전화번호", user.getPhoneNumber());
+        userInfo.put("전화번호", phoneNum);
 
         // 새로운 사용자 DB 생성
         db.collection("users")
@@ -113,9 +117,6 @@ public class TempActivity extends BasicActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, user.getPhoneNumber() + "의 DB 생성 완료  ::  " + documentReference.getId());
-                        Intent intent = new Intent(TempActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        FinishWithAnim();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -126,4 +127,6 @@ public class TempActivity extends BasicActivity {
                 });
 
     }
+
+
 }

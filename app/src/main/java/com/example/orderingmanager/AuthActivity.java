@@ -398,10 +398,17 @@ public class AuthActivity extends BasicActivity {
                         // ProgressBar 제거
                         binding.progressBar.setVisibility(View.GONE);
 
-                        String phoneNum = firebaseAuth.getCurrentUser().getPhoneNumber();
+                        String phoneNum = "0" + firebaseAuth.getCurrentUser().getPhoneNumber().substring(3);
                         Log.e("AuthActivity: signInWithPhoneAuthCredential","PhoneNum = " + phoneNum);
                         Toast.makeText(AuthActivity.this, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(AuthActivity.this, TempActivity.class));
+
+                        // 휴대폰으로 생성된 계정은 탈퇴처리
+                        FirebaseAuth.getInstance().getCurrentUser().delete();
+
+                        Intent intent = new Intent(AuthActivity.this, TempActivity.class);
+                        intent.putExtra("phoneNum", phoneNum);
+                        startActivity(intent);
+
                         FinishWithAnim();
                     }
                 })
