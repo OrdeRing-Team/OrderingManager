@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/white"/> <!--기본배경 색-->
+    <item>
+        <bitmap
+            android:src="@drawable/splash"/> <!--앱 로고-->
+    </item>
+</layer-list>
