@@ -21,7 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InfoActivity extends AppCompatActivity {
+public class InfoActivity extends BasicActivity {
 
     //viewbinding
     private ActivityInfoBinding binding;

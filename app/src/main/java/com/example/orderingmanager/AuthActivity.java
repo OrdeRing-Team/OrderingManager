@@ -232,6 +232,16 @@ public class AuthActivity extends BasicActivity {
                 imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(),0);
             }
         });
+
+        binding.btnGoInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AuthActivity.this, InfoActivity.class);
+                startActivity(intent);
+
+                FinishWithAnim();
+            }
+        });
     }
     private void TimerStart(){
         String min = Integer.toString(2);

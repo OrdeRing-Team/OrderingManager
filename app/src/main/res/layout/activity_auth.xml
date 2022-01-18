@@ -220,7 +220,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/go_info"
+        android:id="@+id/btn_goInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="매장정보입력(임시버튼)"
