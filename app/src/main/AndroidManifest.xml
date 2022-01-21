@@ -32,11 +32,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -45,8 +40,9 @@
         </activity>
 
         <activity
-            android:name=".TempActivity"
-            android:exported="true">
+            android:name=".SignupActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <activity
@@ -61,12 +57,12 @@
         <activity
             android:name=".AuthActivity"
             android:exported="true">
+        </activity>
 
-        </activity><activity
+        <activity
         android:name=".StartActivity"
         android:exported="true">
-
-    </activity>
+        </activity>
     </application>
 
 </manifest>

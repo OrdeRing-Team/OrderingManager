@@ -5,4 +5,5 @@
     <string name="main_logo">OrdeRing 매장관리시스템</string>
     <string name="auth_info">본인 인증</string>
     <string name="auth_errorcode">인증번호가 일치하지 않습니다.</string>
+    <string name="signup_nickname"><u>다시 선택</u></string>
 </resources>

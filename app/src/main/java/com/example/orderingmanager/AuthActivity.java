@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 public class AuthActivity extends BasicActivity {
 
 
-
     //viewbinding
     private ActivityAuthBinding binding;
 
@@ -75,17 +74,17 @@ public class AuthActivity extends BasicActivity {
         ButtonLock(binding.btnVerifyCode);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
-            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential){
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
 
                 signInWithPhoneAuthCredential(phoneAuthCredential);
-                Log.e("AuthActivity","::onVerificationCompleted 실행");
+                Log.e("AuthActivity", "::onVerificationCompleted 실행");
                 Toast.makeText(AuthActivity.this, "인증되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onVerificationFailed(@NonNull FirebaseException e){
+            public void onVerificationFailed(@NonNull FirebaseException e) {
                 // ProgressBar 제거
                 binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(AuthActivity.this, "번호를 올바르게 입력해 주세요.", Toast.LENGTH_SHORT).show();
@@ -130,10 +129,9 @@ public class AuthActivity extends BasicActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int input = binding.etPhoneSignup.getText().toString().length();
-                if(input > 10){
+                if (input > 10) {
                     ButtonRelease(binding.btnSendSMS);
-                }
-                else ButtonLock(binding.btnSendSMS);
+                } else ButtonLock(binding.btnSendSMS);
             }
 
 
@@ -154,10 +152,9 @@ public class AuthActivity extends BasicActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int input = binding.etVerifyCode.getText().toString().length();
-                if(input > 5){
+                if (input > 5) {
                     ButtonRelease(binding.btnVerifyCode);
-                }
-                else ButtonLock(binding.btnVerifyCode);
+                } else ButtonLock(binding.btnVerifyCode);
             }
 
 
@@ -168,28 +165,28 @@ public class AuthActivity extends BasicActivity {
         });
 
 
-        binding.ibClose.setOnClickListener(new View.OnClickListener(){
+        binding.ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 // 키보드 내리기
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(),0);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
 
                 FinishWithAnim();
             }
         });
 
 
-        binding.btnSendSMS.setOnClickListener(new View.OnClickListener(){
+        binding.btnSendSMS.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 // 010부터 받은 전화번호를 +8210... 으로 변환해준다.
                 String phoneNum = "+82" + binding.etPhoneSignup.getText().toString().trim().substring(1);
                 Toast.makeText(AuthActivity.this, phoneNum, Toast.LENGTH_SHORT).show();
 
                 // 키보드 내리기
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(),0);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
 
                 // 문자 전송
                 startPhoneNumberVerification(phoneNum);
@@ -217,9 +214,9 @@ public class AuthActivity extends BasicActivity {
         });
 
 
-        binding.btnVerifyCode.setOnClickListener(new View.OnClickListener(){
+        binding.btnVerifyCode.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 String codeNum = binding.etVerifyCode.getText().toString().trim();
                 verifyCode(mVerificationId, codeNum);
 
@@ -228,8 +225,8 @@ public class AuthActivity extends BasicActivity {
                 binding.tvErrorcode.setVisibility(View.GONE);
 
                 // 키보드 내리기
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(),0);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
             }
         });
 
@@ -243,7 +240,8 @@ public class AuthActivity extends BasicActivity {
             }
         });
     }
-    private void TimerStart(){
+
+    private void TimerStart() {
         String min = Integer.toString(2);
         String sec = Integer.toString(0);
 
@@ -266,12 +264,12 @@ public class AuthActivity extends BasicActivity {
                         // 반복실행할 구문
 
                         // 0초 이상이면
-                        if(second != 0) {
+                        if (second != 0) {
                             //1초씩 감소
                             second--;
 
                             // 0분 이상이면
-                        } else if(minute != 0) {
+                        } else if (minute != 0) {
                             // 1분 = 60초
                             second = 60;
                             second--;
@@ -281,20 +279,20 @@ public class AuthActivity extends BasicActivity {
 
                         // 분, 초가 10이하(한자리수) 라면
                         // 숫자 앞에 0을 붙인다 ( 8 -> 08 )
-                        if(second <= 9){
+                        if (second <= 9) {
                             binding.tvTimerSec.setText("0" + second);
                         } else {
                             binding.tvTimerSec.setText(Integer.toString(second));
                         }
 
-                        if(minute <= 9){
+                        if (minute <= 9) {
                             binding.tvTimerMin.setText("0" + minute);
                         } else {
                             binding.tvTimerMin.setText(Integer.toString(minute));
                         }
 
                         // 분, 초가 다 0이라면 메세지를 출력한다.
-                        if(minute == 0 && second == 0) {
+                        if (minute == 0 && second == 0) {
 
                             timer.cancel();//타이머 종료
 
@@ -315,13 +313,13 @@ public class AuthActivity extends BasicActivity {
         //타이머를 실행
         timer.schedule(timerTask, 0, 1000); //Timer 실행
     }
+
     /* 버튼 Lock거는 함수 */
-    private void ButtonLock(Button button){
-        if(button.equals(binding.btnSendSMS)){
+    private void ButtonLock(Button button) {
+        if (button.equals(binding.btnSendSMS)) {
             binding.btnSendSMS.setBackgroundColor(Color.parseColor("#5E5E5E"));
             binding.btnSendSMS.setEnabled(false);
-        }
-        else if(button.equals(binding.btnVerifyCode)){
+        } else if (button.equals(binding.btnVerifyCode)) {
             binding.btnVerifyCode.setBackgroundColor(Color.parseColor("#5E5E5E"));
             binding.btnVerifyCode.setEnabled(false);
         }
@@ -329,12 +327,11 @@ public class AuthActivity extends BasicActivity {
 
 
     /* 버튼 Lock푸는 함수 */
-    private void ButtonRelease(Button button){
-        if(button.equals(binding.btnSendSMS)){
+    private void ButtonRelease(Button button) {
+        if (button.equals(binding.btnSendSMS)) {
             binding.btnSendSMS.setBackgroundColor(Color.parseColor("#0D70E6"));
             binding.btnSendSMS.setEnabled(true);
-        }
-        else if(button.equals(binding.btnVerifyCode)){
+        } else if (button.equals(binding.btnVerifyCode)) {
             binding.btnVerifyCode.setBackgroundColor(Color.parseColor("#0D70E6"));
             binding.btnVerifyCode.setEnabled(true);
         }
@@ -342,7 +339,7 @@ public class AuthActivity extends BasicActivity {
 
 
     /* 문자 전송 함수 */
-    private void startPhoneNumberVerification(String phoneNum){
+    private void startPhoneNumberVerification(String phoneNum) {
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(firebaseAuth)
                         .setPhoneNumber(phoneNum)
@@ -355,7 +352,7 @@ public class AuthActivity extends BasicActivity {
 
 
     /* 인증번호 재전송 함수 */
-    private void ResendVerificationCode(String phoneNum, PhoneAuthProvider.ForceResendingToken token){
+    private void ResendVerificationCode(String phoneNum, PhoneAuthProvider.ForceResendingToken token) {
         // ProgressBar 실행
         binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -370,8 +367,7 @@ public class AuthActivity extends BasicActivity {
         PhoneAuthProvider.verifyPhoneNumber(options);
 
         // 타이머 초기화
-        if(timerTask != null)
-        {
+        if (timerTask != null) {
             timerTask.cancel();
             timerTask = null;
         }
@@ -384,7 +380,7 @@ public class AuthActivity extends BasicActivity {
 
 
     /* 인증번호 확인 함수 */
-    private void verifyCode(String mVerificationId,String codeNum){
+    private void verifyCode(String mVerificationId, String codeNum) {
         // ProgressBar 실행
         binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -395,7 +391,7 @@ public class AuthActivity extends BasicActivity {
 
 
     /* 계정 생성 함수 */
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential){
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         // ProgressBar 실행
         binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -409,13 +405,13 @@ public class AuthActivity extends BasicActivity {
                         binding.progressBar.setVisibility(View.GONE);
 
                         String phoneNum = "0" + firebaseAuth.getCurrentUser().getPhoneNumber().substring(3);
-                        Log.e("AuthActivity: signInWithPhoneAuthCredential","PhoneNum = " + phoneNum);
+                        Log.e("AuthActivity: signInWithPhoneAuthCredential", "PhoneNum = " + phoneNum);
                         Toast.makeText(AuthActivity.this, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
 
                         // 휴대폰으로 생성된 계정은 탈퇴처리
                         FirebaseAuth.getInstance().getCurrentUser().delete();
 
-                        Intent intent = new Intent(AuthActivity.this, TempActivity.class);
+                        Intent intent = new Intent(AuthActivity.this, SignupActivity.class);
                         intent.putExtra("phoneNum", phoneNum);
                         startActivity(intent);
 

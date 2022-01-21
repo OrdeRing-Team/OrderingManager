@@ -29,10 +29,9 @@ public class MainActivity extends BasicActivity {
         // 회원 정보 입력 안된 상태
         if(user == null){
             startActivity(new Intent(MainActivity.this, StartActivity.class));
-            Toast.makeText(MainActivity.this, "로그인 ㅎ ㅐ ~~~~~~~~~", Toast.LENGTH_SHORT).show();
             FinishWithAnim();
         }
-        Toast.makeText(MainActivity.this, "user.getEmail() : " + user.getEmail(), Toast.LENGTH_SHORT).show();
+
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottomNavi);
