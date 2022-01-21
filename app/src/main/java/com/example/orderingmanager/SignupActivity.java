@@ -316,7 +316,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void initRandomButton(){
-        binding.tvRandomNick.setOnClickListener(new View.OnClickListener(){
+        binding.ibRandomNick.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 randomNickname();

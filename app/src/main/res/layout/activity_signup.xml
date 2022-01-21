@@ -28,8 +28,9 @@
         android:id="@+id/iv_error"
         android:layout_width="15dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/editTextNickname"
+        app:layout_constraintEnd_toStartOf="@+id/tv_nickNameError"
         app:layout_constraintTop_toBottomOf="@+id/editTextNickname"
         app:srcCompat="@drawable/ic_baseline_error_outline_24"
         tools:visibility="visible" />
@@ -38,13 +39,13 @@
         android:id="@+id/tv_nickNameError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         android:layout_marginTop="6dp"
+        android:layout_marginEnd="55dp"
         android:text="닉네임은 3글자 이상 입력해 주세요"
         android:textColor="#FF0000"
         android:textSize="9sp"
         android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@id/iv_error"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/iv_error"
         tools:visibility="visible" />
 
@@ -54,12 +55,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="45dp"
-        android:layout_marginEnd="326dp"
         android:text="닉네임"
         android:textColor="#000000"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -69,12 +68,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="326dp"
         android:text="이메일"
         android:textColor="#000000"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editTextEmail" />
 
@@ -88,12 +85,13 @@
         android:inputType="textEmailAddress"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_randomNick" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickNameError" />
 
     <ImageView
         android:id="@+id/iv_error4"
-        android:layout_width="20dp"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/tv_emailError"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
@@ -104,15 +102,13 @@
         android:id="@+id/tv_emailError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="55dp"
         android:text="올바르지 않은 이메일 형식입니다"
-        android:textColor="#FF4B3E"
-        android:textSize="10sp"
+        android:textColor="#FF1100"
+        android:textSize="9sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.794"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_error4"
         tools:visibility="visible" />
 
@@ -122,12 +118,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="326dp"
         android:text="비밀번호"
         android:textColor="#000000"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textInputLayout_ps" />
 
@@ -137,12 +131,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="326dp"
         android:text="비밀번호 확인"
         android:textColor="#000000"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textInputLayout_psCheck" />
 
@@ -175,8 +167,9 @@
 
     <ImageView
         android:id="@+id/iv_error3"
-        android:layout_width="20dp"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/tv_psAccord"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout_psCheck"
@@ -187,15 +180,13 @@
         android:id="@+id/tv_psAccord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="55dp"
         android:text="비밀번호가 일치하지 않습니다."
-        android:textColor="#FF4B3E"
-        android:textSize="10sp"
+        android:textColor="#FF1100"
+        android:textSize="9sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.794"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_error3"
         tools:visibility="visible" />
 
@@ -227,8 +218,9 @@
 
     <ImageView
         android:id="@+id/iv_error2"
-        android:layout_width="20dp"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/tv_psLength"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout_ps"
@@ -239,15 +231,13 @@
         android:id="@+id/tv_psLength"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="55dp"
         android:text="비밀번호를 6자이상 입력해 주세요."
-        android:textColor="#FF4B3E"
-        android:textSize="10sp"
+        android:textColor="#FF1100"
+        android:textSize="9sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.794"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_error2"
         tools:visibility="visible" />
 
@@ -271,11 +261,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="45dp"
-        android:layout_marginEnd="326dp"
         android:text="휴대폰 번호"
         android:textColor="#000000"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -283,26 +271,27 @@
         android:id="@+id/tv_signupPhoneNum"
         android:layout_width="210dp"
         android:layout_height="50dp"
-        android:layout_marginStart="46dp"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="55dp"
         android:background="@drawable/round_rectangle_locked"
         android:gravity="center"
         android:text="010-1234-5678"
         android:textColor="#B6B6B6"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-    <TextView
-        android:id="@+id/tv_randomNick"
+    <ImageButton
+        android:id="@+id/ib_randomNick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="55dp"
-        android:text="@string/signup_nickname"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNickname" />
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/ic_refresh"
+        android:backgroundTint="#808080"
+        app:layout_constraintEnd_toEndOf="@+id/editTextNickname"
+        app:layout_constraintTop_toTopOf="@+id/editTextNickname" />
 
     <TextView
         android:id="@+id/textView14"
