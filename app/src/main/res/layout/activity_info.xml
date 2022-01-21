@@ -253,7 +253,7 @@
 
             <ImageView
                 android:id="@+id/btn_code1"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:background="#FFFFFF"
                 app:layout_constraintStart_toStartOf="parent"
@@ -262,7 +262,7 @@
 
             <ImageView
                 android:id="@+id/btn_code2"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toEndOf="@+id/btn_code1"
@@ -271,7 +271,7 @@
 
             <ImageView
                 android:id="@+id/btn_code3"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toEndOf="@+id/btn_code2"
@@ -280,7 +280,7 @@
 
             <ImageView
                 android:id="@+id/btn_code4"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toEndOf="@+id/btn_code3"
@@ -289,7 +289,7 @@
 
             <ImageView
                 android:id="@+id/btn_code5"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toEndOf="@+id/btn_code4"
@@ -298,7 +298,7 @@
 
             <ImageView
                 android:id="@+id/btn_code6"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toStartOf="parent"
@@ -307,7 +307,7 @@
 
             <ImageView
                 android:id="@+id/btn_code7"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toEndOf="@+id/btn_code6"
@@ -316,7 +316,7 @@
 
             <ImageView
                 android:id="@+id/btn_code8"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toEndOf="@+id/btn_code7"
@@ -325,7 +325,7 @@
 
             <ImageView
                 android:id="@+id/btn_code9"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toEndOf="@+id/btn_code8"
@@ -334,7 +334,7 @@
 
             <ImageView
                 android:id="@+id/btn_code10"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toEndOf="@+id/btn_code9"
@@ -343,7 +343,7 @@
 
             <ImageView
                 android:id="@+id/btn_code11"
-                android:layout_width="80dp"
+                android:layout_width="78dp"
                 android:layout_height="82dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toStartOf="parent"
