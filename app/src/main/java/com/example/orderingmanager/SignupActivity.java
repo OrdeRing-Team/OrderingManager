@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,12 +21,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.orderingmanager.databinding.ActivityInfoBinding;
 import com.example.orderingmanager.databinding.ActivitySignupBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
@@ -38,7 +49,7 @@ public class SignupActivity extends AppCompatActivity {
     Boolean isPasswordWritten = false;
     Boolean isPasswordCheckAccord = false;
 
-
+    private static final String TAG = "SignupActivity_TAG";
 
     //viewbinding
     private ActivitySignupBinding binding;
@@ -332,7 +343,7 @@ public class SignupActivity extends AppCompatActivity {
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //createAccount(phoneNum);
+                createAccount();
             }
         });
     }
@@ -357,6 +368,67 @@ public class SignupActivity extends AppCompatActivity {
         button.setEnabled(true);
     }
 
+    /* 이메일 계정 생성 */
+    private void createAccount() {
 
-    
+        String Nickname = binding.editTextNickname.getText().toString();
+        String Email = binding.editTextEmail.getText().toString();
+        String Password = binding.editTextPassword.getText().toString();
+
+        Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
+
+        // 이메일 계정 생성 시작
+        if (pattern.matcher(Email).matches() && Password.length() > 5 && Nickname.length() > 2) {
+            mAuth.createUserWithEmailAndPassword(Email, Password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user, Nickname, Email);
+                            } else {
+                                updateUI(null, Nickname, Email);
+                            }
+                        }
+                    });
+        }
+    }
+
+    private void updateUI(FirebaseUser user, String Nickname, String Email) {
+
+        updateDB(user, phoneNum, Nickname, Email);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void updateDB(FirebaseUser user, String phoneNum, String Nickname, String Email) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        //UserInfo userinfo = new UserInfo(name, birthyear, birthmonth, birthday,followerlist,followinglist,contents);
+
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("이메일", Email);
+        userInfo.put("전화번호", phoneNum);
+        userInfo.put("닉네임", Nickname);
+
+        // 새로운 사용자 DB 생성
+        db.collection("users")
+                .add(userInfo)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, user.getPhoneNumber() + "의 DB 생성 완료  ::  " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "의 DB 생성 실패", e);
+                    }
+                });
+
+    }
 }
