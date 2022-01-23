@@ -20,7 +20,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class QrFragment extends Fragment {
     private View view;
@@ -40,13 +47,28 @@ public class QrFragment extends Fragment {
 
 
         // firestore 는 DB 접근할 때 사용하심 됩니당!!
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         /*  각 사용자의 DB 문서명은 사용자의 uid로 구성되기 때문에 DB에 접근하고자 할 때는 user.getUid() 로 접근하시면 됩니다.
             파이어베이스 문서 참고 : https://firebase.google.com/docs/firestore/quickstart?authuser=0#java */
+        String email;
+        String phoneNum;
 
+        /*db.collection("users").document(user.getUid()).get().addOnCompleteListener((task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot document = task.getResult();
+                if(document != null){
+                    if(document.exists()){
+                            binding.tvEmail.setText(document.getData().get("이메일").toString());
+                            Log.e("dddddd",document.getData().get("이메일").toString());
+                            binding.tvPhoneNum.setText(document.getData().get("전화번호").toString());
+                    }
+                    else{
+                        Log.e("xxxxxxxxxxx","xxxxxxxxxx");
+                    }
+                }
+            }
+        }));*/
 
-        binding.tvEmail.setText(user.getEmail());
-        binding.tvPhoneNum.setText(user.getPhoneNumber());
 
         view.findViewById(R.id.btn_logout).setOnClickListener(onClickListener);
         view.findViewById(R.id.btn_deleteAccount).setOnClickListener(onClickListener);

@@ -387,11 +387,20 @@ public class SignupActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 updateUI(user, Nickname, Email);
                             } else {
-                                updateUI(null, Nickname, Email);
+                                // 실패시
+                                    String ErrorEmailAlreadyUse = "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.";
+
+                                    String Errormsg = task.getException().toString();
+                                    Log.w(TAG, "이메일 생성 실패", task.getException());
+                                    if (Errormsg.equals(ErrorEmailAlreadyUse)) {
+
+                                        Toast.makeText(SignupActivity.this, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT).show();
+                                    }
                             }
                         }
                     });
         }
+
     }
 
     private void updateUI(FirebaseUser user, String Nickname, String Email) {
@@ -404,6 +413,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void updateDB(FirebaseUser user, String phoneNum, String Nickname, String Email) {
+
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -420,7 +430,7 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, user.getPhoneNumber() + "의 DB 생성 완료  ::  " + documentReference.getId());
+                        Log.d(TAG, phoneNum + "의 DB 생성 완료  ::  " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
