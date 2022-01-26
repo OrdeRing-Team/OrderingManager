@@ -1,5 +1,7 @@
 package com.example.orderingmanager;
 
+import static com.example.orderingmanager.Utillity.showToast;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.LauncherApps;
@@ -49,6 +51,8 @@ public class SignupActivity extends AppCompatActivity {
     Boolean isPasswordWritten = false;
     Boolean isPasswordCheckAccord = false;
 
+    Animation complete;
+
     private static final String TAG = "SignupActivity_TAG";
 
     //viewbinding
@@ -68,9 +72,9 @@ public class SignupActivity extends AppCompatActivity {
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Animation complete = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale);
-
         mAuth = FirebaseAuth.getInstance();
+
+        complete = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale);
 
         // 전화번호 받아온 뒤 표시
         intent = getIntent();
@@ -79,6 +83,16 @@ public class SignupActivity extends AppCompatActivity {
         binding.tvSignupPhoneNum.setText(convertedPhoneNum);
 
         ButtonLock(binding.btnSignup);
+
+        initNicknameSet();
+        initRandomButton();
+        initSignupButton();
+        initTextChangedListener();
+
+
+    }
+
+    private void initNicknameSet(){
 
         // 첫번째 들어갈 닉네임 초기화 - 음식 관련 형용사를 위주로 추가해주세요!! 재밌게 표현하는것도 가능!!
         firstNick.add("뜨끈한 ");firstNick.add("든든한 ");firstNick.add("달콤한 ");firstNick.add("신선한 ");
@@ -100,11 +114,17 @@ public class SignupActivity extends AppCompatActivity {
         randomNickname();
         binding.ivNickNameComplete.setVisibility(View.VISIBLE);
         binding.ivNickNameComplete.startAnimation(complete);
+    }
 
+    private void randomNickname(){
+        // 리스트 순서 섞기
+        Collections.shuffle(firstNick);
+        Collections.shuffle(lastNick);
 
-        initRandomButton();
-        initSignupButton();
+        binding.editTextNickname.setText(firstNick.get(0) + lastNick.get(0));
+    }
 
+    private void initTextChangedListener(){
         /* 닉네임 입력란 변경 리스너 */
         binding.editTextNickname.addTextChangedListener(new TextWatcher() {
 
@@ -142,7 +162,7 @@ public class SignupActivity extends AppCompatActivity {
                     // 통과 표시 출력
                     binding.ivNickNameComplete.setVisibility(View.VISIBLE);
 
-                    // 에러메세지 애니메이션 실행
+                    // 통과 애니메이션 실행
                     binding.ivNickNameComplete.startAnimation(complete);
                 }
                 else{
@@ -185,7 +205,7 @@ public class SignupActivity extends AppCompatActivity {
                     // 통과 표시 출력
                     binding.ivEmailComplete.setVisibility(View.VISIBLE);
 
-                    // 에러메세지 애니메이션 실행
+                    // 통과 애니메이션 실행
                     binding.ivEmailComplete.startAnimation(complete);
                 }
                 else{
@@ -254,7 +274,7 @@ public class SignupActivity extends AppCompatActivity {
                     // 통과 표시 출력
                     binding.ivPsComplete.setVisibility(View.VISIBLE);
 
-                    // 에러메세지 애니메이션 실행
+                    // 통과 애니메이션 실행
                     binding.ivPsComplete.startAnimation(complete);
                 }
                 else{
@@ -306,7 +326,7 @@ public class SignupActivity extends AppCompatActivity {
                     // 통과 표시 출력
                     binding.ivPsCheckComplete.setVisibility(View.VISIBLE);
 
-                    // 에러메세지 애니메이션 실행
+                    // 통과 애니메이션 실행
                     binding.ivPsCheckComplete.startAnimation(complete);
                 }
                 else{
@@ -316,14 +336,6 @@ public class SignupActivity extends AppCompatActivity {
                 checkAllWritten();
             }
         });
-    }
-
-    private void randomNickname(){
-        // 리스트 순서 섞기
-        Collections.shuffle(firstNick);
-        Collections.shuffle(lastNick);
-
-        binding.editTextNickname.setText(firstNick.get(0) + lastNick.get(0));
     }
 
     private void initRandomButton(){
@@ -384,8 +396,8 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                updateUI(user, Nickname, Email);
+
+                                updateUI(Nickname, Email, Password);
                             } else {
                                 // 실패시
                                     String ErrorEmailAlreadyUse = "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.";
@@ -403,13 +415,28 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    private void updateUI(FirebaseUser user, String Nickname, String Email) {
+    private void updateUI(String Nickname, String Email, String Password) {
 
-        updateDB(user, phoneNum, Nickname, Email);
+        mAuth.signInWithEmailAndPassword(Email, Password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+                        if (task.isSuccessful()) {
+                            if(mAuth.getCurrentUser()!=null){
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateDB(user, phoneNum, Nickname, Email);
+                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                showToast(SignupActivity.this,"회원가입 완료");
+                                finish();
+                            }
+                        } else {
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            showToast(SignupActivity.this,"회원가입에 실패하였습니다.");
+                        }
+                        // ...
+                    }
+                });
     }
 
     private void updateDB(FirebaseUser user, String phoneNum, String Nickname, String Email) {
@@ -421,16 +448,16 @@ public class SignupActivity extends AppCompatActivity {
 
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("이메일", Email);
-        userInfo.put("전화번호", phoneNum);
+        userInfo.put("휴대폰번호", phoneNum);
         userInfo.put("닉네임", Nickname);
 
         // 새로운 사용자 DB 생성
         db.collection("users")
-                .add(userInfo)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                .document(user.getUid()).set(userInfo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, phoneNum + "의 DB 생성 완료  ::  " + documentReference.getId());
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, phoneNum + "의 DB 생성 완료  ::  " + user.getUid());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

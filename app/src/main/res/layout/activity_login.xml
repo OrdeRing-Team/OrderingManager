@@ -20,15 +20,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextPhoneLogin"
+        android:id="@+id/editTextEmailLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="63dp"
         android:layout_marginEnd="64dp"
         android:ems="10"
-        android:hint="휴대폰번호 -없이 입력"
-        android:inputType="phone"
+        android:hint="이메일"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +46,7 @@
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailLogin" />
 
     <Button
         android:id="@+id/btn_login"

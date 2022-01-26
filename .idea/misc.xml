@@ -8,6 +8,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/ic_baseline_close_24_sizeup.xml" value="0.15520833333333334" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/ic_baseline_error_outline_24.xml" value="0.18020833333333333" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/ic_error.xml" value="0.2359375" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/round_login_page.xml" value="0.378125" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/round_rectangle.xml" value="0.265625" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/round_rectangle_locked.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/textbox_border.xml" value="0.13177083333333334" />
@@ -16,7 +17,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_auth.xml" value="0.264" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_guide2.xml" value="0.1757852077001013" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_info.xml" value="0.33" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_login.xml" value="0.5" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_login2.xml" value="0.264" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_main.xml" value="0.1265625" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_signup.xml" value="0.33" />
