@@ -2,11 +2,13 @@ package com.example.orderingmanager;
 
 import static com.example.orderingmanager.Utillity.showToast;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.orderingmanager.databinding.ActivityLoginBinding;
@@ -67,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                                             finish();
                                         }
                                     } else {
-                                        showToast(LoginActivity.this,"이메일과 비밀번호를 다시 확인해 주세요.");
+                                        showLoginErrorPopup();
                                     }
                                     // ...
                                 }
@@ -80,5 +82,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void showLoginErrorPopup(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("로그인 실패").setMessage("아이디와 비밀번호를 다시 확인해 주세요.");
+        builder.setPositiveButton("닫기", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                return;
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
