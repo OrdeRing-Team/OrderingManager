@@ -450,6 +450,7 @@ public class SignupActivity extends AppCompatActivity {
         userInfo.put("이메일", Email);
         userInfo.put("휴대폰번호", phoneNum);
         userInfo.put("닉네임", Nickname);
+        userInfo.put("매장정보","False");
 
         // 새로운 사용자 DB 생성
         db.collection("users")

@@ -47,18 +47,18 @@ public class QrFragment extends Fragment {
         // user 는 현재 로그인 된 사용자 정보 가져오실 때 사용하심 됩니다!!
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        // firestore 는 DB 접근할 때 사용하심 됩니당!!
+        // firestore DB 접근할 때 사용하심 됩니당!!
         db = FirebaseFirestore.getInstance();
         /*  각 사용자의 DB 문서명은 사용자의 uid로 구성되기 때문에 해당 유저의 DB에 접근하고자 할 때는 user.getUid() 로 접근하시면 됩니다.
             파이어베이스 문서 참고 : https://firebase.google.com/docs/firestore/quickstart?authuser=0#java */
 
-        initSetUserInfo();
+        //initSetUserInfo();
         initButtonClickListener();
 
         return view;
     }
 
-    private void initSetUserInfo(){
+    /*private void initSetUserInfo(){
         DocumentReference docRef = db.collection("users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -84,7 +84,7 @@ public class QrFragment extends Fragment {
                 }
             }
         });
-    }
+    }*/
 
     private void initButtonClickListener(){
         binding.btnLogout.setOnClickListener(onClickListener);
