@@ -24,6 +24,7 @@ public class StartActivity extends BasicActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), GuidesActivity.class);
                 startActivity(intent);
+                FinishWithAnim();
             }
         });
 

@@ -21,6 +21,7 @@ public class GuidesActivity extends BasicActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
+                FinishWithAnim();
             }
         });
 

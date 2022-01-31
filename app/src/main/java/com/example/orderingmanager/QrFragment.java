@@ -35,62 +35,35 @@ public class QrFragment extends Fragment {
     //viewbinding
     private FragmentQrBinding binding;
 
-    FirebaseUser user;
-    FirebaseFirestore db;
+    Bundle extra;
+
+    Boolean storeInitInfo;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentQrBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+        extra = this.getArguments();
+        if(extra != null) {
+            extra = getArguments();
 
-        // user 는 현재 로그인 된 사용자 정보 가져오실 때 사용하심 됩니다!!
-        user = FirebaseAuth.getInstance().getCurrentUser();
+            // 매장정보 입력 여부
+            storeInitInfo = extra.getBoolean("StoreInitInfo");
 
-        // firestore DB 접근할 때 사용하심 됩니당!!
-        db = FirebaseFirestore.getInstance();
-        /*  각 사용자의 DB 문서명은 사용자의 uid로 구성되기 때문에 해당 유저의 DB에 접근하고자 할 때는 user.getUid() 로 접근하시면 됩니다.
-            파이어베이스 문서 참고 : https://firebase.google.com/docs/firestore/quickstart?authuser=0#java */
+            /* 이곳에 받아올 데이터를 추가하십셩 */
+        }
 
-        //initSetUserInfo();
         initButtonClickListener();
+        storeInfoCheck();
 
         return view;
     }
 
-    /*private void initSetUserInfo(){
-        DocumentReference docRef = db.collection("users").document(user.getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    Log.d("docRef", "DocumentSnapshot data: " + document.getData());
-                    if (document.exists()) {
-                        Log.e("document.getData().get(Email)", document.getData().get("이메일").toString());
-                        if(document.getData().get("이메일") != null){
-                            Log.e("dddddd",document.getData().get("이메일").toString());
-                            Toast.makeText(getActivity(),document.getData().get("이메일").toString(),Toast.LENGTH_SHORT).show();
-                            binding.tvEmail.setText(document.getData().get("이메일").toString());
-                        }
-                        if(document.getData().get("휴대폰번호") != null){
-                            binding.tvPhoneNum.setText(document.getData().get("휴대폰번호").toString());
-                        }
-                    } else {
-                        Log.d("docRef", "No such document");
-                    }
-                } else {
-                    Log.d("docRef", "get failed with ", task.getException());
-                }
-            }
-        });
-    }*/
 
     private void initButtonClickListener(){
         binding.btnLogout.setOnClickListener(onClickListener);
         binding.btnDeleteAccount.setOnClickListener(onClickListener);
-
-
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -103,9 +76,20 @@ public class QrFragment extends Fragment {
                 case R.id.btn_deleteAccount:
                     deleteAccount();
                     break;
+                case R.id.refreshImageButton:
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    getActivity().finish();
+                    break;
             }
         }
     };
+
+    public void storeInfoCheck(){
+        if(!storeInitInfo){
+            binding.errorNotFound.setVisibility(View.VISIBLE);
+            binding.refreshImageButton.setOnClickListener(onClickListener);
+        }
+    }
 
     @Override
     public void onDestroyView() {
@@ -138,4 +122,5 @@ public class QrFragment extends Fragment {
                     }
                 });
     }
+
 }
