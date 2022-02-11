@@ -75,6 +75,12 @@ dependencies {
     //Material 디자인
     implementation 'com.google.android.material:material:1.4.0'
 
+    //RecyclerView
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+
+    //swipe
+    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+
     //twilio SMS 인증
 //    implementation group: "com.twilio.sdk", name: "twilio", version: "7.42.0"
 //    implementation group: "com.sparkjava", name: "spark-core", version: "2.7.1"
