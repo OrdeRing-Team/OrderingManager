@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ public class InfoActivity extends BasicActivity {
     RadioGroup radioGroup;
     TextView tablenumtext;
     Button btnStartApp;
+    Button btn_map;
 
     EditText inputStoreName;
     EditText inputUserName;
@@ -34,6 +36,10 @@ public class InfoActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_info);
+
+
+
+
 
         binding = ActivityInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -94,6 +100,15 @@ public class InfoActivity extends BasicActivity {
             @Override
             public void onClick(View view) {
                 isEmpty();
+            }
+        });
+
+        btn_map = findViewById(R.id.btn_map);
+        btn_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InfoActivity.this, MapActivity.class);
+                startActivity(intent);
             }
         });
 

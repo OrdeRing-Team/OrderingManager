@@ -157,6 +157,8 @@
             android:text="매장 식사, 포장 가능"
             android:textColor="@color/black"
             android:textSize="13dp" />
+
+
     </RadioGroup>
 
     <LinearLayout
@@ -174,6 +176,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="8dp"
@@ -219,6 +222,23 @@
         app:layout_constraintTop_toBottomOf="@+id/radio_group"
         app:layout_constraintVertical_bias="0.0" />
 
+
+    <Button
+        android:id="@+id/btn_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="지도"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+         />
+
+
+
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/map_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
 
     <Button
         android:id="@+id/startApp"
@@ -351,6 +371,8 @@
                 app:srcCompat="@drawable/food_code_11_name" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

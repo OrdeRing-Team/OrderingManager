@@ -1,7 +1,12 @@
 package com.example.orderingmanager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +26,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class MainActivity extends BasicActivity {
 
     private ActivityMainBinding binding;
@@ -37,6 +47,9 @@ public class MainActivity extends BasicActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 해시키 받아오는 함수 호출
+        Log.e("getKeyHash", ""+getKeyHash(MainActivity.this));
 
         bundle = new Bundle();
 
@@ -99,6 +112,8 @@ public class MainActivity extends BasicActivity {
             }
         });
 
+
+
     }
 
     private void getUserDB(){
@@ -157,4 +172,26 @@ public class MainActivity extends BasicActivity {
         dialog.dismiss();
     };
 
+    //해시 키 값 구하기
+    public static String getKeyHash(final Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+            if (packageInfo == null)
+                return null;
+
+            for (Signature signature : packageInfo.signatures) {
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA");
+                    md.update(signature.toByteArray());
+                    return android.util.Base64.encodeToString(md.digest(), android.util.Base64.NO_WRAP);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
