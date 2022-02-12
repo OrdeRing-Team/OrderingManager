@@ -6,8 +6,8 @@ public class ManageData {
     private String tv_name;
     private String tv_price;
 
-    public ManageData(int iv_menu, String tv_name, String tv_price) {
-        this.iv_menu = iv_menu;
+    public ManageData(String tv_name, String tv_price) {
+        //this.iv_menu = iv_menu;
         this.tv_name = tv_name;
         this.tv_price = tv_price;
     }
@@ -32,7 +32,7 @@ public class ManageData {
         return tv_price;
     }
 
-    public void setTv_price(String tv_price) {
-        this.tv_price = tv_price;
-    }
+    public void setTv_price(String tv_price) { this.tv_price = tv_price; }
+
+
 }

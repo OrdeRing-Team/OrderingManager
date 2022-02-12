@@ -57,52 +57,6 @@ public class ManageFragment extends Fragment {
                     getActivity().finish();
                 }
             });
-
-
-//            /* ******************** 리사이클러뷰 불러오기 ********************* */
-//            recyclerView = view.findViewById(R.id.rv); // 프래그먼트에선 view. 붙여줘야함 !
-//            linearLayoutManager = new LinearLayoutManager(view.getContext());
-//            recyclerView.setLayoutManager(linearLayoutManager);
-//
-//            arrayList = new ArrayList<>();
-//            manageAdapter = new ManageAdapter(arrayList); // adapter를 가져와 arrayList에 넣어준다.
-//            recyclerView.setAdapter(manageAdapter); // 담아진 데이터를 리사이클러뷰에 세팅.
-//
-//            btnAdd = view.findViewById(R.id.btn_add);
-//            btnAdd.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    ManageData manageData = new ManageData(R.mipmap.ic_launcher, "OrdeRing_Menu", "OrdeRing_Price");
-//                    arrayList.add(manageData);
-//                    manageAdapter.notifyDataSetChanged(); // 새로고침 (새로고침은 필수)
-//                }
-//            });
-//
-//            btnAddMenu = view.findViewById(R.id.btn_add_menu);
-//            btnAddMenu.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    startActivity(new Intent(getActivity(), MenuAddActivity.class));
-//                    getActivity().finish();
-//
-//                }
-//            });
-//
-//            Bundle extra = this.getArguments();
-//            if(extra != null) {
-//                extra = getArguments();
-//                String name = extra.getString("sendName");
-//                int price = extra.getInt("sendPrice");
-//                String price_str = Integer.toString(price);
-//                ManageData manageData = new ManageData(R.mipmap.ic_launcher, name, price_str);
-//                arrayList.add(manageData);
-//                manageAdapter.notifyDataSetChanged(); // 새로고침 (새로고침은 필수)
-//
-//            }
-//
-//            /* ************************************************ */
-
-
         }
 
         storeInfoCheck();

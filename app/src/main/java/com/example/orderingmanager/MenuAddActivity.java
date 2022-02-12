@@ -1,35 +1,69 @@
 package com.example.orderingmanager;
 
+import static com.example.orderingmanager.Utillity.showToast;
+
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MenuAddActivity extends AppCompatActivity {
-
     EditText edtName, edtPrice;
     Button btnSubmit;
     String name;
-    int price;
+    String price;
+    int image;
+    private final int GET_GALLERY_IMAGE = 200;
+    private ImageView ivMenu;
+
+    //뒤로가기 버튼
+    ImageButton btnBack;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_add);
+        setContentView(R.layout.activity_menu_item);
 
         edtName = findViewById(R.id.edt_name);
         edtPrice = findViewById(R.id.edt_price);
+
+
+        //뒤로가기 버튼 클릭 이벤트
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MenuManageActivity.class));
+                finish();
+            }
+        });
+
+        //메뉴사진 업로드
+        ivMenu = findViewById(R.id.iv_menu);
+        ivMenu.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent. setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GET_GALLERY_IMAGE);
+            }
+        });
+
 
         btnSubmit = findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 name = edtName.getText().toString();
-                price = Integer.parseInt(edtPrice.getText().toString());
-                if (name.length() > 0 && price > 0) {
+                price = edtPrice.getText().toString();
+                if (name.length() > 0 && price.length() > 0) {
                     Intent intent = new Intent(getApplicationContext(), MenuManageActivity.class);
                     intent.putExtra("new", true);
                     intent.putExtra("name", name);
@@ -37,8 +71,29 @@ public class MenuAddActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
+                else {
+                    showToast(MenuAddActivity.this,"빈 칸을 모두 입력해주세요.");
+                }
             }
         });
-    }
-}
 
+
+    }
+
+
+    //이미지 업로드 함수
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri selectedImageUri = data.getData();
+            ivMenu.setImageURI(selectedImageUri);
+
+        }
+
+    }
+
+
+}

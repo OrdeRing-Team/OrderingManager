@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,23 +15,25 @@ import java.util.ArrayList;
 
 public class MenuManageActivity extends AppCompatActivity {
 
-    //리사이클러뷰 관련 선언
-    private Button btnMenuManage;
-    private ArrayList<ManageData> arrayList;
-    private ManageAdapter manageAdapter;
-    private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
-    private Button btnAdd;
-    private Button btnAddMenu;
+    String TAG = "@@★@";
+    Button btnCreate;
+    RecyclerView recyclerView;
+    ArrayList<ManageData> arrayList = new ArrayList<>();
 
+    //임시
+    ImageButton ibHome;
+
+
+    ManageAdapter adapter = new ManageAdapter(arrayList, this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_manage);
 
-        btnAdd = findViewById(R.id.btn_create);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        setContent();
+
+        btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), MenuAddActivity.class));
@@ -38,27 +41,47 @@ public class MenuManageActivity extends AppCompatActivity {
             }
         });
 
+        //임시 홈 버튼
+        ibHome = findViewById(R.id.btn_home);
+        ibHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+                //ManageFragment로 돌아가야 하는데...
+            }
+        });
 
-        recyclerView = findViewById(R.id.recyclerview); // 프래그먼트에선 view. 붙여줘야함 !
-        linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
 
-        arrayList = new ArrayList<>();
-        manageAdapter = new ManageAdapter(arrayList); // adapter를 가져와 arrayList에 넣어준다.
-        recyclerView.setAdapter(manageAdapter); // 담아진 데이터를 리사이클러뷰에 세팅.
+        //임시 데이터
+        arrayList.add(new ManageData("후라이드 치킨", "18000"));
+        arrayList.add(new ManageData("양념 치킨", "20000"));
+        arrayList.add(new ManageData("간장 치킨", "20000"));
+        arrayList.add(new ManageData("포테이토 피자", "15000"));
+        arrayList.add(new ManageData("불고기 피자", "15000"));
+        arrayList.add(new ManageData("후라이드 치킨 반 + 양념 치킨 반", "20000"));
+        arrayList.add(new ManageData("양념 치킨 반 + 간장 치킨 반", "22000"));
+        arrayList.add(new ManageData("양념 치킨 + 포테이토 피자", "32000"));
+        arrayList.add(new ManageData("후라이드 치킨 + 포테이토 피자", "30000"));
+        arrayList.add(new ManageData("간장 치킨 + 불고기 피자", "32000"));
 
-//        String name;
-//        int price;
-//        name = getIntent().getStringExtra("name");
-//        price = getIntent().getIntExtra("price", -1);
-//        String price_str = Integer.toString(price);
-//        arrayList.add(new ManageData(R.mipmap.ic_launcher, name, price_str));
-//        manageAdapter.notifyDataSetChanged();
+        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    void setContent() {
+        btnCreate = findViewById(R.id.btn_create);
+        recyclerView = findViewById(R.id.recyclerview);
     }
 
 
 
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
 
     @Override
     protected void onStart() {
@@ -66,28 +89,32 @@ public class MenuManageActivity extends AppCompatActivity {
         int action = 0;
         if (getIntent().getBooleanExtra("new", false)) action = 1;
         else if (getIntent().getBooleanExtra("edit", false)) action = 2;
-        Log.d("onStart", "onStart: " + action);
+        Log.d(TAG, "onStart: " + action);
         if (action > 0) {
             String name;
-            int price;
+            String price;
             name = getIntent().getStringExtra("name");
-            price = getIntent().getIntExtra("price", -1);
-            String price_str = Integer.toString(price);
-            if (action == 1) {
-                ManageData manageData = new ManageData(R.mipmap.ic_launcher, name, price_str);
-                arrayList.add(manageData);
-            }
+            price = getIntent().getStringExtra("price");
+
+            //menu add
+            if (action == 1) arrayList.add(new ManageData(name, price));
+
+            //menu edit
             else { // when action == 2
                 int position = getIntent().getIntExtra("position", -1);
                 if (position != -1) {
+                    //파베 연동 후 수정.
                     arrayList.get(position).setTv_name(name);
-                    arrayList.get(position).setTv_name(price_str);
+                    arrayList.get(position).setTv_price(price);
                 }
             }
-            manageAdapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        arrayList = this.arrayList;
+    }
 }
-
