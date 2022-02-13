@@ -73,7 +73,7 @@ public class ManageFragment extends Fragment {
 
         else{
             //메뉴입력화면 보이게 하기.
-            binding.manageFrag.setVisibility(View.VISIBLE);
+            binding.manageFragment.setVisibility(View.VISIBLE);
         }
     }
 

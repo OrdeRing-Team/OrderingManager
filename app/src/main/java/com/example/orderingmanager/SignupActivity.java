@@ -356,6 +356,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 createAccount();
+                ButtonLock(binding.btnSignup);
             }
         });
     }
@@ -406,6 +407,7 @@ public class SignupActivity extends AppCompatActivity {
                                     Log.w(TAG, "이메일 생성 실패", task.getException());
                                     if (Errormsg.equals(ErrorEmailAlreadyUse)) {
 
+                                        ButtonRelease(binding.btnSignup);
                                         Toast.makeText(SignupActivity.this, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT).show();
                                     }
                             }
@@ -432,6 +434,7 @@ public class SignupActivity extends AppCompatActivity {
                             }
                         } else {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            ButtonRelease(binding.btnSignup);
                             showToast(SignupActivity.this,"회원가입에 실패하였습니다.");
                         }
                         // ...
@@ -450,7 +453,7 @@ public class SignupActivity extends AppCompatActivity {
         userInfo.put("이메일", Email);
         userInfo.put("휴대폰번호", phoneNum);
         userInfo.put("닉네임", Nickname);
-        userInfo.put("매장정보","False");
+        userInfo.put("매장정보",false);
 
         // 새로운 사용자 DB 생성
         db.collection("users")

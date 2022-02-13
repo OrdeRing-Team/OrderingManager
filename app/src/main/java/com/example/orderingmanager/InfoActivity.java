@@ -1,9 +1,12 @@
 package com.example.orderingmanager;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -11,7 +14,36 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+/** Food Code List
+ * code1 : 한식
+ * code2 : 분식
+ * code3 : 카페/디저트
+ * code4 : 돈까스/회/초밥
+ * code5 : 치킨
+ * code6 : 피자
+ * code7 : 아시안/양식
+ * code8 : 중국집
+ * code9 : 족발/보쌈
+ * code10: 찜/탕
+ * code11: 패스트푸드
+ */
+import androidx.annotation.NonNull;
+
 import com.example.orderingmanager.databinding.ActivityInfoBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InfoActivity extends BasicActivity {
 
@@ -27,6 +59,8 @@ public class InfoActivity extends BasicActivity {
     EditText tablenum;
 
     TextView psAccord;
+
+    Map<String, Object> storeInfo = new HashMap<>();
 
     boolean[] codeStatus;
 
@@ -59,17 +93,17 @@ public class InfoActivity extends BasicActivity {
             codeStatus[i] = false;
         }
 
-        findViewById(R.id.btn_code1).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code2).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code3).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code4).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code5).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code6).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code7).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code8).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code9).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code10).setOnClickListener(onClickListener);
-        findViewById(R.id.btn_code11).setOnClickListener(onClickListener);
+        binding.btnCode1.setOnClickListener(onClickListener);
+        binding.btnCode2.setOnClickListener(onClickListener);
+        binding.btnCode3.setOnClickListener(onClickListener);
+        binding.btnCode4.setOnClickListener(onClickListener);
+        binding.btnCode5.setOnClickListener(onClickListener);
+        binding.btnCode6.setOnClickListener(onClickListener);
+        binding.btnCode7.setOnClickListener(onClickListener);
+        binding.btnCode8.setOnClickListener(onClickListener);
+        binding.btnCode9.setOnClickListener(onClickListener);
+        binding.btnCode10.setOnClickListener(onClickListener);
+        binding.btnCode11.setOnClickListener(onClickListener);
 
         // 라디오 버튼 클릭 이벤트
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -93,6 +127,7 @@ public class InfoActivity extends BasicActivity {
         btnStartApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnStartApp.setEnabled(false);
                 isEmpty();
             }
         });
@@ -105,9 +140,13 @@ public class InfoActivity extends BasicActivity {
         String userName = inputUserName.getText().toString();
         //String kategorie = inputKategorie.getText().toString();
         //String nicName = inputNicname.getText().toString();
-        String tableNum = tablenum.getText().toString();
+        int tableNum = 0;
+        if(!tablenum.getText().toString().equals("")){
+            tableNum = Integer.parseInt(tablenum.getText().toString());
+        }
         RadioButton radio_button_only = findViewById(R.id.radio_button_onlydeliver);
         RadioButton radio_button_both = findViewById(R.id.radio_button_both);
+
 
         /*if(storeName.matches("") || userName.matches("") || kategorie.matches("") || nicName.matches("")) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
@@ -119,22 +158,89 @@ public class InfoActivity extends BasicActivity {
                 Log.d("isEmpty", "입력칸을 모두 채워라.");
             }
         }*/
-        if ((radio_button_only.isChecked() == false) && (radio_button_both.isChecked() == false)) {
+        if ((!radio_button_only.isChecked()) && (!radio_button_both.isChecked())) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+            btnStartApp.setEnabled(true);
             Log.d("isEmpty", "입력칸을 모두 채워라.");
-        } else if (radio_button_both.isChecked() == true && tableNum.matches("")) {
+        } else if (radio_button_both.isChecked() && (tableNum == 0)) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+            btnStartApp.setEnabled(true);
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
         /*else if(psBeforeCheck.isEmpty() == true || psAfterCheck.isEmpty() == true) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }*/
+        else if(!codeStatus[0] && !codeStatus[1] && !codeStatus[2] && !codeStatus[3] && !codeStatus[4] && !codeStatus[5] && !codeStatus[6] &&
+                !codeStatus[7] && !codeStatus[8] && !codeStatus[9] && !codeStatus[10]){
+            Toast.makeText(InfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요.", Toast.LENGTH_SHORT).show();// 키보드 내리기
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            btnStartApp.setEnabled(true);
+        }
         else {
             Toast.makeText(InfoActivity.this, "오더링 START", Toast.LENGTH_SHORT).show();
             Log.d("isn'tEmpty", "입력칸 모두 채워짐.");
+
+            String storeCustom;
+            if(radio_button_only.isChecked()){
+                storeCustom = "포장";
+            }
+            else {
+                storeCustom = "공통";
+            }
+            storeInfo.put("매장명", storeName);
+            storeInfo.put("사업자명", userName);
+            storeInfo.put("매장종류", storeCustom);
+            if(storeCustom.equals("공통")) {
+                storeInfo.put("테이블 수", tableNum);
+            }
+            storeInfo.put("카테고리", Arrays.toString(codeStatus));
+
+            setDB(storeInfo);
+
             //디비에 데이터 저장하기. (차후에 추가할 부분)
         }
+    }
+
+    private void setDB(Map<String, Object> storeInfo){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();;
+
+        // userInfo의 매장정보 입력여부 true로 변경
+        DocumentReference docRef = db.collection("users").document(user.getUid());
+        docRef
+                .update("매장정보", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.e("매장정보입력여부", "업데이트 성공");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("매장정보입력여부", "업데이트 실패");
+                    }
+                });
+
+        // userInfo에 storeInfo 문서 추가
+        db.collection("users")
+                .document(user.getUid()).collection("매장정보").document().set(storeInfo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.e("storeInfo DB 생성", "완료");
+                        startActivity(new Intent(InfoActivity.this, MainActivity.class));
+                        FinishWithAnim();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("storeInfo DB 생성", "실패");
+                    }
+                });
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {

@@ -172,6 +172,8 @@ public class AuthActivity extends BasicActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
 
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
                 FinishWithAnim();
             }
         });
@@ -230,15 +232,6 @@ public class AuthActivity extends BasicActivity {
             }
         });
 
-        binding.btnGoInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AuthActivity.this, InfoActivity.class);
-                startActivity(intent);
-
-                FinishWithAnim();
-            }
-        });
     }
 
     private void TimerStart() {
