@@ -68,6 +68,7 @@ public class ManageFragment extends Fragment {
     public void storeInfoCheck(){
         if(!storeInitInfo){
             binding.errorNotFound.setVisibility(View.VISIBLE);
+            binding.manageFragment.setVisibility(View.GONE);
             binding.refreshImageButton.setOnClickListener(onClickListener);
         }
 
