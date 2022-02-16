@@ -19,10 +19,14 @@ public class InfoActivity extends BasicActivity {
     //viewbinding
     private ActivityInfoBinding binding;
 
+    private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
+    private EditText et_address;
+
     RadioGroup radioGroup;
     TextView tablenumtext;
     Button btnStartApp;
     Button btn_map;
+    Button btn_search;
 
     EditText inputStoreName;
     EditText inputUserName;
@@ -32,11 +36,14 @@ public class InfoActivity extends BasicActivity {
 
     boolean[] codeStatus;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_info);
+        setContentView(R.layout.activity_info);
 
+        et_address = (EditText) findViewById(R.id.et_address);
+        //Button btn_search = (Button) findViewById(R.id.btn_location);
 
 
 
@@ -94,7 +101,7 @@ public class InfoActivity extends BasicActivity {
                 }
             }
         });
-
+//
 
         btnStartApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,14 +110,28 @@ public class InfoActivity extends BasicActivity {
             }
         });
 
-        btn_map = findViewById(R.id.btn_map);
-        btn_map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(InfoActivity.this, MapActivity.class);
-                startActivity(intent);
-            }
-        });
+        //카카오맵
+//        btn_map = findViewById(R.id.btn_map);
+//        btn_map.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(InfoActivity.this, MapActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        //주소 api로 넘어가는 버튼 이벤
+        btn_search = findViewById(R.id.btn_location);
+        if (btn_search != null) {
+            btn_search.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    Intent i = new Intent(InfoActivity.this, WebViewActivity.class);
+                    startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
+                }
+            });
+        }
 
     }
 
@@ -259,4 +280,19 @@ public class InfoActivity extends BasicActivity {
             }
         }
     };
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        super.onActivityResult(requestCode, resultCode, intent);
+        switch (requestCode) {
+            case SEARCH_ADDRESS_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+                    String data = intent.getExtras().getString("data");
+                    if (data != null) {
+                        et_address.setText(data);
+                    }
+                }
+                break;
+        }
+    }
 }

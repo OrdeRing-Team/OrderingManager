@@ -161,7 +161,78 @@
 
     </RadioGroup>
 
+    <TextView
+    android:id="@+id/location"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="40dp"
+    android:layout_marginTop="40dp"
+    android:text="주소"
+    android:textColor="#000000"
+    android:textSize="15dp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/radio_group" />
+
     <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/Kategorie"
+        android:textColor="#000000"
+        tools:context=".InfoActivity">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_address"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="#000000"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_address"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:backgroundTint="#E1695E"
+                android:textColor="#000000"
+                android:minLines="2" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_address_detail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="#000000"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_address_detail"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:backgroundTint="#E1695E"
+                android:textColor="#000000"
+                android:minLines="2" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#C85C5C"
+            android:layout_gravity="center_horizontal"
+            android:text="주소 검색"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="24dp"
@@ -223,22 +294,18 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-    <Button
-        android:id="@+id/btn_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="지도"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="parent"
-         />
+<!--    <Button-->
+<!--        android:id="@+id/btn_map"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="20dp"-->
+<!--        android:text="지도"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/scrollView2"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--         />-->
 
 
 
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/map_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"/>-->
 
     <Button
         android:id="@+id/startApp"
@@ -254,14 +321,14 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         app:layout_constraintBottom_toTopOf="@+id/startApp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Kategorie">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutInScrollView"

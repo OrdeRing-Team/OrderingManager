@@ -4,8 +4,8 @@
     package="com.example.orderingmanager">
     <!-- twilio와의 retrofit 통신으로 인한 인터넷 권한 요구 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 인터넷, 위치 권한 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+<!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -19,9 +19,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
         <activity
+            android:name=".WebViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".MapActivity"
-            android:exported="true" />
-        <!-- android:theme="@style/Theme.OrderingManager"> -->
+            android:exported="true" /> <!-- android:theme="@style/Theme.OrderingManager"> -->
         <!-- 스플래시 -->
         <activity
             android:name=".SplashActivity"
@@ -34,26 +36,26 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".GuidesActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".SignupActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".InfoActivity"
             android:exported="true" />
         <activity
             android:name=".AuthActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".StartActivity"
-            android:exported="true"></activity> <!-- 네이티브 앱 키 추가 -->
+            android:exported="true" /> <!-- 네이티브 앱 키 추가 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="271badc59f7b54a059063439c4209044" />
