@@ -281,6 +281,7 @@ public class InfoActivity extends BasicActivity {
         }
     };
 
+    //주소 결과값 가져오는 함수
     public void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
         super.onActivityResult(requestCode, resultCode, intent);

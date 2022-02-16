@@ -72,31 +72,113 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+    //주소
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="40dp"
-        android:text="사업자명"
+        android:text="주소"
         android:textColor="#000000"
         android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/storeName" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="57dp"
+        android:textColor="#000000"
+        tools:context=".InfoActivity"
+        app:layout_constraintStart_toEndOf="@+id/userName"
+        app:layout_constraintTop_toBottomOf="@+id/storeName">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_address"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="#000000"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_address"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:backgroundTint="#E1695E"
+                android:textColor="#000000"
+                android:minLines="2"
+                android:layout_gravity="center"
+                android:hint="도로명 주소"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_address_detail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="#000000"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_address_detail"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:backgroundTint="#E1695E"
+                android:textColor="#000000"
+                android:minLines="2"
+                android:hint="상세 주소"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:backgroundTint="#C85C5C"
+        android:text="주소 검색"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintStart_toEndOf="@+id/location"
+        />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="150dp"
+        android:text="사업자명"
+        android:textColor="#000000"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location" />
+
     <EditText
         android:id="@+id/input_userName"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="57dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="#E1695E"
         android:ems="7"
         android:inputType="text"
         android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/userName"
-        app:layout_constraintTop_toBottomOf="@+id/storeName" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_location" />
 
     <TextView
         android:id="@+id/Kategorie"
@@ -130,7 +212,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#E1695E"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -161,74 +243,7 @@
 
     </RadioGroup>
 
-    <TextView
-    android:id="@+id/location"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="40dp"
-    android:layout_marginTop="40dp"
-    android:text="주소"
-    android:textColor="#000000"
-    android:textSize="15dp"
-    android:textStyle="bold"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/radio_group" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@color/white"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/Kategorie"
-        android:textColor="#000000"
-        tools:context=".InfoActivity">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_address"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textColor="#000000"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_address"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:backgroundTint="#E1695E"
-                android:textColor="#000000"
-                android:minLines="2" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_address_detail"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textColor="#000000"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_address_detail"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:backgroundTint="#E1695E"
-                android:textColor="#000000"
-                android:minLines="2" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/btn_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#C85C5C"
-            android:layout_gravity="center_horizontal"
-            android:text="주소 검색"/>
-
-    </LinearLayout>
 
 
     <LinearLayout
