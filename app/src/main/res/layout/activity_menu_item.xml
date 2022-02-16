@@ -126,10 +126,11 @@
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:text="UPLOAD"
         android:textSize="20dp"
-        android:backgroundTint="#E1695E"
+        android:background="#E1695E"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.12" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

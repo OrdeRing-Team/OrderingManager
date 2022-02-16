@@ -14,8 +14,22 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 
-/** Food Code List
+import com.example.orderingmanager.databinding.ActivityInfoBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Food Code List
  * code1 : 한식
  * code2 : 분식
  * code3 : 카페/디저트
@@ -28,22 +42,6 @@ import android.widget.Toast;
  * code10: 찜/탕
  * code11: 패스트푸드
  */
-import androidx.annotation.NonNull;
-
-import com.example.orderingmanager.databinding.ActivityInfoBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public class InfoActivity extends BasicActivity {
 
@@ -134,7 +132,7 @@ public class InfoActivity extends BasicActivity {
 
     }
 
-    // 입력창이 비었거나, 비밀번호가 일치하지 않을 때 알림을 띄우는 함수 (다 차 있고 비밀번호 입력을 안 하면 오류 발생,,,)
+    // 입력창이 비었거나, 비밀번호가 일치하지 않을 때 알림을 띄우는 함수
     private void isEmpty() {
         String storeName = inputStoreName.getText().toString();
         String userName = inputUserName.getText().toString();
@@ -177,6 +175,7 @@ public class InfoActivity extends BasicActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
             btnStartApp.setEnabled(true);
+
         }
         else {
             Toast.makeText(InfoActivity.this, "오더링 START", Toast.LENGTH_SHORT).show();

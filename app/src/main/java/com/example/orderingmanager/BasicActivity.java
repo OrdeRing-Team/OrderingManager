@@ -18,6 +18,17 @@ public class BasicActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.anim_none, R.anim.anim_slide_out_right);
         }
     }
+    protected void BackWithAnim() {
+        finish();
+        if (isFinishing()) {
+            // 이 화면은 오른쪽에서 왼쪽으로 슬라이딩 하면서 사라집니다.
+            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_none);
+        }
+    }
+
+
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
