@@ -52,7 +52,6 @@ public class MenuManageActivity extends AppCompatActivity {
             }
         });
 
-
         //임시 데이터
         arrayList.add(new ManageData("후라이드 치킨", "18000"));
         arrayList.add(new ManageData("양념 치킨", "20000"));
