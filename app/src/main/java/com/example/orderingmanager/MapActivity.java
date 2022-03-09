@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import net.daum.mf.map.api.MapView;
 
+
 public class MapActivity extends AppCompatActivity {
 
     @Override

@@ -83,6 +83,9 @@ dependencies {
     //swipe
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 
+    //kakao map
+    implementation files('libs/libDaumMapAndroid.jar')
+
     //twilio SMS 인증
 //    implementation group: "com.twilio.sdk", name: "twilio", version: "7.42.0"
 //    implementation group: "com.sparkjava", name: "spark-core", version: "2.7.1"
