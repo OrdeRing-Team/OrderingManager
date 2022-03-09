@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/splash1"
+        android:scaleType="centerCrop"
         android:visibility="visible">
     </ImageView>
 
@@ -21,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/splash2"
+        android:scaleType="centerCrop"
         android:visibility="invisible">
     </ImageView>
 

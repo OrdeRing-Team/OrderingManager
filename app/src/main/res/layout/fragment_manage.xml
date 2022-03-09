@@ -88,11 +88,11 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/baeminjua"
             android:text="OrdeRing"
             android:textColor="#E1695E"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
             android:textSize="34sp"
             android:textStyle="bold" />
 
