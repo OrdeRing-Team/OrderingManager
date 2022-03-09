@@ -17,16 +17,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-// 로그인 액티비티에서는 화면전환 효과를 적용하지 않기 이해 AppCompatActivity 상속
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BasicActivity {
 
     //viewbinding
     private ActivityLoginBinding binding;
 
     // 파이어베이스 인증
     private FirebaseAuth mAuth;
-
+    FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +35,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         mAuth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
+        if(user != null){
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
         initButtonClickListener();
 
 
@@ -47,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

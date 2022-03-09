@@ -47,6 +47,9 @@ public class FinishFragment extends Fragment {
             binding.errorNotFound.setVisibility(View.VISIBLE);
             binding.refreshImageButton.setOnClickListener(onClickListener);
         }
+        else{
+            binding.finishFragment.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

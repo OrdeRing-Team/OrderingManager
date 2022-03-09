@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Base64;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +63,9 @@ public class MainActivity extends BasicActivity {
             FinishWithAnim();
         }
 
+        // 유저 DB Init
+        getUserDB();
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.progressBar.setVisibility(View.VISIBLE);
@@ -72,14 +76,29 @@ public class MainActivity extends BasicActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavi);
 
-        //처음화면
-        if(bundle != null){
-            Fragment qrFragment = new QrFragment();
-            qrFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().add(R.id.main_frame, qrFragment).commit(); //FrameLayout에 QrFragment.xml띄우기
-        } else{
-            getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new QrFragment()).commit(); //FrameLayout에 QrFragment.xml띄우기
-        }
+        initFragView();
+
+
+    }
+
+    private void initFragView(){
+        // DB에서 데이터를 받아오는 시간이 있기 때문에
+        // 아래의 핸들러로 코드 실행 시간을 지연 시키지 않으면
+        // StoreInitinfo가 false로 처리되는 현상이 발생함.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //처음화면
+                if(bundle != null){
+                    Fragment qrFragment = new QrFragment();
+                    qrFragment.setArguments(bundle);
+                    getSupportFragmentManager().beginTransaction().add(R.id.main_frame, qrFragment).commit(); //FrameLayout에 QrFragment.xml띄우기
+                } else{
+                    getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new QrFragment()).commit(); //FrameLayout에 QrFragment.xml띄우기
+                }
+            }
+        },1000);
+
 
         //바텀 네비게이션뷰 안의 아이템 설정
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -111,9 +130,6 @@ public class MainActivity extends BasicActivity {
                 return true;
             }
         });
-
-
-
     }
 
     private void getUserDB(){
@@ -140,6 +156,9 @@ public class MainActivity extends BasicActivity {
                         if(!userInfo.getStoreInitInfo()){
                             showCustomDialog();
                             bundle.putBoolean("StoreInitInfo",false);
+                        }
+                        else{
+                            bundle.putBoolean("StoreInitInfo",true);
                         }
                     } else {
                         Log.d("docRef", "No such document");

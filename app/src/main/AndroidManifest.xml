@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.orderingmanager">
     <!-- twilio와의 retrofit 통신으로 인한 인터넷 권한 요구 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 인터넷, 위치 권한 -->
-<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
-<!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -34,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true" />
@@ -55,10 +54,26 @@
             android:exported="true" />
         <activity
             android:name=".StartActivity"
-            android:exported="true" /> <!-- 네이티브 앱 키 추가 -->
+            android:exported="true" />
+        <!-- 네이티브 앱 키 추가 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="271badc59f7b54a059063439c4209044" />
+            android:name=".StartActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MenuAddActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".MenuEditActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".MenuManageActivity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

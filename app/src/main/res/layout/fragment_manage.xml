@@ -7,7 +7,7 @@
     android:background="@color/white"
     tools:context=".ManageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- 매장정보입력 안 되어 있을 경우 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/errorNotFound"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" >
 
         <TextView
             android:id="@+id/errorTitle"
@@ -70,7 +70,57 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/errorMsg" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <!-- 매장정보입력 되어 있을 경우 -->
+
+    <LinearLayout
+        android:id="@+id/manageFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/baeminjua"
+            android:text="OrdeRing"
+            android:textColor="#E1695E"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_menu_manage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="200dp"
+            android:text="메뉴 관리" />
+
+        <Button
+            android:id="@+id/btn_store_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:text="매장 정보" />
+
+        <Button
+            android:id="@+id/btn_mypage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:text="마이페이지" />
+
+    </LinearLayout>
+
 
 </FrameLayout>

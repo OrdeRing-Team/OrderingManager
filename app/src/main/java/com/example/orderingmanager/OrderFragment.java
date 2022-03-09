@@ -46,6 +46,9 @@ public class OrderFragment extends Fragment {
             binding.errorNotFound.setVisibility(View.VISIBLE);
             binding.refreshImageButton.setOnClickListener(onClickListener);
         }
+        else{
+            binding.orderFragment.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
