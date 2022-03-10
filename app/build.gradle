@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.orderingmanager"
-        minSdk 23
+        minSdk 24
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -85,6 +85,10 @@ dependencies {
 
     //kakao map
     implementation files('libs/libDaumMapAndroid.jar')
+
+    //zxing(Qr코드 생성)
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+    implementation 'com.google.zxing:core:3.4.1'
 
     //twilio SMS 인증
 //    implementation group: "com.twilio.sdk", name: "twilio", version: "7.42.0"

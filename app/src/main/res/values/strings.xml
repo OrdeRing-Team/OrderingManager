@@ -22,4 +22,5 @@
     <string name="dialogButtonText">매장 등록하기</string>
     <string name="ErrorMsg_404">404 Not Found</string>
     <string name="errorNotFound">데이터를 찾을 수 없습니다.</string>
+    <string name="createQRMainText">매장에서 사용될 QR코드를 생성중입니다.</string>
 </resources>

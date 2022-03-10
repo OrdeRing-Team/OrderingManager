@@ -51,6 +51,8 @@ public class InfoActivity extends BasicActivity {
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
     private EditText et_address;
 
+    int tableNum = 0;
+    String storeCustom;
     RadioGroup radioGroup;
     TextView tablenumtext;
     Button btnStartApp;
@@ -81,7 +83,7 @@ public class InfoActivity extends BasicActivity {
 
         binding = ActivityInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        createQRCodes();
         radioGroup = findViewById(R.id.radio_group);
         tablenumtext = findViewById(R.id.tablenumtext);
         tablenum = findViewById(R.id.tablenum);
@@ -173,7 +175,7 @@ public class InfoActivity extends BasicActivity {
         String userName = inputUserName.getText().toString();
         //String kategorie = inputKategorie.getText().toString();
         //String nicName = inputNicname.getText().toString();
-        int tableNum = 0;
+
         if(!tablenum.getText().toString().equals("")){
             tableNum = Integer.parseInt(tablenum.getText().toString());
         }
@@ -216,7 +218,7 @@ public class InfoActivity extends BasicActivity {
             Toast.makeText(InfoActivity.this, "오더링 START", Toast.LENGTH_SHORT).show();
             Log.d("isn'tEmpty", "입력칸 모두 채워짐.");
 
-            String storeCustom;
+
             if(radio_button_only.isChecked()){
                 storeCustom = "포장";
             }
@@ -232,9 +234,15 @@ public class InfoActivity extends BasicActivity {
             storeInfo.put("카테고리", Arrays.toString(codeStatus));
 
             setDB(storeInfo);
-
             //디비에 데이터 저장하기. (차후에 추가할 부분)
+
+            createQRCodes();
         }
+    }
+
+    private void createQRCodes(){
+        Intent intent = new Intent(InfoActivity.this, CreateQR.class);
+        startActivity(intent);
     }
 
     private void setDB(Map<String, Object> storeInfo){
@@ -265,8 +273,8 @@ public class InfoActivity extends BasicActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.e("storeInfo DB 생성", "완료");
-                        startActivity(new Intent(InfoActivity.this, MainActivity.class));
-                        FinishWithAnim();
+                        //startActivity(new Intent(InfoActivity.this, MainActivity.class));
+                        //FinishWithAnim();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
