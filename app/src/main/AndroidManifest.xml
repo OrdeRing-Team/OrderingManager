@@ -79,6 +79,13 @@
             android:name=".CreateQR"
             android:exported="true" />
 
+        <activity
+            android:name=".CreateQRSuccessActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".TestStack"
+            android:exported="true" />
     </application>
 
 </manifest>

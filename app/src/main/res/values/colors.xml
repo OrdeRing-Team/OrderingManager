@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="error">#FF0000</color>
     <color name="main">#E1695E</color>
+    <color name="blue">#0066FF</color>
 </resources>

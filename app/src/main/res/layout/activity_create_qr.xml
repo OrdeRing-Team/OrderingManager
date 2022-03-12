@@ -9,8 +9,10 @@
     tools:context=".CreateQR">
 
     <TextView
+        android:id="@+id/tv_maintext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:text="@string/createQRMainText"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -30,6 +32,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/iv_loading"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toTopOf="@id/qrcodeImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"/>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/progressTextLinearLayout_1"
         android:layout_width="wrap_content"
@@ -46,8 +57,8 @@
             android:layout_height="wrap_content"
             android:text="포장 QR"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/progress_1"
@@ -56,8 +67,8 @@
             android:layout_marginStart="8dp"
             android:text="0"
             android:textColor="@color/black"
-            android:textStyle="bold"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/progressText_1"
             app:layout_constraintTop_toTopOf="@+id/progressText_1" />
 
@@ -68,8 +79,8 @@
             android:layout_marginStart="4dp"
             android:text="/"
             android:textColor="@color/black"
-            android:textStyle="bold"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/progress_1"
             app:layout_constraintTop_toTopOf="@id/progressText_1" />
 
@@ -80,8 +91,8 @@
             android:layout_marginStart="4dp"
             android:text="1"
             android:textColor="@color/black"
-            android:textStyle="bold"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/progress_slash_1"
             app:layout_constraintTop_toTopOf="@id/progressText_1" />
 
@@ -89,8 +100,8 @@
             android:id="@+id/iv_Complete_1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:layout_marginStart="8dp"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/progress_end_1"
             app:layout_constraintTop_toTopOf="@+id/progress_end_1"
             app:srcCompat="@drawable/ic_check"
@@ -114,9 +125,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="웨이팅 QR"
-            android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/progress_2"
@@ -124,9 +135,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="0"
-            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/progressText_2"
             app:layout_constraintTop_toTopOf="@+id/progressText_2" />
 
@@ -136,9 +147,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="/"
-            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/progress_2"
             app:layout_constraintTop_toTopOf="@id/progressText_2" />
 
@@ -148,9 +159,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="1"
-            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/progress_slash_2"
             app:layout_constraintTop_toTopOf="@id/progressText_2" />
 
@@ -158,12 +169,12 @@
             android:id="@+id/iv_Complete_2"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:layout_marginStart="8dp"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/progress_end_2"
             app:layout_constraintTop_toTopOf="@+id/progress_end_2"
             app:srcCompat="@drawable/ic_check"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -182,9 +193,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="테이블 QR"
-            android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/progress_3"
@@ -192,9 +203,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="0"
-            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/progressText_1"
             app:layout_constraintTop_toTopOf="@+id/progressText_1" />
 
@@ -204,9 +215,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="/"
-            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/progress_1"
             app:layout_constraintTop_toTopOf="@id/progressText_1" />
 
@@ -216,9 +227,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="1"
-            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/progress_slash_1"
             app:layout_constraintTop_toTopOf="@id/progressText_1" />
 
@@ -226,12 +237,12 @@
             android:id="@+id/iv_Complete_3"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:layout_marginStart="8dp"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/progress_end_2"
             app:layout_constraintTop_toTopOf="@+id/progress_end_2"
             app:srcCompat="@drawable/ic_check"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView

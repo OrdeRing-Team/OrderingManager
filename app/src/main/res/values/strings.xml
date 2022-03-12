@@ -23,4 +23,8 @@
     <string name="ErrorMsg_404">404 Not Found</string>
     <string name="errorNotFound">데이터를 찾을 수 없습니다.</string>
     <string name="createQRMainText">매장에서 사용될 QR코드를 생성중입니다.</string>
+
+    <string name="menu_action_all_down">All down</string>
+    <string name="menu_action_up_down">Up down</string>
+    <string name="menu_action_up_down_stack">Up down stack</string>
 </resources>

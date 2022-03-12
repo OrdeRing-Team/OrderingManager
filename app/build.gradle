@@ -90,6 +90,13 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     implementation 'com.google.zxing:core:3.4.1'
 
+    // CreateQRSuccessActivity
+    implementation 'nl.dionsegijn:konfetti:1.1.2'
+
+    // 임시
+    implementation 'com.loopeer.library:cardstack:1.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     //twilio SMS 인증
 //    implementation group: "com.twilio.sdk", name: "twilio", version: "7.42.0"
 //    implementation group: "com.sparkjava", name: "spark-core", version: "2.7.1"

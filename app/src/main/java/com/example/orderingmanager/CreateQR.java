@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.orderingmanager.databinding.ActivityCreateQrBinding;
 import com.example.orderingmanager.databinding.ActivityInfoBinding;
 import com.google.zxing.BarcodeFormat;
@@ -30,10 +32,10 @@ public class CreateQR extends BasicActivity {
     MultiFormatWriter multiFormatWriter;
 
     // 임시 변수
-    int table_count = 52;
+    int table_count = 5;
 
     static int countNumber = 0;
-    static double PROGRESS_MAX = 54;
+    static double PROGRESS_MAX = 7;
 
     double progress;
 
@@ -134,6 +136,23 @@ public class CreateQR extends BasicActivity {
         }else{
             finish();
         }
+        if(countNumber == table_count-1) waitForUploading();
+    }
+
+    private void waitForUploading(){
+        binding.ivLoading.setVisibility(View.VISIBLE);
+        binding.tvMaintext.setText("QR코드를 서버에 업로드하는 중입니다.");
+        Glide.with(this).load(R.raw.uploading).into(binding.ivLoading);
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run(){
+                try {
+                    Intent intent = new Intent(CreateQR.this, CreateQRSuccessActivity.class);
+                    startActivity(intent);
+                    BackWithAnim();
+                } catch (Exception e) {}
+            }
+        },5000);
     }
 
     private void updateProgress(){
