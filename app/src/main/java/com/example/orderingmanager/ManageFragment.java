@@ -6,12 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orderingmanager.databinding.FragmentManageBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -34,6 +39,7 @@ public class ManageFragment extends Fragment {
     private Button btnAddMenu;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,14 +55,38 @@ public class ManageFragment extends Fragment {
 
             /* 이곳에 받아올 데이터를 추가하십셩 */
 
-            btnMenuManage = view.findViewById(R.id.btn_menu_manage);
+            btnMenuManage = view.findViewById(R.id.btn_manage);
             btnMenuManage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getActivity(), MenuManageActivity.class));
-                    getActivity().finish();
+                    //getActivity().finish();
                 }
             });
+
+            TextView nikname = binding.nikname;
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            CollectionReference docRef = db.collection("user");
+
+//            docRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//               @Override
+//               public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                   //작업이 성공적으로 마쳤을때
+//                   if (task.isSuccessful()) {
+//                       //컬렉션 아래에 있는 모든 정보를 가져온다.
+//                       for (QueryDocumentSnapshot document : task.getResult()) {
+//                           //document.getData() or document.getId() 등등 여러 방법으로
+//                           //데이터를 가져올 수 있다.
+//                           Log.e("data", "getdata", document.getData());
+//                       }
+//                       //그렇지 않을때
+//                   } else {
+//
+//                   }
+//               }
+//
+//
         }
 
         storeInfoCheck();

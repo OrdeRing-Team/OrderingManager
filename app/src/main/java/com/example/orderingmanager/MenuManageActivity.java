@@ -46,7 +46,6 @@ public class MenuManageActivity extends AppCompatActivity {
         ibHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
                 //ManageFragment로 돌아가야 하는데...
             }
