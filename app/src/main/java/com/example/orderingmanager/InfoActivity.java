@@ -49,7 +49,6 @@ public class InfoActivity extends BasicActivity {
     private ActivityInfoBinding binding;
 
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
-    private EditText et_address;
 
     int tableNum = 0;
     String storeCustom;
@@ -62,6 +61,7 @@ public class InfoActivity extends BasicActivity {
     EditText inputStoreName;
     EditText inputUserName;
     EditText tablenum;
+    EditText et_address;
 
     TextView psAccord;
 
@@ -402,6 +402,7 @@ public class InfoActivity extends BasicActivity {
                 if (resultCode == RESULT_OK) {
                     String data = intent.getExtras().getString("data");
                     if (data != null) {
+                        et_address = binding.etAddress;
                         et_address.setText(data);
                     }
                 }

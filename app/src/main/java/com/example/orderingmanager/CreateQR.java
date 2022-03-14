@@ -32,10 +32,10 @@ public class CreateQR extends BasicActivity {
     MultiFormatWriter multiFormatWriter;
 
     // 임시 변수
-    int table_count = 5;
+    static int table_count = 20;
 
     static int countNumber = 0;
-    static double PROGRESS_MAX = 7;
+    static double PROGRESS_MAX = table_count + 2;
 
     double progress;
 
