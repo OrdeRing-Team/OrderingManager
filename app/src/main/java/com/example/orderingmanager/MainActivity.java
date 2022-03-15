@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,8 +13,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import static com.example.orderingmanager.Utillity.showToast;
 
 import com.example.orderingmanager.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,8 +23,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -73,11 +68,10 @@ public class MainActivity extends BasicActivity {
         // 유저 DB Init
         getUserDB();
 
-
+        //startActivity(new Intent(MainActivity.this, CreateQR.class));
         bottomNavigationView = findViewById(R.id.bottomNavi);
 
         initFragView();
-
 
     }
 

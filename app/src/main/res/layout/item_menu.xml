@@ -10,10 +10,11 @@
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
     android:weightSum="10"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="13dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     tools:context=".MenuManageActivity"
+    android:elevation="3dp"
     android:background="@drawable/recycler_custom">
 
 

@@ -15,46 +15,48 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="40dp"
-                android:fontFamily="@font/baeminjua"
-                android:text="OrdeRing"
-                android:textColor="#E1695E"
-                android:textSize="34sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/btn_backToManageFrag"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_baseline_arrow_back_24"
+                    android:backgroundTint="@color/black"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"/>
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="32dp"
-                android:text="OrdeRing을 시작하기 전,"
-                android:textColor="#616161"
-                android:textSize="14dp"/>
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="128dp"
-                android:layout_marginTop="5dp"
-                android:text="매장 정보를 입력해주세요 !"
-                android:textColor="#616161"
-                android:textSize="20dp"
-                android:textStyle="bold"/>
+                <!-- 오른쪽 정렬을 위한 View -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/fui_transparent"
+                    android:textColor="@color/black"
+                    android:text="저장"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"/>
+
+            </LinearLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/storeName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
-                    android:layout_marginTop="44dp"
+                    android:layout_marginTop="48dp"
                     android:text="매장명/상호명"
                     android:textColor="#000000"
                     android:textSize="15dp"
@@ -64,14 +66,16 @@
 
                 <EditText
                     android:id="@+id/input_storeName"
-                    android:layout_width="200dp"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#E1695E"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="32dp"
+                    android:backgroundTint="#656565"
                     android:ems="7"
                     android:inputType="text"
                     android:textColor="#000000"
-                    app:layout_constraintStart_toStartOf="@+id/linearLayout3"
-                    app:layout_constraintTop_toTopOf="@id/storeName" />
+                    app:layout_constraintStart_toEndOf="@+id/storeName"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/location"
@@ -89,7 +93,7 @@
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
-                    android:layout_width="200dp"
+                    android:layout_width="220dp"
                     android:layout_height="100dp"
                     android:layout_marginLeft="57dp"
                     android:layout_marginTop="30dp"
@@ -108,10 +112,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_address"
-                            android:layout_width="200dp"
+                            android:layout_width="220dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:backgroundTint="#E1695E"
+                            android:backgroundTint="#656565"
                             android:hint="도로명 주소"
                             android:inputType="text"
                             android:minLines="2"
@@ -122,14 +126,14 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/input_layout_address_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="46dp"
                         android:textColor="#000000">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_address_detail"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="#E1695E"
+                            android:backgroundTint="#656565"
                             android:hint="상세 주소"
                             android:inputType="text"
                             android:minLines="2"
@@ -137,47 +141,46 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-                <Button
+
+                <ImageButton
                     android:id="@+id/btn_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:backgroundTint="#C85C5C"
-                    android:text="주소 검색"
+                    android:layout_marginTop="165dp"
+                    android:background="@color/fui_transparent"
+                    android:src="@drawable/ic_baseline_search_24"
+                    android:tint="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.915"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-                    app:layout_constraintStart_toEndOf="@+id/location"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
                 <TextView
                     android:id="@+id/userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
-                    android:layout_marginTop="150dp"
+                    android:layout_marginTop="228dp"
                     android:text="사업자명"
                     android:textColor="#000000"
                     android:textSize="15dp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/location" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/input_userName"
-                    android:layout_width="200dp"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="57dp"
-                    android:layout_marginTop="10dp"
-                    android:backgroundTint="#E1695E"
+                    android:layout_marginStart="56dp"
+                    android:layout_marginTop="28dp"
+                    android:backgroundTint="#656565"
                     android:ems="7"
                     android:inputType="text"
                     android:textColor="#000000"
                     app:layout_constraintStart_toEndOf="@+id/userName"
                     app:layout_constraintTop_toBottomOf="@+id/btn_location" />
-
-
 
                 <TextView
                     android:id="@+id/howtoeat"
@@ -237,26 +240,25 @@
                     android:textColor="#000000"
                     android:textSize="15dp"
                     android:textStyle="bold"
+                    android:layout_marginTop="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.501"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tablenum" />
 
+
                 <TextView
                     android:id="@+id/tablenumtext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="150dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="236dp"
+                    android:layout_marginTop="12dp"
                     android:text="테이블 수"
                     android:textColor="#000000"
                     android:textSize="13dp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radio_group" />
-
-
-
 
                 <EditText
                     android:id="@+id/tablenum"
@@ -273,34 +275,35 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/tablenumtext"
-                    app:layout_constraintTop_toBottomOf="@+id/radio_group"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/radio_group" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="0dp"
                     android:layout_height="2dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="40dp"
                     android:layout_marginEnd="8dp"
                     android:background="#AFAEAE"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toStartOf="@+id/Kategorie"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tablenum"/>
+                    app:layout_constraintTop_toBottomOf="@id/tablenum" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
                     android:layout_width="0dp"
                     android:layout_height="2dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="40dp"
                     android:layout_marginEnd="24dp"
                     android:background="#AFAEAE"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/Kategorie"
-                    app:layout_constraintTop_toBottomOf="@id/tablenum"/>
+                    app:layout_constraintTop_toBottomOf="@id/tablenum" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -310,7 +313,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:layout_marginEnd="5dp">
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="30dp">
 
                 <ImageView
                     android:id="@+id/btn_code1"
@@ -421,27 +425,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/btn_code6"
                     app:srcCompat="@drawable/food_code_11_name" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Button
-                android:id="@+id/startApp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:backgroundTint="#C85C5C"
-                android:text="START"/>
         </LinearLayout>
     </ScrollView>
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_map"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="20dp"-->
-<!--        android:text="지도"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/scrollView2"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--         />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

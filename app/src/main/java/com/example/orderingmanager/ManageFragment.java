@@ -2,23 +2,24 @@ package com.example.orderingmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orderingmanager.databinding.FragmentManageBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
 
 public class ManageFragment extends Fragment {
 
@@ -29,15 +30,15 @@ public class ManageFragment extends Fragment {
 
     Boolean storeInitInfo;
 
-    //리사이클러뷰 관련 선언
+    private Button btnInfo;
+    private Button btnStoreInfo;
     private Button btnMenuManage;
-    private ArrayList<ManageData> arrayList;
-    private ManageAdapter manageAdapter;
-    private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
-    private Button btnAdd;
-    private Button btnAddMenu;
-
+    TextView tv_nikname;
+    TextView tv_storeName;
+    TextView tv_name;
+    TextView tv_mealMethod;
+    TextView tv_category;
+    TextView tv_address;
 
 
     @Override
@@ -64,33 +65,77 @@ public class ManageFragment extends Fragment {
                 }
             });
 
-            TextView nikname = binding.nikname;
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            CollectionReference docRef = db.collection("user");
+            //닉네임 set
+            tv_nikname = view.findViewById(R.id.tv_nikname);
+            DocumentReference docRef = db.collection("users").document(user.getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d("dd",  "DocumentSnapshot data: " + document.get("닉네임"));
+                            tv_nikname.setText(document.get("닉네임").toString());
+                        } else {
+                            Log.d("dd", "No such document");
+                        }
+                    } else {
+                        Log.d("dd", "get failed with ", task.getException());
+                    }
+                }
+            });
 
-//            docRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//               @Override
-//               public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                   //작업이 성공적으로 마쳤을때
-//                   if (task.isSuccessful()) {
-//                       //컬렉션 아래에 있는 모든 정보를 가져온다.
-//                       for (QueryDocumentSnapshot document : task.getResult()) {
-//                           //document.getData() or document.getId() 등등 여러 방법으로
-//                           //데이터를 가져올 수 있다.
-//                           Log.e("data", "getdata", document.getData());
-//                       }
-//                       //그렇지 않을때
-//                   } else {
-//
-//                   }
-//               }
-//
-//
+            //매장정보 set
+            tv_storeName = view.findViewById(R.id.tv_storeName);
+            tv_name = view.findViewById(R.id.tv_name);
+            tv_mealMethod = view.findViewById(R.id.tv_mealMethod);
+            tv_category = view.findViewById(R.id.tv_category);
+            tv_address = view.findViewById(R.id.tv_address);
+            DocumentReference docRef2 = db.collection("users").document(user.getUid()).collection("매장정보").document(
+                    "5Y0qSLVyZo48elPnWJ5H"); //document이름값 난수로 되어있는데 어떻게 가져오지 ?
+            docRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d("dd",  "DocumentSnapshot data: " + document.get("매장명"));
+                            tv_storeName.setText(document.get("매장명").toString());
+                            tv_name.setText(document.get("사업자명").toString());
+                            tv_mealMethod.setText(document.get("매장종류").toString());
+                        } else {
+                            Log.d("dd", "No such document");
+                        }
+                    } else {
+                        Log.d("dd", "get failed with ", task.getException());
+                    }
+                }
+            });
+
+            //개인정보수정 버튼 클릭 이벤트
+            btnInfo = view.findViewById(R.id.btn_info);
+            btnInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getActivity(), EditPersonalInfoActivity.class));
+                }
+            });
+
+            //매장정보수정 버튼 클릭 이벤트
+            btnStoreInfo = view.findViewById(R.id.btn_store_info);
+            btnStoreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getActivity(), EditStoreInfoActivity.class));
+                }
+            });
+
         }
 
-        storeInfoCheck();
 
+        storeInfoCheck();
         return view;
     }
 
