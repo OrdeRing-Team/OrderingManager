@@ -59,12 +59,12 @@ public class LoginActivity extends BasicActivity {
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String Email = binding.editTextEmailLogin.getText().toString();
+                String MemberId = binding.etMemberId.getText().toString();
                 String Password = binding.editTextPasswordLogin.getText().toString();
 
                 // 로그인 조건 처리
-                if (Email.length() > 0 && Password.length() > 0) {
-                    mAuth.signInWithEmailAndPassword(Email, Password)
+                if (MemberId.length() > 0 && Password.length() > 0) {
+                    mAuth.signInWithEmailAndPassword(MemberId, Password)
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -82,7 +82,7 @@ public class LoginActivity extends BasicActivity {
                             });
 
                 } else {
-                    showToast(LoginActivity.this,"이메일과 비밀번호를 입력해주세요.");
+                    showToast(LoginActivity.this,"아이디와 비밀번호를 입력해주세요.");
 
 
                 }

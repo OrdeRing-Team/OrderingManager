@@ -7,7 +7,7 @@
     android:background="#FFFFFF">
 
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/et_memberId"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="142dp"
@@ -32,7 +32,7 @@
         android:textColorHint="#958E8E"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/et_memberId" />
 
     <Button
         android:id="@+id/button"
@@ -54,7 +54,7 @@
         android:layout_marginBottom="58dp"
         android:text="TextView"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
+        app:layout_constraintBottom_toTopOf="@+id/et_memberId"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

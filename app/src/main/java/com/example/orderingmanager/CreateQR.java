@@ -108,7 +108,8 @@ public class CreateQR extends BasicActivity {
                 @Override
                 public void run(){
                     countNumber += 1;
-                    text = "https://ordering.com/sadasdasd/Table" + Integer.toString(countNumber);
+                    //text = "https://ordering.com/sadasdasd/Table" + Integer.toString(countNumber);
+                    text = "http://www.ordering.ml/main";
                     try {
                         BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200);
                         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();

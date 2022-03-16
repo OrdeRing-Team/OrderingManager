@@ -10,8 +10,8 @@
     <string name="NicknameSubText">닉네임</string>
     <string name="PhoneNumberSubText">휴대폰 번호</string>
     <string name="OrderingMainText">OrdeRing</string>
-    <string name="EmailSubText">이메일</string>
-    <string name="EmailErrorText">올바르지 않은 이메일 형식입니다</string>
+    <string name="MemberIdSubText">아이디</string>
+    <string name="MemberIdErrorText">아이디는 5~20자의 영문과 숫자만 사용 가능합니다.</string>
     <string name="PasswordSubText">비밀번호</string>
     <string name="PasswordCheckSubText">비밀번호 확인</string>
     <string name="PasswordErrorText">비밀번호를 6자이상 입력해 주세요.</string>

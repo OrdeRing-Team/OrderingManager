@@ -97,6 +97,9 @@ dependencies {
     implementation 'com.loopeer.library:cardstack:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    // lombok
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+
     //twilio SMS 인증
 //    implementation group: "com.twilio.sdk", name: "twilio", version: "7.42.0"
 //    implementation group: "com.sparkjava", name: "spark-core", version: "2.7.1"

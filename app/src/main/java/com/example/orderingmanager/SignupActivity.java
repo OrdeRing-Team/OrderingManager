@@ -4,24 +4,22 @@ import static com.example.orderingmanager.Utillity.showToast;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.LauncherApps;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.orderingmanager.databinding.ActivityInfoBinding;
 import com.example.orderingmanager.databinding.ActivitySignupBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,10 +28,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,7 +43,7 @@ public class SignupActivity extends AppCompatActivity {
     String phoneNum;
 
     Boolean isNickNameWritten = true;
-    Boolean isEmailWritten = false;
+    Boolean isMemberIdWritten = false;
     Boolean isPasswordWritten = false;
     Boolean isPasswordCheckAccord = false;
 
@@ -172,7 +168,7 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         /* 이메일 입력란 변경 리스너 */
-        binding.editTextEmail.addTextChangedListener(new TextWatcher() {
+        binding.etMemberId.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -180,7 +176,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                binding.ivEmailComplete.setVisibility(View.GONE);
+                binding.ivMemberIdComplete.setVisibility(View.GONE);
 
                 checkAllWritten();
             }
@@ -188,28 +184,25 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                String input = binding.editTextEmail.getText().toString();
-                Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
-                if(pattern.matcher(input).matches()){
-                    isEmailWritten = true;
-                } else {
-                    isEmailWritten = false;
+                String input = binding.etMemberId.getText().toString();
+                if(binding.etMemberId.getText().length() < 5 ) {
+                    isMemberIdWritten = false;
                     binding.ivError4.setVisibility(View.VISIBLE);
-                    binding.tvEmailError.setVisibility(View.VISIBLE);
+                    binding.tvMemberIdError.setVisibility(View.VISIBLE);
                 }
-                if(isEmailWritten){
+                if(isMemberIdWritten){
 
                     binding.ivError4.setVisibility(View.GONE);
-                    binding.tvEmailError.setVisibility(View.GONE);
+                    binding.tvMemberIdError.setVisibility(View.GONE);
 
                     // 통과 표시 출력
-                    binding.ivEmailComplete.setVisibility(View.VISIBLE);
+                    binding.ivMemberIdComplete.setVisibility(View.VISIBLE);
 
                     // 통과 애니메이션 실행
-                    binding.ivEmailComplete.startAnimation(complete);
+                    binding.ivMemberIdComplete.startAnimation(complete);
                 }
                 else{
-                    binding.ivEmailComplete.setVisibility(View.GONE);
+                    binding.ivMemberIdComplete.setVisibility(View.GONE);
                 }
 
                 checkAllWritten();
@@ -362,7 +355,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void checkAllWritten(){
-        if(isEmailWritten && isPasswordWritten && isNickNameWritten && isPasswordCheckAccord){
+        if(isMemberIdWritten && isPasswordWritten && isNickNameWritten && isPasswordCheckAccord){
             ButtonRelease(binding.btnSignup);
         }
         else{
@@ -385,34 +378,34 @@ public class SignupActivity extends AppCompatActivity {
     private void createAccount() {
 
         String Nickname = binding.editTextNickname.getText().toString();
-        String Email = binding.editTextEmail.getText().toString();
+        String MemberId = binding.etMemberId.getText().toString();
         String Password = binding.editTextPassword.getText().toString();
 
-        Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
+        //Pattern pattern = Patterns.EMAIL_ADDRESS;
 
         // 이메일 계정 생성 시작
-        if (pattern.matcher(Email).matches() && Password.length() > 5 && Nickname.length() > 2) {
-            mAuth.createUserWithEmailAndPassword(Email, Password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-
-                                updateUI(Nickname, Email, Password);
-                            } else {
-                                // 실패시
-                                    String ErrorEmailAlreadyUse = "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.";
-
-                                    String Errormsg = task.getException().toString();
-                                    Log.w(TAG, "이메일 생성 실패", task.getException());
-                                    if (Errormsg.equals(ErrorEmailAlreadyUse)) {
-
-                                        ButtonRelease(binding.btnSignup);
-                                        Toast.makeText(SignupActivity.this, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT).show();
-                                    }
-                            }
-                        }
-                    });
+        if (MemberId.length() > 4 && MemberId.length() < 21 && Password.length() > 5 && Nickname.length() > 2) {
+//            mAuth.createUserWithEmailAndPassword(Email, Password)
+//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<AuthResult> task) {
+//                            if (task.isSuccessful()) {
+//
+//                                updateUI(Nickname, Email, Password);
+//                            } else {
+//                                // 실패시
+//                                    String ErrorEmailAlreadyUse = "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.";
+//
+//                                    String Errormsg = task.getException().toString();
+//                                    Log.w(TAG, "이메일 생성 실패", task.getException());
+//                                    if (Errormsg.equals(ErrorEmailAlreadyUse)) {
+//
+//                                        ButtonRelease(binding.btnSignup);
+//                                        Toast.makeText(SignupActivity.this, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT).show();
+//                                    }
+//                            }
+//                        }
+//                    });
         }
 
     }
