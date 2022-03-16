@@ -28,7 +28,9 @@
         android:layout_marginEnd="64dp"
         android:maxLength="20"
         android:hint="아이디"
-        android:textColor="#FFFFFF"
+        android:textColorHint="@color/et_hint"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainText" />
@@ -41,8 +43,10 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
         android:hint="비밀번호"
+        android:textColorHint="@color/et_hint"
         android:inputType="textPassword"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_memberId" />
