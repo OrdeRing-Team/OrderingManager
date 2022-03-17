@@ -2,15 +2,14 @@ package com.example.orderingmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.orderingmanager.databinding.FragmentOrderBinding;
-import com.example.orderingmanager.databinding.FragmentQrBinding;
 
 public class OrderFragment extends Fragment {
     private View view;
@@ -29,9 +28,6 @@ public class OrderFragment extends Fragment {
         if(extra != null) {
             extra = getArguments();
 
-            // 매장정보 입력 여부
-            storeInitInfo = extra.getBoolean("StoreInitInfo");
-
             /* 이곳에 받아올 데이터를 추가하십셩 */
         }
 
@@ -42,11 +38,15 @@ public class OrderFragment extends Fragment {
 
 
     public void storeInfoCheck(){
+        storeInitInfo = UserInfo.getRestaurantId() != null;
         if(!storeInitInfo){
+            Log.e("orderFrag",storeInitInfo.toString());
             binding.errorNotFound.setVisibility(View.VISIBLE);
             binding.refreshImageButton.setOnClickListener(onClickListener);
         }
         else{
+            Log.e("orderFrag",storeInitInfo.toString());
+            binding.errorNotFound.setVisibility(View.GONE);
             binding.orderFragment.setVisibility(View.VISIBLE);
         }
     }

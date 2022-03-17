@@ -1,7 +1,7 @@
 package com.example.orderingmanager;
 
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,19 +14,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
+import com.example.orderingmanager.Dto.FoodCategory;
+import com.example.orderingmanager.Dto.HttpApi;
+import com.example.orderingmanager.Dto.RestaurantDto;
+import com.example.orderingmanager.Dto.RestaurantType;
+import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.databinding.ActivityInfoBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URL;
+
+import lombok.SneakyThrows;
 
 /**
  * Food Code List
@@ -59,38 +58,33 @@ public class InfoActivity extends BasicActivity {
     Button btn_search;
 
     EditText inputStoreName;
-    EditText inputUserName;
+    EditText inputOwnerName;
     EditText tablenum;
     EditText et_address;
 
     TextView psAccord;
 
-    Map<String, Object> storeInfo = new HashMap<>();
-
     boolean[] codeStatus;
 
+    RestaurantType restaurantType = RestaurantType.NONE;
+    FoodCategory foodCategory = FoodCategory.NONE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
 
-        et_address = (EditText) findViewById(R.id.et_address);
         //Button btn_search = (Button) findViewById(R.id.btn_location);
-
-
-
 
         binding = ActivityInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        createQRCodes();
         radioGroup = findViewById(R.id.radio_group);
         tablenumtext = findViewById(R.id.tablenumtext);
         tablenum = findViewById(R.id.tablenum);
         inputStoreName = findViewById(R.id.input_storeName);
-        inputUserName = findViewById(R.id.input_userName);
+        inputOwnerName = findViewById(R.id.input_userName);
         btnStartApp = findViewById(R.id.startApp);
-
+        et_address = (EditText) findViewById(R.id.et_address);
         psAccord = findViewById(R.id.tv_psAccord);
 
 
@@ -123,10 +117,12 @@ public class InfoActivity extends BasicActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.radio_button_onlydeliver:
+                        restaurantType = RestaurantType.ONLY_TO_GO;
                         tablenumtext.setVisibility(View.GONE);
                         tablenum.setVisibility(View.GONE);
                         break;
                     case R.id.radio_button_both:
+                        restaurantType = RestaurantType.FOR_HERE_TO_GO;
                         tablenumtext.setVisibility(View.VISIBLE);
                         tablenum.setVisibility(View.VISIBLE);
                         break;
@@ -140,7 +136,8 @@ public class InfoActivity extends BasicActivity {
             @Override
             public void onClick(View view) {
                 btnStartApp.setEnabled(false);
-                isEmpty();
+                checkEmpty();
+                createQRCodes();
             }
         });
 
@@ -170,9 +167,11 @@ public class InfoActivity extends BasicActivity {
     }
 
     // 입력창이 비었거나, 비밀번호가 일치하지 않을 때 알림을 띄우는 함수
-    private void isEmpty() {
+    private void checkEmpty() {
         String storeName = inputStoreName.getText().toString();
-        String userName = inputUserName.getText().toString();
+        String ownerName = inputOwnerName.getText().toString();
+        String address = et_address.getText().toString();
+        String addressDetail = binding.etAddressDetail.getText().toString();
         //String kategorie = inputKategorie.getText().toString();
         //String nicName = inputNicname.getText().toString();
 
@@ -182,17 +181,6 @@ public class InfoActivity extends BasicActivity {
         RadioButton radio_button_only = findViewById(R.id.radio_button_onlydeliver);
         RadioButton radio_button_both = findViewById(R.id.radio_button_both);
 
-
-        /*if(storeName.matches("") || userName.matches("") || kategorie.matches("") || nicName.matches("")) {
-            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
-            Log.d("isEmpty", "입력칸을 모두 채워라.");
-        }
-        else if(!psBeforeCheck.isEmpty() || !psAfterCheck.isEmpty()) {
-            if (psBeforeCheck.equals(psAfterCheck) == false) {
-                Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
-                Log.d("isEmpty", "입력칸을 모두 채워라.");
-            }
-        }*/
         if ((!radio_button_only.isChecked()) && (!radio_button_both.isChecked())) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
             btnStartApp.setEnabled(true);
@@ -202,12 +190,7 @@ public class InfoActivity extends BasicActivity {
             btnStartApp.setEnabled(true);
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
-        /*else if(psBeforeCheck.isEmpty() == true || psAfterCheck.isEmpty() == true) {
-            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
-            Log.d("isEmpty", "입력칸을 모두 채워라.");
-        }*/
-        else if(!codeStatus[0] && !codeStatus[1] && !codeStatus[2] && !codeStatus[3] && !codeStatus[4] && !codeStatus[5] && !codeStatus[6] &&
-                !codeStatus[7] && !codeStatus[8] && !codeStatus[9] && !codeStatus[10]){
+        else if(foodCategory == FoodCategory.NONE){
             Toast.makeText(InfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요.", Toast.LENGTH_SHORT).show();// 키보드 내리기
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
@@ -219,71 +202,42 @@ public class InfoActivity extends BasicActivity {
             Log.d("isn'tEmpty", "입력칸 모두 채워짐.");
 
 
-            if(radio_button_only.isChecked()){
-                storeCustom = "포장";
-            }
-            else {
-                storeCustom = "공통";
-            }
-            storeInfo.put("매장명", storeName);
-            storeInfo.put("사업자명", userName);
-            storeInfo.put("매장종류", storeCustom);
-            if(storeCustom.equals("공통")) {
-                storeInfo.put("테이블 수", tableNum);
-            }
-            storeInfo.put("카테고리", Arrays.toString(codeStatus));
+            try {
+                RestaurantDto restaurantDto = new RestaurantDto(UserInfo.getOwnerId(),storeName,ownerName,address,tableNum, foodCategory, restaurantType);
 
-            setDB(storeInfo);
+                URL url = new URL("http://www.ordering.ml/api/restaurant");
+                HttpApi httpApi = new HttpApi(url, "POST");
+
+                new Thread() {
+                    @SneakyThrows
+                    public void run() {
+                        // login
+                        String json = httpApi.requestToServer(restaurantDto);
+                        ObjectMapper mapper = new ObjectMapper();
+                        ResultDto<Long> result = mapper.readValue(json, new TypeReference<ResultDto<Long>>() {});
+                        UserInfo.setRestaurantInfo(restaurantDto);
+
+                        createQRCodes();
+                    }
+                }.start();
+
+            } catch (Exception e) {
+                showToast(this,"서버 요청에 실패하였습니다.");
+                Log.e("e = " , e.getMessage());
+            }
+
+
+            /** storeInfo.put("카테고리", Arrays.toString(codeStatus)); */
+
             //디비에 데이터 저장하기. (차후에 추가할 부분)
-
-            createQRCodes();
         }
     }
 
     private void createQRCodes(){
-        Intent intent = new Intent(InfoActivity.this, CreateQR.class);
-        startActivity(intent);
+        startActivity(new Intent(InfoActivity.this, CreateQR.class));
+        FinishWithAnim();
     }
 
-    private void setDB(Map<String, Object> storeInfo){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();;
-
-        // userInfo의 매장정보 입력여부 true로 변경
-        DocumentReference docRef = db.collection("users").document(user.getUid());
-        docRef
-                .update("매장정보", true)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.e("매장정보입력여부", "업데이트 성공");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("매장정보입력여부", "업데이트 실패");
-                    }
-                });
-
-        // userInfo에 storeInfo 문서 추가
-        db.collection("users")
-                .document(user.getUid()).collection("매장정보").document().set(storeInfo)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.e("storeInfo DB 생성", "완료");
-                        //startActivity(new Intent(InfoActivity.this, MainActivity.class));
-                        //FinishWithAnim();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("storeInfo DB 생성", "실패");
-                    }
-                });
-    }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -291,102 +245,113 @@ public class InfoActivity extends BasicActivity {
 
             switch (v.getId()) {
                 case R.id.btn_code1:
-                    if (!codeStatus[0]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode1.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[0] = true;
-                    } else {
+                        foodCategory = FoodCategory.KOREAN_FOOD;
+                    }
+                    else{
                         binding.btnCode1.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[0] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code2:
-                    if (!codeStatus[1]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode2.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[1] = true;
-                    } else {
+                        foodCategory = FoodCategory.BUNSIK;
+                    }
+                    else{
                         binding.btnCode2.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[1] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code3:
-                    if (!codeStatus[2]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode3.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[2] = true;
-                    } else {
+                        foodCategory = FoodCategory.CAFE_DESSERT;
+                    }
+                    else{
                         binding.btnCode3.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[2] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code4:
-                    if (!codeStatus[3]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode4.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[3] = true;
-                    } else {
+                        foodCategory = FoodCategory.PORK_CUTLET_ROW_FISH_SUSHI;
+                    }
+                    else{
                         binding.btnCode4.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[3] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code5:
-                    if (!codeStatus[4]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode5.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[4] = true;
-                    } else {
+                        foodCategory = FoodCategory.CHICKEN;
+                    }
+                    else{
                         binding.btnCode5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[4] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code6:
-                    if (!codeStatus[5]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode6.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[5] = true;
-                    } else {
+                        foodCategory = FoodCategory.PIZZA;
+                    }
+                    else{
                         binding.btnCode6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[5] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code7:
-                    if (!codeStatus[6]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode7.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[6] = true;
-                    } else {
+                        foodCategory = FoodCategory.ASIAN_FOOD_WESTERN_FOOD;
+                    }
+                    else{
                         binding.btnCode7.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[6] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code8:
-                    if (!codeStatus[7]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode8.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[7] = true;
-                    } else {
+                        foodCategory = FoodCategory.CHINESE_FOOD;
+                    }
+                    else{
                         binding.btnCode8.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[7] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code9:
-                    if (!codeStatus[8]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode9.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[8] = true;
-                    } else {
+                        foodCategory = FoodCategory.JOKBAL_BOSSAM;
+                    }
+                    else{
                         binding.btnCode9.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[8] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code10:
-                    if (!codeStatus[9]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode10.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[9] = true;
-                    } else {
+                        foodCategory = FoodCategory.JJIM_TANG;
+                    }
+                    else{
                         binding.btnCode10.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[9] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
                 case R.id.btn_code11:
-                    if (!codeStatus[10]) {
+                    if (foodCategory == FoodCategory.NONE) {
                         binding.btnCode11.setBackgroundColor(Color.parseColor("#E1695E"));
-                        codeStatus[10] = true;
-                    } else {
+                        foodCategory = FoodCategory.FAST_FOOD;
+                    }
+                    else{
                         binding.btnCode11.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        codeStatus[10] = false;
+                        foodCategory = FoodCategory.NONE;
                     }
                     break;
             }
@@ -402,8 +367,12 @@ public class InfoActivity extends BasicActivity {
                 if (resultCode == RESULT_OK) {
                     String data = intent.getExtras().getString("data");
                     if (data != null) {
-                        et_address = binding.etAddress;
-                        et_address.setText(data);
+                        String[] address = data.split(", ");
+                        binding.etAddressNumber.setText(address[0]);;
+                        binding.etAddress.setText(address[1]);;
+                    }
+                    else{
+                        showToast(this,"주소를 불러오는 중 오류가 발생했습니다.");
                     }
                 }
                 break;

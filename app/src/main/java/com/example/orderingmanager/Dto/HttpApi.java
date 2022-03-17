@@ -2,7 +2,6 @@ package com.example.orderingmanager.Dto;
 
 import android.util.Log;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
@@ -14,16 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-/**
- *
- * @param <T> 서버에서 받을 DTO 자료형
- */
-public class HttpApi<T> {
+public class HttpApi {
 
     private final URL url;
     private final String httpMethod;
     private HttpURLConnection cnn;
-    private ObjectMapper mapper;
+    private final static ObjectMapper mapper = new ObjectMapper();
 
     /**
      * @param httpMethod: GET, POST, PUT, UPDATE, DELETE
@@ -39,7 +34,6 @@ public class HttpApi<T> {
         try {
             cnn = (HttpURLConnection) url.openConnection();
             cnn.setRequestMethod(httpMethod);
-            mapper = new ObjectMapper();
 
             // 서버 응답 Data를 json 형식의 타입으로 요청.
             cnn.setRequestProperty("Accept", "application/json");
@@ -54,7 +48,7 @@ public class HttpApi<T> {
      *
      * 서버로 보내는 데이터가 없을 때
      */
-    public ResultDto<T> requestToServer() {
+    public String requestToServer() {
 
         // InputStream 으로  서버로 부터 응답을 받겠다는 설정
         cnn.setDoInput(true);
@@ -73,7 +67,7 @@ public class HttpApi<T> {
      *
      * @param dto: 서버로 보내는 객체
      */
-    public ResultDto<T> requestToServer(Object dto) {
+    public String requestToServer(Object dto) {
 
         cnn.setDoOutput(true);
         cnn.setDoInput(true);
@@ -94,7 +88,7 @@ public class HttpApi<T> {
         return null;
     }
 
-    private ResultDto<T> getResponse() throws IOException {
+    private String getResponse() throws IOException {
         InputStream inputStream = cnn.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder builder =  new StringBuilder();
@@ -105,9 +99,7 @@ public class HttpApi<T> {
         }
 
         bufferedReader.close();
-        String json = builder.toString();
 
-        ResultDto<T> response = mapper.readValue(json, new TypeReference<ResultDto<T>>() { });
-        return response;
+        return builder.toString();
     }
 }

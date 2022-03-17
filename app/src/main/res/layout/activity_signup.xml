@@ -6,101 +6,31 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-
-        <EditText
-            android:id="@+id/editTextNickname"
-            android:layout_width="210dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="55dp"
-            android:backgroundTint="#E1695E"
-            android:ems="7"
-            android:fontFamily="@font/baeminjua"
-            android:inputType="text"
-            android:maxLength="11"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/nickname"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/nickname"
-            tools:ignore="Autofill,LabelFor" />
-
-        <ImageButton
-            android:id="@+id/ib_randomNick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/ic_refresh"
-            android:backgroundTint="#808080"
-            app:layout_constraintBottom_toTopOf="@+id/tv_nickNameError"
-            app:layout_constraintEnd_toEndOf="@+id/editTextNickname"
-            app:layout_constraintTop_toTopOf="@+id/editTextNickname"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/iv_error"
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/tv_nickNameError"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNickname"
-            app:srcCompat="@drawable/ic_baseline_error_outline_24"
-            tools:ignore="ContentDescription"
-            tools:visibility="visible" />
-
         <TextView
-            android:id="@+id/tv_nickNameError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="55dp"
-            android:text="@string/NicknameErrorText"
-            android:textColor="#FF0000"
-            android:textSize="12sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_error"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_error"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/nickname"
+            android:id="@+id/tv_memberId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
             android:layout_marginTop="50dp"
-            android:text="@string/NicknameSubText"
+            android:text="@string/memberIdSubText"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-        <TextView
-            android:id="@+id/tv_memberId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/MemberIdSubText"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nickname" />
-
         <EditText
             android:id="@+id/et_memberId"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#E1695E"
-            android:maxLength="20"
+            android:ems="7"
             android:textColor="#000000"
             android:textColorHint="#C1C1C1"
             android:textSize="18sp"
+            android:layout_marginEnd="55dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_memberId"
-            app:layout_constraintEnd_toEndOf="@+id/editTextNickname"
-            app:layout_constraintStart_toStartOf="@+id/editTextNickname"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_memberId"
             tools:ignore="Autofill,LabelFor" />
 
@@ -110,18 +40,18 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/tv_memberIdError"
+            app:layout_constraintEnd_toStartOf="@+id/tv_idError"
             app:layout_constraintTop_toBottomOf="@+id/et_memberId"
             app:srcCompat="@drawable/ic_baseline_error_outline_24"
             tools:ignore="ContentDescription"
             tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/tv_memberIdError"
+            android:id="@+id/tv_idError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="55dp"
-            android:text="@string/MemberIdErrorText"
+            android:text="@string/memberIdErrorText"
             android:textColor="#FF1100"
             android:textSize="12sp"
             android:visibility="gone"
@@ -167,18 +97,18 @@
             app:passwordToggleTint="#E1695E"
             tools:ignore="MissingConstraints">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextPasswordCheck"
-                android:layout_width="210dp"
-                android:layout_height="50dp"
-                android:backgroundTint="#E1695E"
-                android:inputType="textPassword"
-                android:textColor="#636363"
-                android:textColorHint="#E1695E"
-                android:textSize="18sp"
-                app:passwordToggleEnabled="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextPasswordCheck"
+                    android:layout_width="210dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="#E1695E"
+                    android:inputType="textPassword"
+                    android:textColor="#636363"
+                    android:textColorHint="#E1695E"
+                    android:textSize="18sp"
+                    app:passwordToggleEnabled="true">
 
-            </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -219,17 +149,17 @@
             app:passwordToggleTint="#E1695E"
             tools:ignore="MissingConstraints">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextPassword"
-                android:layout_width="210dp"
-                android:layout_height="50dp"
-                android:backgroundTint="#E1695E"
-                android:inputType="textPassword"
-                android:textColor="#636363"
-                android:textColorHint="#E1695E"
-                android:textSize="18sp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextPassword"
+                    android:layout_width="210dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="#E1695E"
+                    android:inputType="textPassword"
+                    android:textColor="#636363"
+                    android:textColorHint="#E1695E"
+                    android:textSize="18sp">
 
-            </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -279,7 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:text="@string/PhoneNumberSubText"
+            android:text="@string/auth_phoneNum"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -304,17 +234,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
 
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/NicknameGuideText"
-            android:textColor="#8F8F8F"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/editTextNickname"
-            app:layout_constraintEnd_toEndOf="@+id/editTextNickname"
-            app:layout_constraintStart_toStartOf="@+id/nickname" />
 
 
         <ImageView
@@ -340,7 +259,7 @@
             tools:visibility="visible" />
 
         <ImageView
-            android:id="@+id/iv_memberIdComplete"
+            android:id="@+id/iv_idComplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -350,28 +269,17 @@
             tools:ignore="ContentDescription"
             tools:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/iv_nickNameComplete"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/editTextNickname"
-            app:layout_constraintTop_toTopOf="@+id/nickname"
-            app:srcCompat="@drawable/ic_check"
-            tools:ignore="ContentDescription"
-            tools:visibility="visible" />
-
-    <Button
-        android:id="@+id/btn_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#0D70E6"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/SignupButtonText"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent" />
+            android:background="#0D70E6"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/SignupButtonText"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

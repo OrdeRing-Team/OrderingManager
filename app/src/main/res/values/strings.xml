@@ -5,13 +5,15 @@
     <string name="main_logo">OrdeRing 매장관리시스템</string>
     <string name="auth_info">본인 인증</string>
     <string name="auth_errorcode">인증번호가 일치하지 않습니다.</string>
+    <string name="auth_phoneNum">휴대폰 번호</string>
     <string name="signup_nickname"><u>다시 선택</u></string>
     <string name="NicknameErrorText">닉네임은 3글자 이상 입력해 주세요</string>
     <string name="NicknameSubText">닉네임</string>
     <string name="PhoneNumberSubText">휴대폰 번호</string>
     <string name="OrderingMainText">OrdeRing</string>
     <string name="MemberIdSubText">아이디</string>
-    <string name="MemberIdErrorText">아이디는 5~20자의 영문과 숫자만 사용 가능합니다.</string>
+    <string name="memberIdErrorText">아이디는 5~20자의 영문 소문자와 숫자만 사용 가능합니다.</string>
+
     <string name="PasswordSubText">비밀번호</string>
     <string name="PasswordCheckSubText">비밀번호 확인</string>
     <string name="PasswordErrorText">비밀번호를 6자이상 입력해 주세요.</string>
@@ -23,8 +25,24 @@
     <string name="ErrorMsg_404">404 Not Found</string>
     <string name="errorNotFound">데이터를 찾을 수 없습니다.</string>
     <string name="createQRMainText">매장에서 사용될 QR코드를 생성중입니다.</string>
-
+    <string name="memberIdSubText">아이디</string>
     <string name="menu_action_all_down">All down</string>
     <string name="menu_action_up_down">Up down</string>
     <string name="menu_action_up_down_stack">Up down stack</string>
+    <string name="address_number">우편번호</string>
+    <string name="road_address">도로명 주소</string>
+    <string name="detail_address">상세주소</string>
+    <string name="owner_name">사업자명</string>
+    <string name="address">주소</string>
+    <string name="store_type">매장 종류</string>
+    <string name="store_name">매장명/상호명</string>
+    <string name="info_main_1">OrdeRing을 시작하기 전,</string>
+    <string name="info_main_2">매장 정보를 입력해주세요 !</string>
+    <string name="ordering">OrdeRing</string>
+    <string name="info_search_address">주소 검색</string>
+    <string name="info_only_takeout">포장만 가능</string>
+    <string name="info_allowall">매장 식사, 포장 가능</string>
+    <string name="info_category">음식 카테고리</string>
+    <string name="info_table_count">테이블 수</string>
+    <string name="start">START</string>
 </resources>

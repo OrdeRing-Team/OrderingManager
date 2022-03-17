@@ -10,5 +10,5 @@ public class OwnerSignUpDto {
 
     private String signInId;
     private String password;
-    private String totalPhoneNum;
+    private String phoneNumber;
 }

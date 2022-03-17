@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -67,13 +66,12 @@ public class TempActivity extends BasicActivity {
 
     /* 이메일 계정 생성 */
     private void createAccount(String phoneNum) {
-        String Email = binding.editTextEmail.getText().toString();
+        String memberId = binding.etMemberId.getText().toString();
         String Password = binding.editTextPassword.getText().toString();
 
-
         // 이메일 계정 생성 시작
-        if (Email.length() > 0 && Password.length() > 0) {
-            mAuth.createUserWithEmailAndPassword(Email, Password)
+        if (memberId.length() > 0 && Password.length() > 0) {
+            mAuth.createUserWithEmailAndPassword(memberId, Password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {

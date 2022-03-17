@@ -15,13 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.orderingmanager.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
@@ -29,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends BasicActivity {
 
+    private static final String TAG = "MainActivity_TAG";
     private ActivityMainBinding binding;
     private CustomDialog dialog;
 
@@ -46,17 +42,7 @@ public class MainActivity extends BasicActivity {
 
         // 해시키 받아오는 함수 호출
         Log.e("getKeyHash", ""+getKeyHash(MainActivity.this));
-
         bundle = new Bundle();
-
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-        // 로그인 상태가 아닐 때 StartActivity로 이동
-        // 회원 정보 입력 안된 상태
-        if(user == null){
-            startActivity(new Intent(MainActivity.this, StartActivity.class));
-            FinishWithAnim();
-        }
 
         // 유저 DB Init
         getUserDB();
@@ -64,15 +50,9 @@ public class MainActivity extends BasicActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.progressBar.setVisibility(View.VISIBLE);
-
-        // 유저 DB Init
-        getUserDB();
-
-        //startActivity(new Intent(MainActivity.this, CreateQR.class));
         bottomNavigationView = findViewById(R.id.bottomNavi);
 
         initFragView();
-
     }
 
     private void initFragView(){
@@ -127,41 +107,14 @@ public class MainActivity extends BasicActivity {
     }
 
     private void getUserDB(){
-        DocumentReference docRef = db.collection("users").document(user.getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        String PhoneNum = document.getData().get("휴대폰번호").toString();
-                        String Email = document.getData().get("이메일").toString();
-                        String Nickname = document.getData().get("닉네임").toString();
-                        boolean StoreInitInfo = Boolean.parseBoolean(document.getData().get("매장정보").toString());
-                        userInfo = new UserInfo(PhoneNum, Email, Nickname, StoreInitInfo);
-                        Log.e("userInfo.setEmail", Email);
-                        Log.e("userInfo.getEmail :: ", userInfo.getEmail());
-                        Log.e("userInfo.setPhoneNum", PhoneNum);
-                        Log.e("userInfo.getPhoneNum :: ", userInfo.getPhoneNum());
-                        Log.e("userInfo.setNickname", Nickname);
-                        Log.e("userInfo.getNickname :: ", userInfo.getNickname());
-                        Log.e("userInfo.setStoreInfo", Boolean.toString(StoreInitInfo));
-                        Log.e("userInfo.getStoreInfo :: ", Boolean.toString(userInfo.getStoreInitInfo()));
-                        if(!userInfo.getStoreInitInfo()){
-                            showCustomDialog();
-                            bundle.putBoolean("StoreInitInfo",false);
-                        }
-                        else{
-                            bundle.putBoolean("StoreInitInfo",true);
-                        }
-                    } else {
-                        Log.d("docRef", "No such document");
-                    }
-                } else {
-                    Log.d("docRef", "get failed with ", task.getException());
-                }
-            }
-        });
+        //Intent intent = getIntent();
+        if(UserInfo.getRestaurantId() == null){
+            showCustomDialog();
+        }
+        else{
+            Log.e(TAG,"매장정보입력 : true");
+        }
+
     }
 
     private void showCustomDialog(){

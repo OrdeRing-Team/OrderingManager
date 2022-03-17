@@ -6,20 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.orderingmanager.Dto.FoodCategory;
+import com.example.orderingmanager.Dto.RestaurantType;
 import com.example.orderingmanager.databinding.FragmentManageBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ManageFragment extends Fragment {
 
@@ -30,125 +22,101 @@ public class ManageFragment extends Fragment {
 
     Boolean storeInitInfo;
 
-    private Button btnInfo;
-    private Button btnStoreInfo;
-    private Button btnMenuManage;
-    TextView tv_nikname;
-    TextView tv_storeName;
-    TextView tv_name;
-    TextView tv_mealMethod;
-    TextView tv_category;
-    TextView tv_address;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentManageBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
-        extra = this.getArguments();
-        if(extra != null) {
-            extra = getArguments();
-
-            // 매장정보 입력 여부
-            storeInitInfo = extra.getBoolean("StoreInitInfo");
-
-            /* 이곳에 받아올 데이터를 추가하십셩 */
-
-            btnMenuManage = view.findViewById(R.id.btn_manage);
-            btnMenuManage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(getActivity(), MenuManageActivity.class));
-                    //getActivity().finish();
-                }
-            });
-
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            //닉네임 set
-            tv_nikname = view.findViewById(R.id.tv_nikname);
-            DocumentReference docRef = db.collection("users").document(user.getUid());
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Log.d("dd",  "DocumentSnapshot data: " + document.get("닉네임"));
-                            tv_nikname.setText(document.get("닉네임").toString());
-                        } else {
-                            Log.d("dd", "No such document");
-                        }
-                    } else {
-                        Log.d("dd", "get failed with ", task.getException());
-                    }
-                }
-            });
-
-            //매장정보 set
-            tv_storeName = view.findViewById(R.id.tv_storeName);
-            tv_name = view.findViewById(R.id.tv_name);
-            tv_mealMethod = view.findViewById(R.id.tv_mealMethod);
-            tv_category = view.findViewById(R.id.tv_category);
-            tv_address = view.findViewById(R.id.tv_address);
-            DocumentReference docRef2 = db.collection("users").document(user.getUid()).collection("매장정보").document(
-                    "5Y0qSLVyZo48elPnWJ5H"); //document이름값 난수로 되어있는데 어떻게 가져오지 ?
-            docRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Log.d("dd",  "DocumentSnapshot data: " + document.get("매장명"));
-                            tv_storeName.setText(document.get("매장명").toString());
-                            tv_name.setText(document.get("사업자명").toString());
-                            tv_mealMethod.setText(document.get("매장종류").toString());
-                        } else {
-                            Log.d("dd", "No such document");
-                        }
-                    } else {
-                        Log.d("dd", "get failed with ", task.getException());
-                    }
-                }
-            });
-
-            //개인정보수정 버튼 클릭 이벤트
-            btnInfo = view.findViewById(R.id.btn_info);
-            btnInfo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(getActivity(), EditPersonalInfoActivity.class));
-                }
-            });
-
-            //매장정보수정 버튼 클릭 이벤트
-            btnStoreInfo = view.findViewById(R.id.btn_store_info);
-            btnStoreInfo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(getActivity(), EditStoreInfoActivity.class));
-                }
-            });
-
-        }
-
-
+        initClickListener();
+        initView();
         storeInfoCheck();
+
         return view;
     }
 
+    private void initView() {
+        // 점주용은 닉네임 없애기로 했어! 필요 없을것 같아서 ㅎ ㅎ ㅎ.......
+        // 그래서 별명 자리에 매장명 크게 보이는게 좋을것 같아서 수정했숨당!
+        binding.tvNikname.setText(UserInfo.getRestaurantName());
 
-    public void storeInfoCheck(){
-        if(!storeInitInfo){
-            binding.errorNotFound.setVisibility(View.VISIBLE);
-            binding.manageFragment.setVisibility(View.GONE);
-            binding.refreshImageButton.setOnClickListener(onClickListener);
+        // 매장명
+        binding.tvStoreName.setText(UserInfo.getRestaurantName());
+
+        // 사업자명
+        binding.tvName.setText(UserInfo.getOwnerName());
+
+        // 매장주소
+        binding.tvAddress.setText(UserInfo.getAddress());
+
+        // 매장종류
+        RestaurantType restaurantType = UserInfo.getRestaurantType();
+        switch (restaurantType) {
+            case ONLY_TO_GO:
+                binding.tvMealMethod.setText("포장");
+                break;
+            case FOR_HERE_TO_GO:
+                binding.tvMealMethod.setText("매장식사, 포장");
+                break;
         }
 
-        else{
-            //메뉴입력화면 보이게 하기.
+        // 카테고리
+        FoodCategory foodCategory = UserInfo.getFoodCategory();
+        switch (foodCategory) {
+            case PIZZA: binding.tvCategory.setText("피자");break;
+            case BUNSIK: binding.tvCategory.setText("분식");break;
+            case CHICKEN: binding.tvCategory.setText("치킨");break;
+            case KOREAN_FOOD: binding.tvCategory.setText("한식");break;
+            case CAFE_DESSERT: binding.tvCategory.setText("카페/디저트");break;
+            case PORK_CUTLET_ROW_FISH_SUSHI: binding.tvCategory.setText("돈가스/회/초밥");break;
+            case FAST_FOOD: binding.tvCategory.setText("패스트푸드");break;
+            case JJIM_TANG: binding.tvCategory.setText("찜/탕");break;
+            case CHINESE_FOOD: binding.tvCategory.setText("중국집");break;
+            case JOKBAL_BOSSAM: binding.tvCategory.setText("족발/보쌈");break;
+            case ASIAN_FOOD_WESTERN_FOOD: binding.tvCategory.setText("아시안/양식");break;
+        }
+    }
+
+    private void initClickListener() {
+        binding.btnManage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MenuManageActivity.class));
+                //getActivity().finish();
+            }
+        });
+
+        binding.btnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), EditPersonalInfoActivity.class));
+            }
+        });
+
+        binding.btnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 개인정보 수정 버튼이 할 일
+            }
+        });
+
+        binding.btnStoreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), EditStoreInfoActivity.class));
+            }
+        });
+    }
+
+    public void storeInfoCheck() {
+        storeInitInfo = UserInfo.getRestaurantId() != null;
+        if (!storeInitInfo) {
+            Log.e("manageFrag", storeInitInfo.toString());
+            binding.errorNotFound.setVisibility(View.VISIBLE);
+            binding.refreshImageButton.setOnClickListener(onClickListener);
+        } else {
+            Log.e("manageFrag", storeInitInfo.toString());
+            binding.errorNotFound.setVisibility(View.GONE);
             binding.manageFragment.setVisibility(View.VISIBLE);
         }
     }
@@ -162,7 +130,7 @@ public class ManageFragment extends Fragment {
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            switch(view.getId()){
+            switch (view.getId()) {
                 case R.id.refreshImageButton:
                     startActivity(new Intent(getActivity(), MainActivity.class));
                     getActivity().finish();
@@ -170,7 +138,6 @@ public class ManageFragment extends Fragment {
             }
         }
     };
-
 
 
 }

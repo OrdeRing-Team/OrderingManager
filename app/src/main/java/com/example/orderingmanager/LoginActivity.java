@@ -1,32 +1,33 @@
 package com.example.orderingmanager;
 
-import static com.example.orderingmanager.Utillity.showToast;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.orderingmanager.Dto.HttpApi;
+import com.example.orderingmanager.Dto.OwnerSignInResultDto;
+import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.SignInDto;
 import com.example.orderingmanager.databinding.ActivityLoginBinding;
-import com.example.orderingmanager.databinding.ActivitySignupBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.net.URL;
+
+import lombok.SneakyThrows;
 
 public class LoginActivity extends BasicActivity {
 
     //viewbinding
     private ActivityLoginBinding binding;
 
-    // 파이어베이스 인증
-    private FirebaseAuth mAuth;
-    FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +35,7 @@ public class LoginActivity extends BasicActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        mAuth = FirebaseAuth.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(user != null){
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        }
         initButtonClickListener();
-
 
     }
 
@@ -59,32 +52,59 @@ public class LoginActivity extends BasicActivity {
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String MemberId = binding.etMemberId.getText().toString();
-                String Password = binding.editTextPasswordLogin.getText().toString();
+                String memberId = binding.etMemberId.getText().toString();
+                String password = binding.editTextPasswordLogin.getText().toString();
+
 
                 // 로그인 조건 처리
-                if (MemberId.length() > 0 && Password.length() > 0) {
-                    mAuth.signInWithEmailAndPassword(MemberId, Password)
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        if(mAuth.getCurrentUser() != null){
-                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                            showToast(LoginActivity.this,"로그인이 정상적으로 되었습니다.");
+                if (memberId.length() > 0 && password.length() > 0) {
+                    try {
+                        SignInDto signInDto = new SignInDto(memberId, password);
+
+                        URL url = new URL("http://www.ordering.ml/api/owner/signin");
+                        HttpApi httpApi = new HttpApi(url, "POST");
+
+                        new Thread() {
+                            @SneakyThrows
+                            public void run() {
+                                // login
+                                String json = httpApi.requestToServer(signInDto);
+                                ObjectMapper mapper = new ObjectMapper();
+                                ResultDto<OwnerSignInResultDto> result = mapper.readValue(json, new TypeReference<ResultDto<OwnerSignInResultDto>>() {});
+                                if(result.getData() != null){
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            UserInfo.setUserInfo(result.getData());
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            if(result.getData().getRestaurantId() == null){
+                                                Log.e("getOwnerId : ",result.getData().getOwnerId().toString());
+                                                Log.e("getbRegisterRestaurant : ",result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
+                                                //intent.putExtra("restaurantId", false);
+                                            }
+                                            startActivity(intent);
                                             finish();
                                         }
-                                    } else {
-                                        showLoginErrorPopup();
-                                    }
-                                    // ...
+                                    });
                                 }
-                            });
+                                else{
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
+                                            showLoginErrorPopup();
+                                        }
+                                    });
+                                }
+                            }
+                        }.start();
 
+                    } catch (Exception e) {
+                        Toast.makeText(LoginActivity.this,"로그인 도중 일시적인 오류가 발생하였습니다.",Toast.LENGTH_LONG).show();
+                        Log.e("e = " , e.getMessage());
+                    }
                 } else {
-                    showToast(LoginActivity.this,"아이디와 비밀번호를 입력해주세요.");
-
-
+                    Toast.makeText(LoginActivity.this, "아이디와 비밀번호를 모두 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }
             }
         });

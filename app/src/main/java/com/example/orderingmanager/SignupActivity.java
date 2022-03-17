@@ -2,52 +2,52 @@ package com.example.orderingmanager;
 
 import static com.example.orderingmanager.Utillity.showToast;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.orderingmanager.Dto.HttpApi;
+import com.example.orderingmanager.Dto.OwnerSignUpDto;
+import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.databinding.ActivitySignupBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import lombok.SneakyThrows;
 
 public class SignupActivity extends AppCompatActivity {
 
     Intent intent;
     String phoneNum;
 
-    Boolean isNickNameWritten = true;
     Boolean isMemberIdWritten = false;
     Boolean isPasswordWritten = false;
     Boolean isPasswordCheckAccord = false;
 
     Animation complete;
+
+    // 아이디 형식 패턴(영문 소문자, 숫자만)
+    Pattern ps = Pattern.compile("^[a-zA-Z0-9_]*$");
 
     private static final String TAG = "SignupActivity_TAG";
 
@@ -75,99 +75,20 @@ public class SignupActivity extends AppCompatActivity {
         // 전화번호 받아온 뒤 표시
         intent = getIntent();
         phoneNum = intent.getStringExtra("phoneNum");
-        String convertedPhoneNum = phoneNum.substring(0, 3) + "-" + phoneNum.substring(3,7) + "-" + phoneNum.substring(7);
-        binding.tvSignupPhoneNum.setText(convertedPhoneNum);
+        binding.tvSignupPhoneNum.setText(phoneNum);
 
         ButtonLock(binding.btnSignup);
 
-        initNicknameSet();
-        initRandomButton();
         initSignupButton();
         initTextChangedListener();
 
 
     }
 
-    private void initNicknameSet(){
-
-        // 첫번째 들어갈 닉네임 초기화 - 음식 관련 형용사를 위주로 추가해주세요!! 재밌게 표현하는것도 가능!!
-        firstNick.add("뜨끈한 ");firstNick.add("든든한 ");firstNick.add("달콤한 ");firstNick.add("신선한 ");
-        firstNick.add("바삭바삭한 ");firstNick.add("부드러운 ");firstNick.add("쫀득쫀득한 ");firstNick.add("살살녹는 ");
-        firstNick.add("시큼한 ");firstNick.add("따뜻한 ");firstNick.add("불같이매운 ");firstNick.add("빛깔좋은 ");
-        firstNick.add("상상도못한 ");firstNick.add("이탈리안 ");firstNick.add("코리안 ");firstNick.add("아메리칸 ");firstNick.add("질긴 ");
-        firstNick.add("삶은 ");firstNick.add("울고있는 ");firstNick.add("웃고있는 ");firstNick.add("화난 ");firstNick.add("감동먹은 ");
-        firstNick.add("놀란 ");firstNick.add("의미심장한 ");firstNick.add("기쁜 ");
-
-        // 두번째 들어갈 닉네임 초기화 - 음식 이름 위주로 추가해주세요!!
-        lastNick.add("치킨");lastNick.add("국밥");lastNick.add("아이스크림");lastNick.add("통닭");lastNick.add("피자");lastNick.add("달걀");
-        lastNick.add("비빔밥");lastNick.add("탕수육");lastNick.add("짜장면");lastNick.add("마라탕");lastNick.add("떡볶이");lastNick.add("치즈");
-        lastNick.add("냉면");lastNick.add("파스타");lastNick.add("우동");lastNick.add("라면");lastNick.add("만두");lastNick.add("왕갈비");
-        lastNick.add("부대찌개");lastNick.add("두루치기");lastNick.add("제육볶음");lastNick.add("햄버거");lastNick.add("통삼겹");
-        lastNick.add("돈까스");lastNick.add("초밥");lastNick.add("회");lastNick.add("닭발");lastNick.add("짬뽕");lastNick.add("족발");
-        lastNick.add("곱창");lastNick.add("케이크");lastNick.add("아메리카노");lastNick.add("샐러드");lastNick.add("샌드위치");lastNick.add("팥빙수");
-
-        /* 닉네임 설정 */
-        randomNickname();
-        binding.ivNickNameComplete.setVisibility(View.VISIBLE);
-        binding.ivNickNameComplete.startAnimation(complete);
-    }
-
-    private void randomNickname(){
-        // 리스트 순서 섞기
-        Collections.shuffle(firstNick);
-        Collections.shuffle(lastNick);
-
-        binding.editTextNickname.setText(firstNick.get(0) + lastNick.get(0));
-    }
 
     private void initTextChangedListener(){
-        /* 닉네임 입력란 변경 리스너 */
-        binding.editTextNickname.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                binding.ivError.setVisibility(View.GONE);
-                binding.tvNickNameError.setVisibility(View.GONE);
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                int input = binding.editTextNickname.getText().toString().length();
-
-                if (input > 2) {
-                    isNickNameWritten = true;
-                    binding.ivError.setVisibility(View.GONE);
-                    binding.tvNickNameError.setVisibility(View.GONE);
-                    binding.ivNickNameComplete.setVisibility(View.GONE);
-                } else {
-                    isNickNameWritten = false;
-                    binding.ivError.setVisibility(View.VISIBLE);
-                    binding.tvNickNameError.setVisibility(View.VISIBLE);
-                    binding.ivNickNameComplete.setVisibility(View.GONE);
-                }
-
-                checkAllWritten();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if(isNickNameWritten){
-                    // 통과 표시 출력
-                    binding.ivNickNameComplete.setVisibility(View.VISIBLE);
-
-                    // 통과 애니메이션 실행
-                    binding.ivNickNameComplete.startAnimation(complete);
-                }
-                else{
-                    binding.ivNickNameComplete.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        /* 이메일 입력란 변경 리스너 */
+        /* 아이디 입력란 변경 리스너 */
         binding.etMemberId.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -176,7 +97,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                binding.ivMemberIdComplete.setVisibility(View.GONE);
+                binding.ivIdComplete.setVisibility(View.GONE);
 
                 checkAllWritten();
             }
@@ -185,24 +106,27 @@ public class SignupActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
                 String input = binding.etMemberId.getText().toString();
-                if(binding.etMemberId.getText().length() < 5 ) {
+
+                if(input.length()> 4 && input.length() < 21 && ps.matcher(input).matches()){
+                    isMemberIdWritten = true;
+                } else {
                     isMemberIdWritten = false;
                     binding.ivError4.setVisibility(View.VISIBLE);
-                    binding.tvMemberIdError.setVisibility(View.VISIBLE);
+                    binding.tvIdError.setVisibility(View.VISIBLE);
                 }
                 if(isMemberIdWritten){
 
                     binding.ivError4.setVisibility(View.GONE);
-                    binding.tvMemberIdError.setVisibility(View.GONE);
+                    binding.tvIdError.setVisibility(View.GONE);
 
                     // 통과 표시 출력
-                    binding.ivMemberIdComplete.setVisibility(View.VISIBLE);
+                    binding.ivIdComplete.setVisibility(View.VISIBLE);
 
                     // 통과 애니메이션 실행
-                    binding.ivMemberIdComplete.startAnimation(complete);
+                    binding.ivIdComplete.startAnimation(complete);
                 }
                 else{
-                    binding.ivMemberIdComplete.setVisibility(View.GONE);
+                    binding.ivIdComplete.setVisibility(View.GONE);
                 }
 
                 checkAllWritten();
@@ -331,31 +255,17 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void initRandomButton(){
-        binding.ibRandomNick.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                randomNickname();
-
-                // 키보드 내리기
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(binding.editTextNickname.getWindowToken(), 0);
-            }
-        });
-    }
-
     private void initSignupButton(){
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createAccount();
-                ButtonLock(binding.btnSignup);
             }
         });
     }
 
     private void checkAllWritten(){
-        if(isMemberIdWritten && isPasswordWritten && isNickNameWritten && isPasswordCheckAccord){
+        if(isMemberIdWritten && isPasswordWritten && isPasswordCheckAccord){
             ButtonRelease(binding.btnSignup);
         }
         else{
@@ -377,100 +287,97 @@ public class SignupActivity extends AppCompatActivity {
     /* 이메일 계정 생성 */
     private void createAccount() {
 
-        String Nickname = binding.editTextNickname.getText().toString();
-        String MemberId = binding.etMemberId.getText().toString();
-        String Password = binding.editTextPassword.getText().toString();
+        String memberId = binding.etMemberId.getText().toString();
+        String password = binding.editTextPassword.getText().toString();
+        String phoneNum = binding.tvSignupPhoneNum.getText().toString();
 
-        //Pattern pattern = Patterns.EMAIL_ADDRESS;
 
         // 이메일 계정 생성 시작
-        if (MemberId.length() > 4 && MemberId.length() < 21 && Password.length() > 5 && Nickname.length() > 2) {
-//            mAuth.createUserWithEmailAndPassword(Email, Password)
-//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                            if (task.isSuccessful()) {
-//
-//                                updateUI(Nickname, Email, Password);
-//                            } else {
-//                                // 실패시
-//                                    String ErrorEmailAlreadyUse = "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.";
-//
-//                                    String Errormsg = task.getException().toString();
-//                                    Log.w(TAG, "이메일 생성 실패", task.getException());
-//                                    if (Errormsg.equals(ErrorEmailAlreadyUse)) {
-//
-//                                        ButtonRelease(binding.btnSignup);
-//                                        Toast.makeText(SignupActivity.this, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT).show();
-//                                    }
-//                            }
-//                        }
-//                    });
+        if (memberId.length() > 4 && memberId.length() < 21 && password.length() > 5) {
+            // twilio
+            try {
+                Log.e("아이디", memberId);
+                Log.e("비밀번호", password);
+                Log.e("전화번호", phoneNum);
+                OwnerSignUpDto ownerSignUpDto = new OwnerSignUpDto(memberId, password, phoneNum);
+
+                URL url = new URL("http://www.ordering.ml/api/owner/signup");
+                HttpApi httpApi = new HttpApi(url, "POST");
+
+                new Thread() {
+                    @SneakyThrows
+                    public void run() {
+                        String json = httpApi.requestToServer(ownerSignUpDto);
+                        ObjectMapper mapper = new ObjectMapper();
+                        ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
+                        if (result.getData()) {
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateDB(memberId, phoneNum);
+                                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                                    finish();
+                                    Log.e(TAG, "회원가입 성공\n아이디:" + memberId + "\n전화번호:" + phoneNum + "\n비밀번호:" + password);
+                                    showToast(SignupActivity.this, "회원가입을 완료하였습니다.");
+                                }
+                            });
+                        } else {
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.w(TAG, "회원가입 실패");
+                                    showToast(SignupActivity.this, "이미 존재하는 아이디입니다.");
+                                }
+                            });
+                        }
+                    }
+                }.start();
+
+            } catch (Exception e) {
+                Toast.makeText(this, "회원가입 도중 일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                Log.e("e = ", e.getMessage());
+            }
+
         }
 
     }
 
-    private void updateUI(String Nickname, String Email, String Password) {
+//    private void updateUI(String Nickname, String Email, String Password) {
+//
+//        mAuth.signInWithEmailAndPassword(Email, Password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//                        if (task.isSuccessful()) {
+//                            if(mAuth.getCurrentUser()!=null){
+//                                FirebaseUser user = mAuth.getCurrentUser();
+//                                updateDB(user, phoneNum, Nickname, Email);
+//                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
+//                                showToast(SignupActivity.this,"회원가입을 완료하였습니다.");
+//                                finish();
+//                            }
+//                        } else {
+//                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+//                            showToast(SignupActivity.this,"회원가입에 실패하였습니다.");
+//                        }
+//                        // ...
+//                    }
+//                });
+//    }
 
-        mAuth.signInWithEmailAndPassword(Email, Password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        if (task.isSuccessful()) {
-                            if(mAuth.getCurrentUser()!=null){
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                updateDB(user, phoneNum, Nickname, Email);
-                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                                showToast(SignupActivity.this,"회원가입 완료");
-                                finish();
-                            }
-                        } else {
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            ButtonRelease(binding.btnSignup);
-                            showToast(SignupActivity.this,"회원가입에 실패하였습니다.");
-                        }
-                        // ...
-                    }
-                });
-    }
-
-    private void updateDB(FirebaseUser user, String phoneNum, String Nickname, String Email) {
-
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        //UserInfo userinfo = new UserInfo(name, birthyear, birthmonth, birthday,followerlist,followinglist,contents);
-
+    private void updateDB(String memberId, String phoneNum) {
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("이메일", Email);
+        userInfo.put("아이디", memberId);
         userInfo.put("휴대폰번호", phoneNum);
-        userInfo.put("닉네임", Nickname);
-        userInfo.put("매장정보",false);
-
-        // 새로운 사용자 DB 생성
-        db.collection("users")
-                .document(user.getUid()).set(userInfo)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, phoneNum + "의 DB 생성 완료  ::  " + user.getUid());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "의 DB 생성 실패", e);
-                    }
-                });
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+        startActivity(new Intent(SignupActivity.this, StartActivity.class));
         finish();
     }
+
 }

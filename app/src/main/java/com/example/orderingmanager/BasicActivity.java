@@ -1,6 +1,9 @@
 package com.example.orderingmanager;
 
+
+import android.app.Activity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,8 +29,9 @@ public class BasicActivity extends AppCompatActivity {
         }
     }
 
-
-
+    public static void showToast(Activity activity, String msg){
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onBackPressed() {

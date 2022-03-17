@@ -37,8 +37,6 @@ public class QrFragment extends Fragment {
         if(extra != null) {
             extra = getArguments();
 
-            // 매장정보 입력 여부
-            storeInitInfo = extra.getBoolean("StoreInitInfo");
             /* 이곳에 받아올 데이터를 추가하십셩 */
         }
 
@@ -79,6 +77,7 @@ public class QrFragment extends Fragment {
     };
 
     public void storeInfoCheck(){
+        storeInitInfo = UserInfo.getRestaurantId() != null;
         if(!storeInitInfo){
             Log.e("qrFragment",storeInitInfo.toString());
             binding.errorNotFound.setVisibility(View.VISIBLE);

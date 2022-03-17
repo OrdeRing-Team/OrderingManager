@@ -9,13 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-
-import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingmanager.databinding.ActivityCreateQrBinding;
-import com.example.orderingmanager.databinding.ActivityInfoBinding;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -108,8 +104,7 @@ public class CreateQR extends BasicActivity {
                 @Override
                 public void run(){
                     countNumber += 1;
-                    //text = "https://ordering.com/sadasdasd/Table" + Integer.toString(countNumber);
-                    text = "http://www.ordering.ml/main";
+                    text = "https://ordering.com/sadasdasd/Table" + Integer.toString(countNumber);
                     try {
                         BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200);
                         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
