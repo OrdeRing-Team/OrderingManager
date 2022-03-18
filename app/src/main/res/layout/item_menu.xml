@@ -13,7 +13,7 @@
     android:layout_marginBottom="13dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    tools:context=".MenuManageActivity"
+    tools:context=".StoreManageActivity"
     android:elevation="3dp"
     android:background="@drawable/recycler_custom">
 

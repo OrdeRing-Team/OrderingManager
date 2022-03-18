@@ -52,7 +52,7 @@ public class MenuAddActivity extends BasicActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MenuManageActivity.class));
+                startActivity(new Intent(getApplicationContext(), StoreManageActivity.class));
                 BackWithAnim(); // 뒤로가기 슬라이드 (finish(); 포함되어 있음.)
             }
         });
@@ -134,7 +134,7 @@ public class MenuAddActivity extends BasicActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.e("manageInfo DB 생성", "완료");
-                        startActivity(new Intent(MenuAddActivity.this, MenuManageActivity.class));
+                        startActivity(new Intent(MenuAddActivity.this, StoreManageActivity.class));
                         FinishWithAnim();
                     }
                 })

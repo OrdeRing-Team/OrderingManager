@@ -72,7 +72,7 @@
             android:name=".MenuEditActivity"
             android:exported="true" />
         <activity
-            android:name=".MenuManageActivity"
+            android:name=".StoreManageActivity"
             android:exported="true" />
         <activity
             android:name=".CreateQR"
@@ -83,6 +83,7 @@
         <activity
             android:name=".TestStack"
             android:exported="true" />
+
     </application>
 
 </manifest>
