@@ -45,4 +45,5 @@
     <string name="info_category">음식 카테고리</string>
     <string name="info_table_count">테이블 수</string>
     <string name="start">START</string>
+    <string name="edit_store_info_toolbar_text">매장정보수정</string>
 </resources>

@@ -25,6 +25,12 @@ import java.security.NoSuchAlgorithmException;
 public class MainActivity extends BasicActivity {
 
     private static final String TAG = "MainActivity_TAG";
+
+    public static final int QRFRAGMENT = 1111;
+    public static final int MANAGEFRAGMENT = 2222;
+    public static final int ORDERFRAGMENT = 3333;
+    public static final int FINISHFRAGMENT = 4444;
+
     private ActivityMainBinding binding;
     private CustomDialog dialog;
 
@@ -159,5 +165,36 @@ public class MainActivity extends BasicActivity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+//        if (resultCode == RESULT_OK) {
+//            Log.e(TAG,"resultokkkkkkkkkkkkkkk으아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
+//            switch (requestCode) {
+//                case QRFRAGMENT:
+//                    Fragment qrFragment = new QrFragment();
+//                    qrFragment.setArguments(bundle);
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, qrFragment).commit();
+//                    break;
+//                case MANAGEFRAGMENT:
+//                    Fragment manageFragment = new ManageFragment();
+//                    manageFragment.setArguments(bundle);
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, manageFragment).commit();
+//                    break;
+//                case ORDERFRAGMENT:
+//                    Fragment orderFragment = new OrderFragment();
+//                    orderFragment.setArguments(bundle);
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, orderFragment).commit();
+//                    break;
+//                case FINISHFRAGMENT:
+//                    Fragment finishFragment = new FinishFragment();
+//                    finishFragment.setArguments(bundle);
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, finishFragment).commit();
+//                    break;
+//            }
+//        }
     }
 }

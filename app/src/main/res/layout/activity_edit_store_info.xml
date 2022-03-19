@@ -25,16 +25,28 @@
                     android:layout_height="30dp"
                     android:background="@drawable/ic_baseline_arrow_back_24"
                     android:backgroundTint="@color/black"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"/>
 
                 <!-- 오른쪽 정렬을 위한 View -->
-                <View
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/edit_store_info_toolbar_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        />
+                </LinearLayout>
 
                 <Button
+                    android:id="@+id/btn_save_store_info"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:background="@color/fui_transparent"

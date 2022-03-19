@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.orderingmanager.Dto.request.FoodCategory;
 import com.example.orderingmanager.Dto.request.RestaurantType;
@@ -25,6 +26,10 @@ public class ManageFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentManageBinding.inflate(inflater, container, false);
         view = binding.getRoot();
+
+        // 새로고침
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
 
         initClickListener();
         initView();
@@ -49,14 +54,14 @@ public class ManageFragment extends Fragment {
 
         // 매장종류
         RestaurantType restaurantType = UserInfo.getRestaurantType();
-//        switch (restaurantType) {
-//            case ONLY_TO_GO:
-//                binding.tvMealMethod.setText("포장");
-//                break;
-//            case FOR_HERE_TO_GO:
-//                binding.tvMealMethod.setText("매장식사, 포장");
-//                break;
-//        }
+        switch (restaurantType) {
+            case ONLY_TO_GO:
+                binding.tvMealMethod.setText("포장");
+                break;
+            case FOR_HERE_TO_GO:
+                binding.tvMealMethod.setText("매장식사, 포장");
+                break;
+        }
         // 카테고리
         FoodCategory foodCategory = UserInfo.getFoodCategory();
         switch (foodCategory) {
@@ -90,17 +95,14 @@ public class ManageFragment extends Fragment {
             }
         });
 
-        binding.btnInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 개인정보 수정 버튼이 할 일
-            }
-        });
-
         binding.btnStoreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), EditStoreInfoActivity.class));
+                Intent intent = new Intent(getActivity(), EditStoreInfoActivity.class);
+                startActivity(intent);
+                // 저장 후 화면을 갱신하기 위해 startActivityForResult 로 호출
+                // 이 호출함수는 나중에 돌아오면 MainActivity 의 onActivityResult 함수 에서 받는다.
+                //startActivityForResult(intent,MainActivity.MANAGEFRAGMENT);
             }
         });
     }
@@ -116,6 +118,14 @@ public class ManageFragment extends Fragment {
             binding.errorNotFound.setVisibility(View.GONE);
             binding.manageFragment.setVisibility(View.VISIBLE);
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 정보 수정이 이루어지고 fragment 로 다시 돌아왔을때는 onResume 이 호출된다
+        // 뷰를 새로 다시 세팅해준다.
+        // onResume 을 사용하면 굳이 복잡하게 메인액티비티의 onActivityResult 안써도 될것같긴한데,,,, 수정하기 무서우니 일단...
+        initView();
     }
 
     @Override

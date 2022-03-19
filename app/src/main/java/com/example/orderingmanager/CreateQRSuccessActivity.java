@@ -1,24 +1,15 @@
 package com.example.orderingmanager;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.bumptech.glide.Glide;
 import com.example.orderingmanager.databinding.ActivityCreateQrSuccessBinding;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
@@ -85,8 +76,7 @@ public class CreateQRSuccessActivity extends BasicActivity {
                         binding.btnComplete.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(CreateQRSuccessActivity.this, TestStack.class);
-                                startActivity(intent);
+                                finish();
                             }
                         });
                     }
