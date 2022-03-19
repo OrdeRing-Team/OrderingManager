@@ -1,9 +1,9 @@
 package com.example.orderingmanager;
 
 import com.example.orderingmanager.Dto.request.FoodCategory;
-import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 import com.example.orderingmanager.Dto.request.RestaurantDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
+import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,16 @@ public class UserInfo {
     private static FoodCategory foodCategory;
     private static RestaurantType restaurantType;
 
-    public static void setRestaurantInfo(RestaurantDto dto) {
+    public static void setRestaurantInfo(OwnerSignInResultDto dto) {
+        restaurantName = dto.getRestaurantName();
+        ownerName = dto.getOwnerName();
+        address = dto.getAddress();
+        tableCount = dto.getTableCount();
+        foodCategory = dto.getFoodCategory();
+        restaurantType = dto.getRestaurantType();
+    }
+    public static void initRestaurantInfo(RestaurantDto dto) {
+        ownerId = dto.getOwnerId();
         restaurantName = dto.getRestaurantName();
         ownerName = dto.getOwnerName();
         address = dto.getAddress();
@@ -29,7 +38,6 @@ public class UserInfo {
         restaurantType = dto.getRestaurantType();
     }
 
-    /** 수정할것 !!**/
     public static void setUserInfo(OwnerSignInResultDto dto){
         ownerId = dto.getOwnerId();
         restaurantId = dto.getRestaurantId();

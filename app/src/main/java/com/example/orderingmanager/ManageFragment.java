@@ -18,8 +18,6 @@ public class ManageFragment extends Fragment {
     private View view;
     private FragmentManageBinding binding;
 
-    Bundle extra;
-
     Boolean storeInitInfo;
 
     @Override
@@ -51,15 +49,14 @@ public class ManageFragment extends Fragment {
 
         // 매장종류
         RestaurantType restaurantType = UserInfo.getRestaurantType();
-        switch (restaurantType) {
-            case ONLY_TO_GO:
-                binding.tvMealMethod.setText("포장");
-                break;
-            case FOR_HERE_TO_GO:
-                binding.tvMealMethod.setText("매장식사, 포장");
-                break;
-        }
-
+//        switch (restaurantType) {
+//            case ONLY_TO_GO:
+//                binding.tvMealMethod.setText("포장");
+//                break;
+//            case FOR_HERE_TO_GO:
+//                binding.tvMealMethod.setText("매장식사, 포장");
+//                break;
+//        }
         // 카테고리
         FoodCategory foodCategory = UserInfo.getFoodCategory();
         switch (foodCategory) {

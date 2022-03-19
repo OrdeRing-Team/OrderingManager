@@ -70,16 +70,27 @@ public class LoginActivity extends BasicActivity {
                                 String json = httpApi.requestToServer(signInDto);
                                 ObjectMapper mapper = new ObjectMapper();
                                 ResultDto<OwnerSignInResultDto> result = mapper.readValue(json, new TypeReference<ResultDto<OwnerSignInResultDto>>() {});
+
+
                                 if(result.getData() != null){
+                                    // 아이디 비밀번호 일치할 때
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
                                             UserInfo.setUserInfo(result.getData());
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+
                                             if(result.getData().getRestaurantId() == null){
+                                                // 매장정보입력이 안되어 있을때
                                                 Log.e("getOwnerId : ",result.getData().getOwnerId().toString());
                                                 Log.e("getRestaurantId : ",result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
+
                                                 //intent.putExtra("restaurantId", false);
+                                            }
+                                            else{
+                                                // 매장정보입력이 완료된 상태
+                                                UserInfo.setRestaurantInfo(result.getData());
                                             }
                                             startActivity(intent);
                                             finish();
