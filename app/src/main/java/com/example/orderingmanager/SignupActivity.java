@@ -18,8 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.orderingmanager.Dto.HttpApi;
-import com.example.orderingmanager.Dto.OwnerSignUpDto;
+import com.example.orderingmanager.Dto.request.OwnerSignUpDto;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.databinding.ActivitySignupBinding;
 import com.fasterxml.jackson.core.type.TypeReference;

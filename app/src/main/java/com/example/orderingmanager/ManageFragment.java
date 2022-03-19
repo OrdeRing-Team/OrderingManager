@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.orderingmanager.Dto.FoodCategory;
-import com.example.orderingmanager.Dto.RestaurantType;
+import com.example.orderingmanager.Dto.request.FoodCategory;
+import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.databinding.FragmentManageBinding;
 
 public class ManageFragment extends Fragment {

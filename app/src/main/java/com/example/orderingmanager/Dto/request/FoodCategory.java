@@ -1,4 +1,4 @@
-package com.example.orderingmanager.Dto;
+package com.example.orderingmanager.Dto.request;
 
 public enum FoodCategory {
     NONE, KOREAN_FOOD, BUNSIK, CAFE_DESSERT, PORK_CUTLET_ROW_FISH_SUSHI, CHICKEN, PIZZA,

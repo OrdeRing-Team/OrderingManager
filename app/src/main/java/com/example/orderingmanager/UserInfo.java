@@ -1,9 +1,9 @@
 package com.example.orderingmanager;
 
-import com.example.orderingmanager.Dto.FoodCategory;
-import com.example.orderingmanager.Dto.OwnerSignInResultDto;
-import com.example.orderingmanager.Dto.RestaurantDto;
-import com.example.orderingmanager.Dto.RestaurantType;
+import com.example.orderingmanager.Dto.request.FoodCategory;
+import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
+import com.example.orderingmanager.Dto.request.RestaurantDto;
+import com.example.orderingmanager.Dto.request.RestaurantType;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -29,6 +29,7 @@ public class UserInfo {
         restaurantType = dto.getRestaurantType();
     }
 
+    /** 수정할것 !!**/
     public static void setUserInfo(OwnerSignInResultDto dto){
         ownerId = dto.getOwnerId();
         restaurantId = dto.getRestaurantId();

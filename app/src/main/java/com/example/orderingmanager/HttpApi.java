@@ -1,4 +1,4 @@
-package com.example.orderingmanager.Dto;
+package com.example.orderingmanager;
 
 import android.util.Log;
 

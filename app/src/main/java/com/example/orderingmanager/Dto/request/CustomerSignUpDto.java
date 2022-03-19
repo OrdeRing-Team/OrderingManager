@@ -1,13 +1,13 @@
-package com.example.orderingmanager.Dto;
+package com.example.orderingmanager.Dto.request;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OwnerSignUpDto {
+public class CustomerSignUpDto {
 
+    private String nickname;
     private String signInId;
     private String password;
     private String phoneNumber;

@@ -19,10 +19,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.orderingmanager.Dto.HttpApi;
-import com.example.orderingmanager.Dto.PhoneNumberDto;
+import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.ResultDto;
-import com.example.orderingmanager.Dto.VerificationDto;
+import com.example.orderingmanager.Dto.request.VerificationDto;
 import com.example.orderingmanager.databinding.ActivityAuthBinding;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +32,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -137,7 +135,7 @@ public class AuthActivity extends BasicActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
 
-                startActivity(new Intent(AuthActivity.this, StartActivity.class));
+                startActivity(new Intent(AuthActivity.this, LoginActivity.class));
                 FinishWithAnim();
             }
         });
@@ -314,7 +312,7 @@ public class AuthActivity extends BasicActivity {
             Log.e("phoneNum", phoneNum);
             PhoneNumberDto phoneNumberDto = new PhoneNumberDto(phoneNum);
 
-            URL url = new URL("http://www.ordering.ml/api/customer/verification/get");
+            URL url = new URL("http://www.ordering.ml/api/owner/verification/get");
             HttpApi httpApi = new HttpApi(url, "POST");
 
             /* 3.15 오늘의 교훈 http 요청은 쓰레드 새로 파서 하자!!!!!!!!!!!!!!!!!!!!!!!!!! 꼭!!!!!!!!! */
@@ -326,6 +324,7 @@ public class AuthActivity extends BasicActivity {
                     String json = httpApi.requestToServer(phoneNumberDto);
                     ObjectMapper mapper = new ObjectMapper();
                     ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
+                    Log.e(TAG,result.getData().toString());
                     if(result.getData()){
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
@@ -339,7 +338,7 @@ public class AuthActivity extends BasicActivity {
                             public void run() {
                                 binding.progressBar.setVisibility(View.GONE);
                                 Toast.makeText(AuthActivity.this, "이미 가입된 전화번호 입니다.", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(AuthActivity.this, StartActivity.class));
+                                startActivity(new Intent(AuthActivity.this, LoginActivity.class));
                                 finish();
                             }
                         });
@@ -523,7 +522,7 @@ public class AuthActivity extends BasicActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        startActivity(new Intent(AuthActivity.this, StartActivity.class));
+        startActivity(new Intent(AuthActivity.this, LoginActivity.class));
         finish();
     }
 

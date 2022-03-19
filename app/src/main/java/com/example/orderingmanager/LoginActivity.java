@@ -11,10 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.example.orderingmanager.Dto.HttpApi;
-import com.example.orderingmanager.Dto.OwnerSignInResultDto;
 import com.example.orderingmanager.Dto.ResultDto;
-import com.example.orderingmanager.Dto.SignInDto;
+import com.example.orderingmanager.Dto.request.SignInDto;
+import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 import com.example.orderingmanager.databinding.ActivityLoginBinding;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,7 +78,7 @@ public class LoginActivity extends BasicActivity {
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                             if(result.getData().getRestaurantId() == null){
                                                 Log.e("getOwnerId : ",result.getData().getOwnerId().toString());
-                                                Log.e("getbRegisterRestaurant : ",result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
+                                                Log.e("getRestaurantId : ",result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
                                                 //intent.putExtra("restaurantId", false);
                                             }
                                             startActivity(intent);

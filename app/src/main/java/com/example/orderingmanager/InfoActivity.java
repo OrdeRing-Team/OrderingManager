@@ -14,10 +14,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.orderingmanager.Dto.FoodCategory;
-import com.example.orderingmanager.Dto.HttpApi;
-import com.example.orderingmanager.Dto.RestaurantDto;
-import com.example.orderingmanager.Dto.RestaurantType;
+import com.example.orderingmanager.Dto.request.FoodCategory;
+import com.example.orderingmanager.Dto.request.RestaurantDto;
+import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.databinding.ActivityInfoBinding;
 import com.fasterxml.jackson.core.type.TypeReference;

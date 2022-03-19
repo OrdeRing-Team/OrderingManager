@@ -93,6 +93,9 @@ dependencies {
     // CreateQRSuccessActivity
     implementation 'nl.dionsegijn:konfetti:1.1.2'
 
+    // Circle ImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     // 임시
     implementation 'com.loopeer.library:cardstack:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

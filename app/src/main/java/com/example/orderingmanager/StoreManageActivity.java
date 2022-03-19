@@ -20,7 +20,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StoreManageActivity extends AppCompatActivity {
-    
+
     RatingBar ratingBar;
     TextView tvScore;
 
