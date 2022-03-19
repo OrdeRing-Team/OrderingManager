@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,7 @@ public class EditStoreInfoActivity extends BasicActivity {
 
     private ActivityEditStoreInfoBinding binding;
 
+    private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
     public static final int EDIT_NONE = 11111;
     public static final int EDIT_ONLY = 22222;
     public static final int EDIT_BOTH = 33333;
@@ -81,8 +83,18 @@ public class EditStoreInfoActivity extends BasicActivity {
                 }
             }
         });
+
+        binding.viewActivityEditStoreInfo.btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(EditStoreInfoActivity.this, WebViewActivity.class);
+                startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
+            }
+        });
     }
 
+    @SuppressLint("SetTextI18n")
     private void setData(){
         // 각 입력 항목에 기존 정보로 세팅
 
@@ -93,10 +105,28 @@ public class EditStoreInfoActivity extends BasicActivity {
         binding.viewActivityEditStoreInfo.inputUserName.setText(UserInfo.getOwnerName());
 
         // 주소
+        // 주소 배열은 split을 통해 ", " (공백 1문자 포함) 을 기준으로 구분하여 배열에 담는다.
+        // 도로명 주소 검색 결과에 "06544, 서울 서초구 신반포로 270 (반포동, 반포자이아파트)" 이런식으로 "반포동" 뒤에 ", "가 포함되어 나오는 주소가 있고
+        // "52828, 경남 진주시 진주대로 501 (가좌동)" 과 같이 ", "가 포함되지 않는 주소도 있다.
+        // 따라서 처음 배열에 담을때 먼저 ", " 을 기준으로 split 한다음에 배열에 담으면
+        // 위 반포자이아파트 주소와 같이 ", "가 결과에 포함되는 주소면 address.length()는 4가 될것이고
+        // 경상국립대의 주소와 같은 경우는 address.length()는 3이 될것이다.
+        // 위와 같은 경우를 나누어서 setText해준다.
         String[] address = getAddressArr();
         binding.viewActivityEditStoreInfo.etAddressNumber.setText(address[0]);
-        binding.viewActivityEditStoreInfo.etAddress.setText(address[1]);
-        binding.viewActivityEditStoreInfo.etAddressDetail.setText(address[2]);
+        Log.e("address[0] = ", address[0]);
+        if(address.length == 4) {
+            binding.viewActivityEditStoreInfo.etAddress.setText(address[1] +", " + address[2]);
+            binding.viewActivityEditStoreInfo.etAddressDetail.setText(address[3]);
+            Log.e("address[1] = ", address[1]);
+            Log.e("address[2] = ", address[2]);
+            Log.e("address[3] = ", address[3]);
+        }else{
+            binding.viewActivityEditStoreInfo.etAddress.setText(address[1]);
+            Log.e("address[1] = ", address[1]);
+            binding.viewActivityEditStoreInfo.etAddressDetail.setText(address[2]);
+            Log.e("address[2] = ", address[2]);
+        }
 
         // 매장종류(포장/식사)
         if(UserInfo.getRestaurantType() == RestaurantType.ONLY_TO_GO){
@@ -164,8 +194,18 @@ public class EditStoreInfoActivity extends BasicActivity {
                             @Override
                             public void run() {
                                 if(result.getData() != null) {
-                                    UserInfo.initRestaurantInfo(restaurantDto);
-                                    createQRCodes();
+                                    if(restaurantType == RestaurantType.ONLY_TO_GO ||
+                                            UserInfo.getTableCount() == Integer.parseInt(binding.viewActivityEditStoreInfo.tablenum.getText().toString())){
+                                        // 포장이 선택되었거나 테이블 수가 이전과 같다면 QR코드를 새로 생성하지 않는다.
+                                        UserInfo.initRestaurantInfo(restaurantDto);
+                                        showToast(EditStoreInfoActivity.this, "매장정보가 저장되었습니다.");
+                                        FinishWithAnim();
+                                    }
+                                    else{
+                                        // 반면에 테이블 수가 변경되었다면 QR코드를 새로 생성한다.(QR코드 생성화면으로 넘어간다)
+                                        UserInfo.initRestaurantInfo(restaurantDto);
+                                        createQRCodes();
+                                    }
                                 }
                             }
                         });
@@ -193,6 +233,7 @@ public class EditStoreInfoActivity extends BasicActivity {
         //startActivityForResult(intent,999);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -204,7 +245,29 @@ public class EditStoreInfoActivity extends BasicActivity {
                     setResult(RESULT_OK, intent);
                     FinishWithAnim();
                     break;
+
+                case SEARCH_ADDRESS_ACTIVITY:
+                    if (resultCode == RESULT_OK) {
+                        String addressExtra = data.getExtras().getString("data");
+
+                        Log.e("주소: ",addressExtra);
+                        if (addressExtra != null) {
+                            String[] address = addressExtra.split(", ");
+                            binding.viewActivityEditStoreInfo.etAddressNumber.setText(address[0]);;
+                            if(address.length == 3) {
+                                binding.viewActivityEditStoreInfo.etAddress.setText(address[1] +", " + address[2]);
+                            }else{
+                                binding.viewActivityEditStoreInfo.etAddress.setText(address[1]);
+                            }
+                            binding.viewActivityEditStoreInfo.etAddressDetail.setText("");
+                        }
+                        else{
+                            showToast(this,"주소를 불러오는 중 오류가 발생했습니다.");
+                        }
+                    }
+                    break;
             }
         }
     }
+
 }

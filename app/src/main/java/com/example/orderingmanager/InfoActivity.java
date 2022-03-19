@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -120,18 +121,15 @@ public class InfoActivity extends BasicActivity {
 //            }
 //        });
 
-        //주소 api로 넘어가는 버튼 이벤
-        if (binding.viewActivityInfo.btnLocation != null) {
-            binding.viewActivityInfo.btnLocation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v)
-                {
-                    Intent i = new Intent(InfoActivity.this, WebViewActivity.class);
-                    startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
-                }
-            });
-        }
-
+        //주소 검색 버튼
+        binding.viewActivityInfo.btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(InfoActivity.this, WebViewActivity.class);
+                startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
+            }
+        });
     }
 
     // 입력창이 비었거나, 비밀번호가 일치하지 않을 때 알림을 띄우는 함수
@@ -334,6 +332,7 @@ public class InfoActivity extends BasicActivity {
 //    };
 
     //주소 결과값 가져오는 함수
+    @SuppressLint("SetTextI18n")
     public void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -344,7 +343,12 @@ public class InfoActivity extends BasicActivity {
                     if (data != null) {
                         String[] address = data.split(", ");
                         binding.viewActivityInfo.etAddressNumber.setText(address[0]);;
-                        binding.viewActivityInfo.etAddress.setText(address[1]);;
+                        if(address.length == 3) {
+                            binding.viewActivityInfo.etAddress.setText(address[1] +", " + address[2]);
+                        }else{
+                            binding.viewActivityInfo.etAddress.setText(address[1]);
+                        }
+                        binding.viewActivityInfo.etAddressDetail.setText("");
                     }
                     else{
                         showToast(this,"주소를 불러오는 중 오류가 발생했습니다.");
