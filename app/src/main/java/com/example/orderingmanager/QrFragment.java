@@ -2,24 +2,26 @@ package com.example.orderingmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.request.MemberIdDto;
 import com.example.orderingmanager.databinding.FragmentQrBinding;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.net.URL;
+
+import lombok.SneakyThrows;
 
 public class QrFragment extends Fragment {
     private View view;
@@ -107,37 +109,44 @@ public class QrFragment extends Fragment {
 
     /* 회원탈퇴 */
     public void deleteAccount() {
-        FirebaseAuth.getInstance().getCurrentUser().delete();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        try {
+            MemberIdDto memberIdDto = new MemberIdDto(UserInfo.getOwnerId());
 
-        AuthUI.getInstance()
-                .delete(getActivity())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // 유저 DB 삭제
-                        db.collection("users").document(user.getUid())
-                                .delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("유저DB 삭제", "성공");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w("유저DB 삭제", "실패", e);
-                                    }
-                                });
-                        Toast.makeText(getActivity(), "회원탈퇴가 정상적으로 처리되었습니다.", Toast.LENGTH_LONG).show();
-                        FirebaseAuth.getInstance().signOut();
-                        getActivity().finish();
-                        startActivity(new Intent(getActivity(), StartActivity.class));
+            URL url = new URL("http://www.ordering.ml/api/owner");
+            HttpApi httpApi = new HttpApi(url, "DELETE");
+
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    String json = httpApi.requestToServer(memberIdDto);
+                    ObjectMapper mapper = new ObjectMapper();
+                    ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
+
+
+                    if(result.getData() != null){
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.showToast(getActivity(),"회원탈퇴 되었습니다.");
+                                startActivity(new Intent(getActivity(),LoginActivity.class));
+                                getActivity().finish();
+                            }
+                        });
                     }
-                });
+                    else{
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.showToast(getActivity(),"서버 연결에 문제가 발생했습니다.");
+                            }
+                        });
+                    }
+                }
+            }.start();
 
+        } catch (Exception e) {
+            MainActivity.showToast(getActivity(),"서버 연결에 문제가 발생했습니다.");
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -51,7 +52,7 @@ public class InfoActivity extends BasicActivity {
 
     RestaurantType restaurantType = RestaurantType.NONE;
     FoodCategory foodCategory = FoodCategory.NONE;
-
+    InputMethodManager imm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,26 +63,12 @@ public class InfoActivity extends BasicActivity {
         binding.viewActivityInfo.tablenumtext.setVisibility(View.GONE);
         binding.viewActivityInfo.tablenum.setVisibility(View.GONE);
 
-        // 카테고리 선택여부 초기화
-//        int categotyNum = binding.viewActivityInfo.constraintLayoutInScrollView.getChildCount();
-//        codeStatus = new boolean[categotyNum];
-//        for (int i = 0; i < categotyNum; i++) {
-//            codeStatus[i] = false;
-//        }
+        initButtonClickListener();
+    }
 
-//        binding.btnCode1.setOnClickListener(onClickListener);
-//        binding.btnCode2.setOnClickListener(onClickListener);
-//        binding.btnCode3.setOnClickListener(onClickListener);
-//        binding.btnCode4.setOnClickListener(onClickListener);
-//        binding.btnCode5.setOnClickListener(onClickListener);
-//        binding.btnCode6.setOnClickListener(onClickListener);
-//        binding.btnCode7.setOnClickListener(onClickListener);
-//        binding.btnCode8.setOnClickListener(onClickListener);
-//        binding.btnCode9.setOnClickListener(onClickListener);
-//        binding.btnCode10.setOnClickListener(onClickListener);
-//        binding.btnCode11.setOnClickListener(onClickListener);
 
-        // 라디오 버튼 클릭 이벤트
+    private void initButtonClickListener(){
+        // 매장식사/포장 라디오 버튼 클릭 이벤트
         binding.viewActivityInfo.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -90,6 +77,7 @@ public class InfoActivity extends BasicActivity {
                         restaurantType = RestaurantType.ONLY_TO_GO;
                         binding.viewActivityInfo.tablenumtext.setVisibility(View.GONE);
                         binding.viewActivityInfo.tablenum.setVisibility(View.GONE);
+                        hideKeybord();
                         break;
                     case R.id.radio_button_both:
                         restaurantType = RestaurantType.FOR_HERE_TO_GO;
@@ -100,8 +88,60 @@ public class InfoActivity extends BasicActivity {
                 }
             }
         });
-//
 
+        // 매장식사/포장 라디오 버튼 클릭 이벤트
+        binding.viewActivityInfo.radioGroupCategory.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rbtn_korean_food:
+                        foodCategory = FoodCategory.KOREAN_FOOD;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_bunsik:
+                        foodCategory = FoodCategory.BUNSIK;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_cafe_dessert:
+                        foodCategory = FoodCategory.CAFE_DESSERT;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_japanese_food:
+                        foodCategory = FoodCategory.JOKBAL_BOSSAM;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_chicken:
+                        foodCategory = FoodCategory.CHICKEN;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_pizza:
+                        foodCategory = FoodCategory.PIZZA;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_asian:
+                        foodCategory = FoodCategory.ASIAN_FOOD_WESTERN_FOOD;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_chinese_food:
+                        foodCategory = FoodCategory.CHINESE_FOOD;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_jokbal_bossam:
+                        foodCategory = FoodCategory.JOKBAL_BOSSAM;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_jjim:
+                        foodCategory = FoodCategory.JJIM_TANG;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_fast_food:
+                        foodCategory = FoodCategory.FAST_FOOD;
+                        hideKeybord();
+                        break;
+
+                }
+            }
+        });
         binding.startApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,16 +150,6 @@ public class InfoActivity extends BasicActivity {
                 createQRCodes();
             }
         });
-
-        //카카오맵
-//        btn_map = findViewById(R.id.btn_map);
-//        btn_map.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(InfoActivity.this, MapActivity.class);
-//                startActivity(intent);
-//            }
-//        });
 
         //주소 검색 버튼
         binding.viewActivityInfo.btnLocation.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +218,7 @@ public class InfoActivity extends BasicActivity {
                             public void run() {
                                 if(result.getData() != null) {
                                     UserInfo.initRestaurantInfo(restaurantDto);
+                                    UserInfo.setRestaurantId(result.getData());
                                     createQRCodes();
                                 }
                                 else{
@@ -207,129 +238,10 @@ public class InfoActivity extends BasicActivity {
     }
 
     private void createQRCodes(){
+        hideKeybord();
         startActivity(new Intent(InfoActivity.this, CreateQR.class));
         FinishWithAnim();
     }
-
-
-//    View.OnClickListener onClickListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//
-//            switch (v.getId()) {
-//                case R.id.btn_code1:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode1.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.KOREAN_FOOD;
-//                    }
-//                    else{
-//                        binding.btnCode1.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code2:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode2.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.BUNSIK;
-//                    }
-//                    else{
-//                        binding.btnCode2.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code3:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode3.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.CAFE_DESSERT;
-//                    }
-//                    else{
-//                        binding.btnCode3.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code4:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode4.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.PORK_CUTLET_ROW_FISH_SUSHI;
-//                    }
-//                    else{
-//                        binding.btnCode4.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code5:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode5.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.CHICKEN;
-//                    }
-//                    else{
-//                        binding.btnCode5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code6:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode6.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.PIZZA;
-//                    }
-//                    else{
-//                        binding.btnCode6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code7:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode7.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.ASIAN_FOOD_WESTERN_FOOD;
-//                    }
-//                    else{
-//                        binding.btnCode7.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code8:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode8.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.CHINESE_FOOD;
-//                    }
-//                    else{
-//                        binding.btnCode8.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code9:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode9.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.JOKBAL_BOSSAM;
-//                    }
-//                    else{
-//                        binding.btnCode9.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code10:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode10.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.JJIM_TANG;
-//                    }
-//                    else{
-//                        binding.btnCode10.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//                case R.id.btn_code11:
-//                    if (foodCategory == FoodCategory.NONE) {
-//                        binding.btnCode11.setBackgroundColor(Color.parseColor("#E1695E"));
-//                        foodCategory = FoodCategory.FAST_FOOD;
-//                    }
-//                    else{
-//                        binding.btnCode11.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                        foodCategory = FoodCategory.NONE;
-//                    }
-//                    break;
-//            }
-//        }
-//    };
 
     //주소 결과값 가져오는 함수
     @SuppressLint("SetTextI18n")
@@ -355,6 +267,13 @@ public class InfoActivity extends BasicActivity {
                     }
                 }
                 break;
+        }
+    }
+
+    private void hideKeybord(){
+        if(getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 }

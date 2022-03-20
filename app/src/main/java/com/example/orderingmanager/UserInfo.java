@@ -43,6 +43,20 @@ public class UserInfo {
         restaurantId = dto.getRestaurantId();
     }
 
+    public static void setRestaurantId(Long id){
+        restaurantId = id;
+    }
+    public static void init(){
+
+        ownerId = null;
+        restaurantName = null;
+        ownerName = null;
+        address = null;
+        tableCount = 0;
+        foodCategory = null;
+        restaurantType = null;
+    }
+
     public static Long getOwnerId() {
         return ownerId;
     }

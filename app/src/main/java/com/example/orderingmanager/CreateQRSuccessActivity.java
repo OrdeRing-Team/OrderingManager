@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -76,7 +77,8 @@ public class CreateQRSuccessActivity extends BasicActivity {
                         binding.btnComplete.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view) {
-                                finish();
+                                startActivity(new Intent(CreateQRSuccessActivity.this, MainActivity.class));
+                                FinishWithAnim();
                             }
                         });
                     }
