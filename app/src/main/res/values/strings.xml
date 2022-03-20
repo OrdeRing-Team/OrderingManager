@@ -42,8 +42,19 @@
     <string name="info_search_address">주소 검색</string>
     <string name="info_only_takeout">포장만 가능</string>
     <string name="info_allowall">매장 식사, 포장 가능</string>
-    <string name="info_category">음식 카테고리</string>
+    <string name="info_category">음식 카테고리를 선택해 주세요. (최대 1개)</string>
     <string name="info_table_count">테이블 수</string>
     <string name="start">START</string>
     <string name="edit_store_info_toolbar_text">매장정보수정</string>
+    <string name="category_korean_food">한식</string>
+    <string name="categoty_bunsik">분식</string>
+    <string name="category_cafe_dessert">카페 / 디저트</string>
+    <string name="category_chicken">치킨</string>
+    <string name="category_japanese_food">돈까스 / 회 / 초밥</string>
+    <string name="category_pizza">피자</string>
+    <string name="category_asian">아시안 / 양식</string>
+    <string name="category_chinese">중식</string>
+    <string name="category_jokbal">족발 / 보쌈</string>
+    <string name="category_jjim">찜 / 탕</string>
+    <string name="category_fast_food">패스트푸드</string>
 </resources>

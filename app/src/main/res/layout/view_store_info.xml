@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white">
 
     <TextView
@@ -39,13 +38,12 @@
         android:id="@+id/tv_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
         android:text="@string/address"
         android:textColor="#000000"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/storeName"
         app:layout_constraintTop_toBottomOf="@+id/input_userName" />
 
 
@@ -64,18 +62,21 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_marginTop="10dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/et_address_number"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="@drawable/textview_round_rectangle_background"
                 android:enabled="false"
                 android:hint="@string/address_number"
                 android:inputType="number"
+                android:paddingStart="5dp"
                 android:textColor="#000000"
                 android:textColorHint="@color/et_hint"
                 android:textSize="16sp"
@@ -84,7 +85,7 @@
             <Button
                 android:id="@+id/btn_location"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:background="@drawable/button_round_rectangle_background"
                 android:outlineSpotShadowColor="#C85C5C"
                 android:text="@string/info_search_address"
@@ -99,8 +100,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="@drawable/textview_round_rectangle_background"
             android:enabled="false"
             android:hint="@string/road_address"
+            android:paddingStart="5dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:textColor="#000000"
             android:textColorHint="@color/et_hint"
             android:textSize="16sp"
@@ -109,11 +114,13 @@
         <EditText
             android:id="@+id/et_address_detail"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:background="@drawable/textview_round_rectangle_background"
             android:hint="@string/detail_address"
             android:inputType="text"
+            android:paddingStart="5dp"
             android:textColor="#000000"
             android:textColorHint="@color/et_hint"
             android:textSize="16sp"
@@ -124,13 +131,12 @@
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
         android:text="@string/owner_name"
         android:textColor="#000000"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/storeName"
         app:layout_constraintTop_toBottomOf="@+id/input_storeName" />
 
 
@@ -152,24 +158,25 @@
         android:id="@+id/tv_howtoeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
         android:text="@string/store_type"
         android:textColor="#000000"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/storeName"
         app:layout_constraintTop_toBottomOf="@+id/ll_address" />
 
     <RadioGroup
         android:id="@+id/radio_group"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#E1695E"
         android:orientation="vertical"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/ll_address"
+        app:layout_constraintStart_toStartOf="@+id/storeName"
         app:layout_constraintTop_toBottomOf="@+id/tv_howtoeat">
 
         <RadioButton
@@ -191,22 +198,19 @@
             android:text="@string/info_allowall"
             android:textColor="@color/black"
             android:textSize="13sp" />
-
-
     </RadioGroup>
 
     <TextView
-        android:id="@+id/Kategorie"
+        android:id="@+id/tv_categoty_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:text="@string/info_category"
         android:textColor="#000000"
-        android:textSize="15sp"
+        android:layout_marginTop="30dp"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/storeName"
         app:layout_constraintTop_toBottomOf="@+id/tablenum" />
 
     <TextView
@@ -214,11 +218,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="40dp"
         android:text="@string/info_table_count"
         android:textColor="#000000"
         android:textSize="13sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/radio_group"
+        app:layout_constraintStart_toStartOf="@+id/storeName"
         app:layout_constraintTop_toBottomOf="@+id/radio_group" />
 
 
@@ -240,31 +245,113 @@
         app:layout_constraintTop_toBottomOf="@+id/radio_group"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="Autofill" />
-
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:background="#AFAEAE"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/Kategorie"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tablenum" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="24dp"
-        android:background="#AFAEAE"
-        android:orientation="horizontal"
+        android:layout_marginBottom="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Kategorie"
-        app:layout_constraintTop_toBottomOf="@id/tablenum" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_categoty_info">
+        <RadioGroup
+            android:id="@+id/radio_group_category"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#E1695E">
+            <RadioButton
+                android:id="@+id/rbtn_korean_food"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_korean_food"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
+            <RadioButton
+                android:id="@+id/rbtn_bunsik"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/categoty_bunsik"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/rbtn_cafe_dessert"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_cafe_dessert"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/rbtn_japanese_food"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_japanese_food"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/rbtn_chicken"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_chicken"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/rbtn_pizza"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_pizza"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/rbtn_asian"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_asian"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/rbtn_chinese_food"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_chinese"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/rbtn_jokbal_bossam"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_jokbal"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/rbtn_jjim"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_jjim"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/rbtn_fast_food"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="50dp"
+                android:buttonTint="#E1695E"
+                android:text="@string/category_fast_food"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </RadioGroup>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
