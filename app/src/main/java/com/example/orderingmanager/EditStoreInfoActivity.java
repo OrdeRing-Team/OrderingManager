@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -73,6 +74,7 @@ public class EditStoreInfoActivity extends BasicActivity {
                         restaurantType = RestaurantType.ONLY_TO_GO;
                         binding.viewActivityEditStoreInfo.tablenumtext.setVisibility(View.GONE);
                         binding.viewActivityEditStoreInfo.tablenum.setVisibility(View.GONE);
+                        hideKeybord();
                         break;
                     case R.id.radio_button_both:
                         restaurantType = RestaurantType.FOR_HERE_TO_GO;
@@ -84,6 +86,59 @@ public class EditStoreInfoActivity extends BasicActivity {
             }
         });
 
+        // 매장식사/포장 라디오 버튼 클릭 이벤트
+        binding.viewActivityEditStoreInfo.radioGroupCategory.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rbtn_korean_food:
+                        foodCategory = FoodCategory.KOREAN_FOOD;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_bunsik:
+                        foodCategory = FoodCategory.BUNSIK;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_cafe_dessert:
+                        foodCategory = FoodCategory.CAFE_DESSERT;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_japanese_food:
+                        foodCategory = FoodCategory.PORK_CUTLET_ROW_FISH_SUSHI;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_chicken:
+                        foodCategory = FoodCategory.CHICKEN;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_pizza:
+                        foodCategory = FoodCategory.PIZZA;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_asian:
+                        foodCategory = FoodCategory.ASIAN_FOOD_WESTERN_FOOD;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_chinese_food:
+                        foodCategory = FoodCategory.CHINESE_FOOD;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_jokbal_bossam:
+                        foodCategory = FoodCategory.JOKBAL_BOSSAM;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_jjim:
+                        foodCategory = FoodCategory.JJIM_TANG;
+                        hideKeybord();
+                        break;
+                    case R.id.rbtn_fast_food:
+                        foodCategory = FoodCategory.FAST_FOOD;
+                        hideKeybord();
+                        break;
+
+                }
+            }
+        });
         binding.viewActivityEditStoreInfo.btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -115,7 +170,7 @@ public class EditStoreInfoActivity extends BasicActivity {
         String[] address = getAddressArr();
         binding.viewActivityEditStoreInfo.etAddressNumber.setText(address[0]);
         Log.e("address[0] = ", address[0]);
-        if(address.length == 4) {
+        if(address.length >= 4) {
             binding.viewActivityEditStoreInfo.etAddress.setText(address[1] +", " + address[2]);
             binding.viewActivityEditStoreInfo.etAddressDetail.setText(address[3]);
             Log.e("address[1] = ", address[1]);
@@ -137,6 +192,53 @@ public class EditStoreInfoActivity extends BasicActivity {
             restaurantType = RestaurantType.FOR_HERE_TO_GO;
             binding.viewActivityEditStoreInfo.radioButtonBoth.setChecked(true);
             binding.viewActivityEditStoreInfo.tablenum.setText(Integer.toString(UserInfo.getTableCount()));
+        }
+
+        switch(UserInfo.getFoodCategory()){
+            case KOREAN_FOOD:
+                foodCategory = FoodCategory.KOREAN_FOOD;
+                binding.viewActivityEditStoreInfo.rbtnKoreanFood.setChecked(true);
+                break;
+            case BUNSIK:
+                foodCategory = FoodCategory.BUNSIK;
+                binding.viewActivityEditStoreInfo.rbtnBunsik.setChecked(true);
+                break;
+            case CAFE_DESSERT:
+                foodCategory = FoodCategory.CAFE_DESSERT;
+                binding.viewActivityEditStoreInfo.rbtnCafeDessert.setChecked(true);
+                break;
+            case PORK_CUTLET_ROW_FISH_SUSHI:
+                foodCategory = FoodCategory.PORK_CUTLET_ROW_FISH_SUSHI;
+                binding.viewActivityEditStoreInfo.rbtnJapaneseFood.setChecked(true);
+                break;
+            case CHICKEN:
+                foodCategory = FoodCategory.CHICKEN;
+                binding.viewActivityEditStoreInfo.rbtnChicken.setChecked(true);
+                break;
+            case PIZZA:
+                foodCategory = FoodCategory.PIZZA;
+                binding.viewActivityEditStoreInfo.rbtnPizza.setChecked(true);
+                break;
+            case ASIAN_FOOD_WESTERN_FOOD:
+                foodCategory = FoodCategory.ASIAN_FOOD_WESTERN_FOOD;
+                binding.viewActivityEditStoreInfo.rbtnAsian.setChecked(true);
+                break;
+            case CHINESE_FOOD:
+                foodCategory = FoodCategory.CHINESE_FOOD;
+                binding.viewActivityEditStoreInfo.rbtnChineseFood.setChecked(true);
+                break;
+            case JOKBAL_BOSSAM:
+                foodCategory = FoodCategory.JOKBAL_BOSSAM;
+                binding.viewActivityEditStoreInfo.rbtnJokbalBossam.setChecked(true);
+                break;
+            case JJIM_TANG:
+                foodCategory = FoodCategory.JJIM_TANG;
+                binding.viewActivityEditStoreInfo.rbtnJjim.setChecked(true);
+                break;
+            case FAST_FOOD:
+                foodCategory = FoodCategory.FAST_FOOD;
+                binding.viewActivityEditStoreInfo.rbtnFastFood.setChecked(true);
+                break;
         }
 
     }
@@ -166,17 +268,15 @@ public class EditStoreInfoActivity extends BasicActivity {
 
         if ((!radio_button_only.isChecked()) && (!radio_button_both.isChecked())) {
             Toast.makeText(EditStoreInfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+            hideKeybord();
         }else if (!radio_button_only.isChecked() && (tableNum == 0)) {
             Toast.makeText(EditStoreInfoActivity.this, "테이블의 수는 1개 이상이어야 합니다.", Toast.LENGTH_SHORT).show();
+            hideKeybord();
         }
-        /** 카테고리 개선 후 수정 **/
-//        else if(foodCategory == FoodCategory.NONE){
-//            Toast.makeText(EditStoreInfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요.", Toast.LENGTH_SHORT).show();// 키보드 내리기
-//            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-//            binding.startApp.setEnabled(true);
-//
-//        }
+        else if(foodCategory == FoodCategory.NONE){
+            Toast.makeText(EditStoreInfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요.", Toast.LENGTH_SHORT).show();
+            hideKeybord();
+        }
         else {
             try {
                 RestaurantDto restaurantDto = new RestaurantDto(UserInfo.getOwnerId(),storeName,ownerName,address,tableNum, foodCategory, restaurantType);
@@ -270,4 +370,10 @@ public class EditStoreInfoActivity extends BasicActivity {
         }
     }
 
+    private void hideKeybord(){
+        if(getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
 }

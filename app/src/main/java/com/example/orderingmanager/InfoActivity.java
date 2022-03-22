@@ -186,20 +186,20 @@ public class InfoActivity extends BasicActivity {
         if ((!radio_button_only.isChecked()) && (!radio_button_both.isChecked())) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
             binding.startApp.setEnabled(true);
+            hideKeybord();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         } else if (!radio_button_only.isChecked() && (tableNum == 0)) {
             Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
             binding.startApp.setEnabled(true);
+            hideKeybord();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
-        /** 카테고리 개선 후 수정 **/
-//        else if(foodCategory == FoodCategory.NONE){
-//            Toast.makeText(EditStoreInfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요.", Toast.LENGTH_SHORT).show();// 키보드 내리기
-//            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-//            binding.startApp.setEnabled(true);
-//
-//        }
+        else if(foodCategory == FoodCategory.NONE){
+            Toast.makeText(InfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요.", Toast.LENGTH_SHORT).show();// 키보드 내리기
+            hideKeybord();
+            binding.startApp.setEnabled(true);
+
+        }
         else {
             try {
                 RestaurantDto restaurantDto = new RestaurantDto(UserInfo.getOwnerId(),storeName,ownerName,address,tableNum, foodCategory, restaurantType);
