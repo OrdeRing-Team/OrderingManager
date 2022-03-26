@@ -108,3 +108,4 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         return (arrayList != null ? arrayList.size() : 0);
     }
 }
+

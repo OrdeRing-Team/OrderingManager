@@ -7,7 +7,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
-
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
@@ -19,6 +18,8 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         switch (position) {
             case 0:
                 return new MenuManageFragment();
+
+
             default:
                 return new ReviewManageFragment();
         }

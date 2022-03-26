@@ -104,11 +104,7 @@ public class StoreManageActivity extends AppCompatActivity {
                 startActivityForResult(intent, GET_GALLERY_IMAGE2);
             }
         });
-
     }
-
-
-
 
 
     //대표이미지 업로드 함수

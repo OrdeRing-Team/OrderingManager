@@ -24,11 +24,11 @@
 
     <ImageButton
         android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/btn_back"
-        android:textColor="@color/white"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/ic_baseline_arrow_back_24"
+        android:backgroundTint="@color/main"
         android:textSize="22dp"
         app:layout_constraintEnd_toStartOf="@+id/textView1"
         app:layout_constraintHorizontal_bias="0.074"
