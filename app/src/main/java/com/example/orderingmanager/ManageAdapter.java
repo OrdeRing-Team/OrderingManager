@@ -27,7 +27,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
-//            item 에 대한 클릭 이벤트 설정
+            //item 에 대한 클릭 이벤트 설정
             tvName = itemView.findViewById(R.id.item_name);
             tvPrice = itemView.findViewById(R.id.item_price);
             //ivMenu = itemView.findViewById(R.id.item_image);

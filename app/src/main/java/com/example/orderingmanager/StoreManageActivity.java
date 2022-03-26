@@ -14,13 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.orderingmanager.databinding.ActivityStoreManageBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StoreManageActivity extends AppCompatActivity {
-
+    private ActivityStoreManageBinding binding;
     RatingBar ratingBar;
     TextView tvScore;
 
@@ -34,7 +35,9 @@ public class StoreManageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_store_manage);
+
+        binding = ActivityStoreManageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         //백버튼 이벤트
         ImageButton btnBack = findViewById(R.id.btn_backToManageFrag);
@@ -104,6 +107,9 @@ public class StoreManageActivity extends AppCompatActivity {
                 startActivityForResult(intent, GET_GALLERY_IMAGE2);
             }
         });
+
+        //매장명 설정
+        binding.tvStoreName.setText(UserInfo.getRestaurantName());
     }
 
 
