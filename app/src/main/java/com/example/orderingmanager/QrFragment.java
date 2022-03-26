@@ -17,7 +17,6 @@ import com.example.orderingmanager.Dto.request.MemberIdDto;
 import com.example.orderingmanager.databinding.FragmentQrBinding;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.net.URL;
 
@@ -100,8 +99,6 @@ public class QrFragment extends Fragment {
 
     /* 로그아웃 */
     public void logout() {
-        FirebaseAuth.getInstance().signOut();
-
         startActivity(new Intent(getActivity(), LoginActivity.class));
         Toast.makeText(getActivity(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
         getActivity().finish();
@@ -112,7 +109,7 @@ public class QrFragment extends Fragment {
         try {
             MemberIdDto memberIdDto = new MemberIdDto(UserInfo.getOwnerId());
 
-            URL url = new URL("http://www.ordering.ml/api/owner");
+            URL url = new URL("http://www.ordering.ml/api/owner/"+ UserInfo.getOwnerId().toString());
             HttpApi httpApi = new HttpApi(url, "DELETE");
 
             new Thread() {

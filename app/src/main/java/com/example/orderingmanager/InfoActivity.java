@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.request.FoodCategory;
-import com.example.orderingmanager.Dto.request.RestaurantDto;
+import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.databinding.ActivityInfoBinding;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -202,22 +202,22 @@ public class InfoActivity extends BasicActivity {
         }
         else {
             try {
-                RestaurantDto restaurantDto = new RestaurantDto(UserInfo.getOwnerId(),storeName,ownerName,address,tableNum, foodCategory, restaurantType);
+                RestaurantInfoDto restaurantInfoDto = new RestaurantInfoDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType);
 
-                URL url = new URL("http://www.ordering.ml/api/restaurant");
+                URL url = new URL("http://www.ordering.ml/api/owner/" + UserInfo.getOwnerId().toString()+ "/restaurant");
                 HttpApi httpApi = new HttpApi(url, "POST");
 
                 new Thread() {
                     @SneakyThrows
                     public void run() {
-                        String json = httpApi.requestToServer(restaurantDto);
+                        String json = httpApi.requestToServer(restaurantInfoDto);
                         ObjectMapper mapper = new ObjectMapper();
                         ResultDto<Long> result = mapper.readValue(json, new TypeReference<ResultDto<Long>>() {});
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
                                 if(result.getData() != null) {
-                                    UserInfo.initRestaurantInfo(restaurantDto);
+                                    UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantInfoDto);
                                     UserInfo.setRestaurantId(result.getData());
                                     createQRCodes();
                                 }

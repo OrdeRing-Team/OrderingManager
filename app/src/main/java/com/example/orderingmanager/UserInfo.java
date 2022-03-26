@@ -1,7 +1,7 @@
 package com.example.orderingmanager;
 
 import com.example.orderingmanager.Dto.request.FoodCategory;
-import com.example.orderingmanager.Dto.request.RestaurantDto;
+import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
@@ -28,8 +28,8 @@ public class UserInfo {
         foodCategory = dto.getFoodCategory();
         restaurantType = dto.getRestaurantType();
     }
-    public static void initRestaurantInfo(RestaurantDto dto) {
-        ownerId = dto.getOwnerId();
+    public static void initRestaurantInfo(Long ownerId, RestaurantInfoDto dto) {
+        ownerId = ownerId;
         restaurantName = dto.getRestaurantName();
         ownerName = dto.getOwnerName();
         address = dto.getAddress();

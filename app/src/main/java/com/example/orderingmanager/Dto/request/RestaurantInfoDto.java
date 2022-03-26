@@ -5,11 +5,12 @@ import static lombok.AccessLevel.PROTECTED;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
-@AllArgsConstructor(access =PROTECTED)
+@Getter @Setter
+@AllArgsConstructor
 @NoArgsConstructor(access =PROTECTED)
-public abstract class RestaurantInfoDto {
+public class RestaurantInfoDto {
 
     private String restaurantName;
     private String ownerName;
@@ -18,12 +19,4 @@ public abstract class RestaurantInfoDto {
     private FoodCategory foodCategory;
     private RestaurantType restaurantType;
 
-    protected RestaurantInfoDto(RestaurantInfoDto dto) {
-        this.restaurantName = dto.restaurantName;
-        this.ownerName = dto.ownerName;
-        this.address = dto.address;
-        this.tableCount = dto.tableCount;
-        this.foodCategory = dto.foodCategory;
-        this.restaurantType = dto.restaurantType;
-    }
 }
