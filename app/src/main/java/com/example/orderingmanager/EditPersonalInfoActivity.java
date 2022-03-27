@@ -2,106 +2,104 @@ package com.example.orderingmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.request.MemberIdDto;
+import com.example.orderingmanager.databinding.ActivityEditPersonalInfoBinding;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import java.net.URL;
 
-public class EditPersonalInfoActivity extends AppCompatActivity {
+import lombok.SneakyThrows;
 
-    private ImageButton btnBack;
-    private Button btnLogout;
-    private Button btnDeleteAccount;
+public class EditPersonalInfoActivity extends BasicActivity {
+
+    private ActivityEditPersonalInfoBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_personal_info);
-        btnBack = findViewById(R.id.btn_backToManageFrag);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
-        // 로그아웃 버튼 클릭 이벤트
-        btnLogout = findViewById(R.id.btn_logout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        binding = ActivityEditPersonalInfoBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        initButtonClickListener();
+
+    }
+
+    private void initButtonClickListener(){
+        binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 logout();
             }
         });
-
-        // 회원탈퇴 버튼 클릭 이벤트
-        btnDeleteAccount = findViewById(R.id.btn_deleteAccount);
-        btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
+        binding.btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 deleteAccount();
             }
         });
 
-
-
-
+        binding.btnBackToManageFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     /* 로그아웃 */
     public void logout() {
-        FirebaseAuth.getInstance().signOut();
-
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, LoginActivity.class));
+        Toast.makeText(this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     /* 회원탈퇴 */
     public void deleteAccount() {
-        FirebaseAuth.getInstance().getCurrentUser().delete();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        try {
+            MemberIdDto memberIdDto = new MemberIdDto(UserInfo.getOwnerId());
 
-        AuthUI.getInstance()
-                .delete(getApplicationContext())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // 유저 DB 삭제
-                        db.collection("users").document(user.getUid())
-                                .delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("유저DB 삭제", "성공");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w("유저DB 삭제", "실패", e);
-                                    }
-                                });
-                        Toast.makeText(getApplicationContext(), "회원탈퇴가 정상적으로 처리되었습니다.", Toast.LENGTH_LONG).show();
-                        FirebaseAuth.getInstance().signOut();
-                        finish();
-                        startActivity(new Intent(getApplicationContext(), StartActivity.class));
+            URL url = new URL("http://www.ordering.ml/api/owner/"+ UserInfo.getOwnerId().toString());
+            HttpApi httpApi = new HttpApi(url, "DELETE");
+
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    String json = httpApi.requestToServer(memberIdDto);
+                    ObjectMapper mapper = new ObjectMapper();
+                    ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
+
+
+                    if(result.getData() != null){
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast(EditPersonalInfoActivity.this,"회원탈퇴 되었습니다.");
+                                startActivity(new Intent(EditPersonalInfoActivity.this,LoginActivity.class));
+                                finish();
+                            }
+                        });
                     }
-                });
+                    else{
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast(EditPersonalInfoActivity.this,"서버 연결에 문제가 발생했습니다.");
+                            }
+                        });
+                    }
+                }
+            }.start();
 
+        } catch (Exception e) {
+            showToast(EditPersonalInfoActivity.this,"서버 연결에 문제가 발생했습니다.");
+        }
     }
 }

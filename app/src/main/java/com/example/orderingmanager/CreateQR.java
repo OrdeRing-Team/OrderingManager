@@ -65,7 +65,7 @@ public class CreateQR extends BasicActivity {
 
         if(getIntentValue != EditStoreInfoActivity.EDIT_ONLY) {
             // 포장인 경우 테이블QR을 생성할 필요가 없으므로 포장만 예외로 한다.
-            CreateTablesQR();
+            CreateTableQR();
         }
     }
 
@@ -75,7 +75,8 @@ public class CreateQR extends BasicActivity {
     }
 
     private void CreateTakeoutQR(){
-        text = "https://www.ordering.com/uid/TakeoutQR";
+        Log.e("RestaurantId : ", Long.toString(UserInfo.getRestaurantId()));
+        text = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/takeout";
         try{
             BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
@@ -96,7 +97,7 @@ public class CreateQR extends BasicActivity {
 
     private void CreateWaitingQR(){
         binding.progressTextLinearLayout2.setVisibility(View.VISIBLE);
-        text = "도메인/uid/WaitingQR";
+        text = "http://www.ordering.ml/"+ Long.toString(UserInfo.getRestaurantId()) +"/waiting";
         try{
             BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
@@ -119,7 +120,7 @@ public class CreateQR extends BasicActivity {
         }catch (Exception e){}
     }
 
-    private void CreateTablesQR(){
+    private void CreateTableQR(){
         binding.progressTextLinearLayout3.setVisibility(View.VISIBLE);
         binding.progressEnd3.setText(Integer.toString(table_count));
         if(countNumber < table_count){
@@ -127,7 +128,7 @@ public class CreateQR extends BasicActivity {
                 @Override
                 public void run(){
                     countNumber += 1;
-                    text = "https://ordering.com/sadasdasd/Table" + Integer.toString(countNumber);
+                    text = "http://ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + Integer.toString(countNumber);
                     try {
                         BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200);
                         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
@@ -139,7 +140,7 @@ public class CreateQR extends BasicActivity {
                         Log.e("TableQRCreated :: ", text);
                     } catch (Exception e) { countNumber = table_count+1; }
                     if(countNumber < table_count){
-                        CreateTablesQR();
+                        CreateTableQR();
                     }
                     else{
                         binding.progress3.setTypeface(null, Typeface.NORMAL);

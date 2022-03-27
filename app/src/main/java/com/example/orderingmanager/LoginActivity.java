@@ -57,7 +57,6 @@ public class LoginActivity extends BasicActivity {
                 String memberId = binding.etMemberId.getText().toString();
                 String password = binding.editTextPasswordLogin.getText().toString();
 
-
                 // 로그인 조건 처리
                 if (memberId.length() > 0 && password.length() > 0) {
                     try {

@@ -1,26 +1,25 @@
 package com.example.orderingmanager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.orderingmanager.Dto.ResultDto;
-import com.example.orderingmanager.Dto.request.MemberIdDto;
 import com.example.orderingmanager.databinding.FragmentQrBinding;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import java.net.URL;
-
-import lombok.SneakyThrows;
+import java.util.ArrayList;
 
 public class QrFragment extends Fragment {
     private View view;
@@ -31,6 +30,13 @@ public class QrFragment extends Fragment {
     Bundle extra;
 
     Boolean storeInitInfo;
+    String url;
+
+    ArrayList<QrData> qrList = new ArrayList<>();
+    MultiFormatWriter multiFormatWriter;
+    int table_count;
+    Bitmap bitmap;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,47 +48,34 @@ public class QrFragment extends Fragment {
         }
 
         binding = FragmentQrBinding.inflate(inflater, container, false);
-
         view = binding.getRoot();
-
-
 
         initButtonClickListener();
         storeInfoCheck();
-
+        if(UserInfo.getRestaurantId() != null) {
+            createQrCodesByUserInfo();
+        }
         return view;
     }
 
 
     private void initButtonClickListener(){
-        binding.btnLogout.setOnClickListener(onClickListener);
-        binding.btnDeleteAccount.setOnClickListener(onClickListener);
-    }
-
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch(view.getId()){
-                case R.id.btn_logout:
-                    logout();
-                    break;
-                case R.id.btn_deleteAccount:
-                    deleteAccount();
-                    break;
-                case R.id.refreshImageButton:
-                    startActivity(new Intent(getActivity(), MainActivity.class));
-                    getActivity().finish();
-                    break;
+        // 버튼 기능 추가
+        binding.refreshImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
             }
-        }
-    };
+        });
+    }
 
     public void storeInfoCheck(){
         storeInitInfo = UserInfo.getRestaurantId() != null;
         if(!storeInitInfo){
             Log.e("qrFragment",storeInitInfo.toString());
             binding.errorNotFound.setVisibility(View.VISIBLE);
-            binding.refreshImageButton.setOnClickListener(onClickListener);
+            //binding.refreshImageButton.setOnClickListener(onClickListener);
         }
         else{
             Log.e("qrFragment",storeInitInfo.toString());
@@ -97,53 +90,62 @@ public class QrFragment extends Fragment {
         binding = null;
     }
 
-    /* 로그아웃 */
-    public void logout() {
-        startActivity(new Intent(getActivity(), LoginActivity.class));
-        Toast.makeText(getActivity(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-        getActivity().finish();
+    public void createQrCodesByUserInfo(){
+        table_count = UserInfo.getTableCount();
+        String takeout_explain = "기다리지 말고\nQR 찍고 포장 주문하세요";
+        String waiting_explain = "줄 서지 말고\nQR 찍고 대기 등록하세요";
+        String table_explain = "테이블에서\nQR 찍고 주문하세요";
+        String storeName = UserInfo.getRestaurantName();
+        qrList.add(new QrData(takeout_explain, storeName, CreateTakeoutQR()));
+        qrList.add(new QrData(waiting_explain, storeName, CreateWaitingQR()));
+        for(int tableNum = 1; tableNum<=table_count; tableNum++){
+            qrList.add(new QrData(table_explain, storeName, CreateTableQR(tableNum)));
+        }
+        RecyclerView recyclerView = binding.rvQrcode;
+        QrAdapter qrAdapter = new QrAdapter(qrList, getActivity());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity())) ;
+        recyclerView.setAdapter(qrAdapter);
     }
 
-    /* 회원탈퇴 */
-    public void deleteAccount() {
-        try {
-            MemberIdDto memberIdDto = new MemberIdDto(UserInfo.getOwnerId());
+    private Bitmap CreateTakeoutQR(){
+        url = "http://www.ordering.ml/"+UserInfo.getRestaurantId().toString()+"/takeout";
+        try{
+            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
-            URL url = new URL("http://www.ordering.ml/api/owner/"+ UserInfo.getOwnerId().toString());
-            HttpApi httpApi = new HttpApi(url, "DELETE");
-
-            new Thread() {
-                @SneakyThrows
-                public void run() {
-                    String json = httpApi.requestToServer(memberIdDto);
-                    ObjectMapper mapper = new ObjectMapper();
-                    ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
-
-
-                    if(result.getData() != null){
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                MainActivity.showToast(getActivity(),"회원탈퇴 되었습니다.");
-                                startActivity(new Intent(getActivity(),LoginActivity.class));
-                                getActivity().finish();
-                            }
-                        });
-                    }
-                    else{
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                MainActivity.showToast(getActivity(),"서버 연결에 문제가 발생했습니다.");
-                            }
-                        });
-                    }
-                }
-            }.start();
-
-        } catch (Exception e) {
-            MainActivity.showToast(getActivity(),"서버 연결에 문제가 발생했습니다.");
+            return bitmap;
+        }catch (Exception e){
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
+            return bitmap;
         }
     }
 
+    private Bitmap CreateWaitingQR(){
+        url = "http://www.ordering.ml/"+UserInfo.getRestaurantId().toString()+"/waiting";
+        try{
+            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+
+            return bitmap;
+        }catch (Exception e){
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
+            return bitmap;
+        }
+    }
+
+    private Bitmap CreateTableQR(int i){
+        url = "http://ordering.ml/"+UserInfo.getRestaurantId().toString()+"/table" + i;
+        try{
+            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+
+            return bitmap;
+        }catch (Exception e){
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
+            return bitmap;
+        }
+    }
 }
