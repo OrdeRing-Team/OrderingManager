@@ -33,9 +33,8 @@ public class QrFragment extends Fragment {
     String url;
 
     ArrayList<QrData> qrList = new ArrayList<>();
-    MultiFormatWriter multiFormatWriter;
+    //MultiFormatWriter multiFormatWriter;
     int table_count;
-    Bitmap bitmap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +54,14 @@ public class QrFragment extends Fragment {
         if(UserInfo.getRestaurantId() != null) {
             createQrCodesByUserInfo();
         }
+//        if(UserInfo.getRestaurantId() != null) {
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    createQrCodesByUserInfo();
+//                }
+//            },3000);
+//        }
         return view;
     }
 
@@ -103,48 +110,77 @@ public class QrFragment extends Fragment {
         }
         RecyclerView recyclerView = binding.rvQrcode;
         QrAdapter qrAdapter = new QrAdapter(qrList, getActivity());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity())) ;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false)) ;
         recyclerView.setAdapter(qrAdapter);
     }
 
     private Bitmap CreateTakeoutQR(){
-        url = "http://www.ordering.ml/"+UserInfo.getRestaurantId().toString()+"/takeout";
+        url = "http://www.ordering.ml/"+ UserInfo.getRestaurantId() +"/takeout";
         try{
+            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            bitmap = barcodeEncoder.createBitmap(bitMatrix);
-
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            Log.e("takeout qr ","성공");
             return bitmap;
         }catch (Exception e){
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
+            Log.e("takeout qr ",e.toString());
+            Log.e("url = ",url);
             return bitmap;
         }
+
+//        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);;
+//        new Handler().postDelayed(new Runnable(){
+//            @Override
+//            public void run(){
+//                url = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/takeout";
+//                try{
+//                    BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
+//                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+//                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+//                            Log.e("takeout qr ","성공");
+//                        }
+//                    });
+//                }catch (Exception e){
+//                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
+//                    Log.e("takeout qr ",e.toString());
+//                    Log.e("url = ",url);
+//                }
+//            }
+//        },200);
+//        return bitmap;
     }
 
     private Bitmap CreateWaitingQR(){
-        url = "http://www.ordering.ml/"+UserInfo.getRestaurantId().toString()+"/waiting";
+        url = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/waiting";
         try{
+            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
             return bitmap;
         }catch (Exception e){
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
             return bitmap;
         }
     }
 
     private Bitmap CreateTableQR(int i){
-        url = "http://ordering.ml/"+UserInfo.getRestaurantId().toString()+"/table" + i;
+        url = "http://ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + i;
         try{
+            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
             return bitmap;
         }catch (Exception e){
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
             return bitmap;
         }
     }
