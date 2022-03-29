@@ -10,11 +10,15 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.orderingmanager.databinding.FragmentFinishBinding;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
+import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
 public class FinishFragment extends Fragment {
 
     private View view;
     private FragmentFinishBinding binding;
+    private MaterialCalendarView calendarView;
 
     Bundle extra;
 
@@ -33,6 +37,14 @@ public class FinishFragment extends Fragment {
         }
 
         storeInfoCheck();
+
+        //calendarView = getView().findViewById(R.id.calendarView);
+
+
+        // 월, 요일을 한글로 보이게 설정 (MonthArrayTitleFormatter의 작동을 확인하려면 밑의 setTitleFormatter()를 지운다)
+        //calendarView.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
+        //calendarView.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
+
 
         return view;
     }

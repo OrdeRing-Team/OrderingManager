@@ -87,6 +87,7 @@
         <entry key="app/src/main/res/layout/activity_temp.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/activity_test_stack.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/fragment_finish.xml" value="0.1862427471259469" />
         <entry key="app/src/main/res/layout/fragment_manage.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_menu_manage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_menumanage.xml" value="0.32472826086956524" />
