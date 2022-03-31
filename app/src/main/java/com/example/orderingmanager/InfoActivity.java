@@ -219,10 +219,8 @@ public class InfoActivity extends BasicActivity {
                                 if(result.getData() != null) {
                                     UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantInfoDto);
                                     UserInfo.setRestaurantId(result.getData());
+                                    Log.e("restaurantId ",result.getData().toString());
                                     createQRCodes();
-                                }
-                                else{
-                                    showToast(InfoActivity.this,"asdasdas");
                                 }
                             }
                         });
