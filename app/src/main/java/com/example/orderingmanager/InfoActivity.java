@@ -147,7 +147,6 @@ public class InfoActivity extends BasicActivity {
             public void onClick(View view) {
                 binding.startApp.setEnabled(false);
                 checkEmpty();
-                createQRCodes();
             }
         });
 
@@ -184,24 +183,29 @@ public class InfoActivity extends BasicActivity {
         }
 
         if ((!radio_button_only.isChecked()) && (!radio_button_both.isChecked())) {
-            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요", Toast.LENGTH_SHORT).show();
             binding.startApp.setEnabled(true);
             hideKeybord();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         } else if (!radio_button_only.isChecked() && (tableNum == 0)) {
-            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요", Toast.LENGTH_SHORT).show();
             binding.startApp.setEnabled(true);
             hideKeybord();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
         else if(foodCategory == FoodCategory.NONE){
-            Toast.makeText(InfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요.", Toast.LENGTH_SHORT).show();// 키보드 내리기
+            Toast.makeText(InfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요", Toast.LENGTH_SHORT).show();
             hideKeybord();
             binding.startApp.setEnabled(true);
-
+        }
+        else if(binding.viewActivityInfo.etAddress.getText().toString().equals("") || binding.viewActivityInfo.etAddressDetail.getText().toString().equals("")){
+            Toast.makeText(InfoActivity.this, "주소를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+            hideKeybord();
+            binding.startApp.setEnabled(true);
         }
         else {
             try {
+                Log.e("ads",binding.viewActivityInfo.etAddress.getText().toString());
                 RestaurantInfoDto restaurantInfoDto = new RestaurantInfoDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType);
 
                 URL url = new URL("http://www.ordering.ml/api/owner/" + UserInfo.getOwnerId().toString()+ "/restaurant");

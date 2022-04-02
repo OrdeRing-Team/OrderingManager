@@ -277,6 +277,10 @@ public class EditStoreInfoActivity extends BasicActivity {
             Toast.makeText(EditStoreInfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요.", Toast.LENGTH_SHORT).show();
             hideKeybord();
         }
+        else if(binding.viewActivityEditStoreInfo.etAddress.getText().toString().equals("") || binding.viewActivityEditStoreInfo.etAddressDetail.getText().toString().equals("")){
+            Toast.makeText(EditStoreInfoActivity.this, "주소를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+            hideKeybord();
+        }
         else {
             try {
                 RestaurantInfoDto restaurantInfoDto = new RestaurantInfoDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType);
