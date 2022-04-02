@@ -94,6 +94,7 @@ public class LoginActivity extends BasicActivity {
                                                 // 매장정보입력이 완료된 상태
                                                 UserInfo.setRestaurantInfo(result.getData());
                                             }
+                                            UserInfo.setUserId(binding.etMemberId.getText().toString());
                                             startActivity(intent);
                                             finish();
                                         }

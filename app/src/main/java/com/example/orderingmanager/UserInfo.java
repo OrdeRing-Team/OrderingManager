@@ -19,6 +19,7 @@ public class UserInfo {
     private static int tableCount;
     private static FoodCategory foodCategory;
     private static RestaurantType restaurantType;
+    private static String userId;
 
     public static void setRestaurantInfo(OwnerSignInResultDto dto) {
         restaurantName = dto.getRestaurantName();
@@ -43,6 +44,10 @@ public class UserInfo {
         restaurantId = dto.getRestaurantId();
     }
 
+    public static void setUserId(String id){
+        userId = id;
+    }
+
     public static void setRestaurantId(Long id){
         restaurantId = id;
     }
@@ -56,6 +61,7 @@ public class UserInfo {
         foodCategory = null;
         restaurantType = null;
     }
+    public static String getUserId() { return userId; }
 
     public static Long getOwnerId() {
         return ownerId;
