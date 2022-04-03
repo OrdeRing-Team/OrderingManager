@@ -8,77 +8,18 @@
     tools:context=".ManageFragment">
 
     <!-- 매장정보입력 안 되어 있을 경우 -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/errorNotFound"
+    <include
+        android:id="@+id/view_error_load_store"
+        layout="@layout/view_error_page"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#BCBCBC"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
-
-        <TextView
-            android:id="@+id/errorTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/bmeuljiro10years"
-            android:gravity="center"
-            android:text="@string/ErrorMsg_404"
-            android:textColor="@color/black"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/errorImage"
-            android:layout_width="match_parent"
-            android:layout_height="416dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ordering_error_emoji_nohands"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/errorTitle" />
-
-        <TextView
-            android:id="@+id/errorMsg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/bmeuljiro10years"
-            android:gravity="center"
-            android:text="@string/errorNotFound"
-            android:textColor="@color/black"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/errorImage" />
-
-        <ImageButton
-            android:id="@+id/refreshImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/ic_refresh_big"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/errorMsg" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+        android:layout_height="match_parent"/>
 
     <!-- 매장정보입력 되어 있을 경우 -->
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/manageFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,7 +27,6 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/manageFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
@@ -149,7 +89,7 @@
                         android:id="@+id/tv_nikname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="닉네임"
+                        android:text="매장명"
                         android:fontFamily="@font/baeminjua"
                         android:textColor="@color/black"
                         android:textStyle="bold"
@@ -433,16 +373,9 @@
 
                             </LinearLayout>
 
-
                         </LinearLayout>
 
-
-
-
-
-
                     </LinearLayout>
-
 
                 </LinearLayout>
 
@@ -450,5 +383,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </FrameLayout>

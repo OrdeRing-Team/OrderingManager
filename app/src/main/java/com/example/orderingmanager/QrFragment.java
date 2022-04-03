@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orderingmanager.databinding.FragmentQrBinding;
 import com.google.zxing.BarcodeFormat;
@@ -54,21 +52,14 @@ public class QrFragment extends Fragment {
         if(UserInfo.getRestaurantId() != null) {
             createQrCodesByUserInfo();
         }
-//        if(UserInfo.getRestaurantId() != null) {
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    createQrCodesByUserInfo();
-//                }
-//            },3000);
-//        }
+
         return view;
     }
 
 
     private void initButtonClickListener(){
         // 버튼 기능 추가
-        binding.refreshImageButton.setOnClickListener(new View.OnClickListener() {
+        binding.viewErrorLoadStore.btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), MainActivity.class));
@@ -81,12 +72,12 @@ public class QrFragment extends Fragment {
         storeInitInfo = UserInfo.getRestaurantId() != null;
         if(!storeInitInfo){
             Log.e("qrFragment",storeInitInfo.toString());
-            binding.errorNotFound.setVisibility(View.VISIBLE);
+            binding.viewErrorLoadStore.errorNotFound.setVisibility(View.VISIBLE);
             //binding.refreshImageButton.setOnClickListener(onClickListener);
         }
         else{
             Log.e("qrFragment",storeInitInfo.toString());
-            binding.errorNotFound.setVisibility(View.GONE);
+            binding.viewErrorLoadStore.errorNotFound.setVisibility(View.GONE);
             binding.qrFragment.setVisibility(View.VISIBLE);
         }
     }
@@ -108,10 +99,10 @@ public class QrFragment extends Fragment {
         for(int tableNum = 1; tableNum<=table_count; tableNum++){
             qrList.add(new QrData(table_explain, storeName, CreateTableQR(tableNum)));
         }
-        RecyclerView recyclerView = binding.rvQrcode;
-        QrAdapter qrAdapter = new QrAdapter(qrList, getActivity());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false)) ;
-        recyclerView.setAdapter(qrAdapter);
+//        RecyclerView recyclerView = binding.rvQrcode;
+//        QrAdapter qrAdapter = new QrAdapter(qrList, getActivity());
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false)) ;
+//        recyclerView.setAdapter(qrAdapter);
     }
 
     private Bitmap CreateTakeoutQR(){

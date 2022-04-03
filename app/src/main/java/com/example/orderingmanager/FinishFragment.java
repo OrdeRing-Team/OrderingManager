@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.orderingmanager.databinding.FragmentFinishBinding;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
-import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
 public class FinishFragment extends Fragment {
 
@@ -35,7 +33,7 @@ public class FinishFragment extends Fragment {
 
             /* 이곳에 받아올 데이터를 추가하십셩 */
         }
-
+        initButtonClickListener();
         storeInfoCheck();
 
         //calendarView = getView().findViewById(R.id.calendarView);
@@ -53,13 +51,14 @@ public class FinishFragment extends Fragment {
     public void storeInfoCheck(){
         storeInitInfo = UserInfo.getRestaurantId() != null;
         if(!storeInitInfo){
-            Log.e("finishFrag",storeInitInfo.toString());
-            binding.errorNotFound.setVisibility(View.VISIBLE);
-            binding.refreshImageButton.setOnClickListener(onClickListener);
+            Log.e("FinishFragment",storeInitInfo.toString());
+            binding.viewErrorLoadStore.errorNotFound.setVisibility(View.VISIBLE);
+            binding.finishFragment.setVisibility(View.GONE);
+            //binding.refreshImageButton.setOnClickListener(onClickListener);
         }
         else{
-            Log.e("finishFrag",storeInitInfo.toString());
-            binding.errorNotFound.setVisibility(View.GONE);
+            Log.e("FinishFragment",storeInitInfo.toString());
+            binding.viewErrorLoadStore.errorNotFound.setVisibility(View.GONE);
             binding.finishFragment.setVisibility(View.VISIBLE);
         }
     }
@@ -70,16 +69,14 @@ public class FinishFragment extends Fragment {
         binding = null;
     }
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch(view.getId()){
-                case R.id.refreshImageButton:
-                    startActivity(new Intent(getActivity(), MainActivity.class));
-                    getActivity().finish();
-                    break;
+    public void initButtonClickListener(){
+        binding.viewErrorLoadStore.btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
             }
-        }
-    };
+        });
+    }
 }
 

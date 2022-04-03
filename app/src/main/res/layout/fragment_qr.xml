@@ -10,71 +10,11 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/errorNotFound"
+    <include
+        android:id="@+id/view_error_load_store"
+        layout="@layout/view_error_page"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#BCBCBC"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/errorTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="@string/ErrorMsg_404"
-            android:textStyle="bold"
-            android:textSize="50sp"
-            android:fontFamily="@font/bmeuljiro10years"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center"/>
-
-        <ImageView
-            android:id="@+id/errorImage"
-            android:layout_width="match_parent"
-            android:layout_height="416dp"
-            android:src="@drawable/ordering_error_emoji_nohands"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/errorTitle"/>
-
-        <TextView
-            android:id="@+id/errorMsg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/errorNotFound"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textSize="36sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/errorImage"
-            android:fontFamily="@font/bmeuljiro10years"/>
-
-        <ImageButton
-            android:id="@+id/refreshImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_refresh_big"
-            android:layout_gravity="center"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/errorMsg"
-            />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/qrFragment"
@@ -86,7 +26,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"
         tools:visibility="visible">
-
+        <com.github.florent37.hollyviewpager.HollyViewPager
+            android:id="@+id/hollyViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:hvp_headerHeight="150dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    <!--
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_qrcode"
             android:layout_width="wrap_content"
@@ -97,5 +46,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+            -->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

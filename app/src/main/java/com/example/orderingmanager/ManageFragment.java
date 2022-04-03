@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.orderingmanager.Dto.request.FoodCategory;
 import com.example.orderingmanager.Dto.request.RestaurantType;
@@ -28,13 +27,16 @@ public class ManageFragment extends Fragment {
         view = binding.getRoot();
 
         // 새로고침
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.detach(this).attach(this).commit();
 
-        initClickListener();
-        initView();
+        initButtonClickListener();
+
         storeInfoCheck();
 
+        if(UserInfo.getRestaurantId() != null) {
+            initView();
+        }
         return view;
     }
 
@@ -79,7 +81,7 @@ public class ManageFragment extends Fragment {
         }
     }
 
-    private void initClickListener() {
+    private void initButtonClickListener() {
         binding.btnManage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,27 +107,38 @@ public class ManageFragment extends Fragment {
                 //startActivityForResult(intent,MainActivity.MANAGEFRAGMENT);
             }
         });
+
+        binding.viewErrorLoadStore.btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
+            }
+        });
     }
 
-    public void storeInfoCheck() {
+    public void storeInfoCheck(){
         storeInitInfo = UserInfo.getRestaurantId() != null;
-        if (!storeInitInfo) {
-            Log.e("manageFrag", storeInitInfo.toString());
-            binding.errorNotFound.setVisibility(View.VISIBLE);
-            binding.refreshImageButton.setOnClickListener(onClickListener);
-        } else {
-            Log.e("manageFrag", storeInitInfo.toString());
-            binding.errorNotFound.setVisibility(View.GONE);
+        if(!storeInitInfo){
+            Log.e("ManageFragment",storeInitInfo.toString());
+            binding.viewErrorLoadStore.errorNotFound.setVisibility(View.VISIBLE);
+            binding.manageFragment.setVisibility(View.GONE);
+        }
+        else{
+            Log.e("ManageFragment",storeInitInfo.toString());
+            binding.viewErrorLoadStore.errorNotFound.setVisibility(View.GONE);
             binding.manageFragment.setVisibility(View.VISIBLE);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
         // 정보 수정이 이루어지고 fragment 로 다시 돌아왔을때는 onResume 이 호출된다
         // 뷰를 새로 다시 세팅해준다.
-        // onResume 을 사용하면 굳이 복잡하게 메인액티비티의 onActivityResult 안써도 될것같긴한데,,,, 수정하기 무서우니 일단...
-        initView();
+        if(UserInfo.getRestaurantId() != null) {
+            initView();
+        }
     }
 
     @Override
@@ -134,17 +147,6 @@ public class ManageFragment extends Fragment {
         binding = null;
     }
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.refreshImageButton:
-                    startActivity(new Intent(getActivity(), MainActivity.class));
-                    getActivity().finish();
-                    break;
-            }
-        }
-    };
 
 
 }

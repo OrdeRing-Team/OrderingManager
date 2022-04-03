@@ -23,7 +23,7 @@
     <string name="dialogTitleText">등록된 매장이 없습니다.</string>
     <string name="dialogButtonText">매장 등록하기</string>
     <string name="ErrorMsg_404">404 Not Found</string>
-    <string name="errorNotFound">데이터를 찾을 수 없습니다.</string>
+    <string name="errorNotFound">매장 정보를 불러오는데 오류가 발생했습니다.\n앱을 종료 후 다시 실행하시거나\n페이지를 새로고침 하십시오.</string>
     <string name="createQRMainText">매장에서 사용될 QR코드를 생성중입니다.</string>
     <string name="memberIdSubText">아이디</string>
     <string name="menu_action_all_down">All down</string>
@@ -57,6 +57,7 @@
     <string name="category_jokbal">족발 / 보쌈</string>
     <string name="category_jjim">찜 / 탕</string>
     <string name="category_fast_food">패스트푸드</string>
+    <string name="error_refresh">새로고침</string>
 
     //캘린더
     <string-array name="custom_weekdays">

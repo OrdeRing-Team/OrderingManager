@@ -31,6 +31,7 @@ public class OrderFragment extends Fragment {
             /* 이곳에 받아올 데이터를 추가하십셩 */
         }
 
+        initButtonClickListener();
         storeInfoCheck();
 
         return view;
@@ -40,13 +41,13 @@ public class OrderFragment extends Fragment {
     public void storeInfoCheck(){
         storeInitInfo = UserInfo.getRestaurantId() != null;
         if(!storeInitInfo){
-            Log.e("orderFrag",storeInitInfo.toString());
-            binding.errorNotFound.setVisibility(View.VISIBLE);
-            binding.refreshImageButton.setOnClickListener(onClickListener);
+            Log.e("OrderFragment",storeInitInfo.toString());
+            binding.viewErrorLoadStore.errorNotFound.setVisibility(View.VISIBLE);
+            binding.orderFragment.setVisibility(View.GONE);
         }
         else{
-            Log.e("orderFrag",storeInitInfo.toString());
-            binding.errorNotFound.setVisibility(View.GONE);
+            Log.e("OrderFragment",storeInitInfo.toString());
+            binding.viewErrorLoadStore.errorNotFound.setVisibility(View.GONE);
             binding.orderFragment.setVisibility(View.VISIBLE);
         }
     }
@@ -57,15 +58,13 @@ public class OrderFragment extends Fragment {
         binding = null;
     }
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch(view.getId()){
-                case R.id.refreshImageButton:
-                    startActivity(new Intent(getActivity(), MainActivity.class));
-                    getActivity().finish();
-                    break;
+    public void initButtonClickListener(){
+        binding.viewErrorLoadStore.btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
             }
-        }
-    };
+        });
+    }
 }
