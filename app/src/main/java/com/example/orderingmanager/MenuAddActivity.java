@@ -3,24 +3,35 @@ package com.example.orderingmanager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.orderingmanager.Dto.FoodDto;
+import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.databinding.ActivityMenuItemBinding;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import lombok.SneakyThrows;
 
 public class MenuAddActivity extends BasicActivity {
     EditText edtName, edtPrice;
@@ -30,6 +41,7 @@ public class MenuAddActivity extends BasicActivity {
     String image;
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView ivMenu;
+    private ActivityMenuItemBinding binding;
 
     //뒤로가기 버튼
     ImageButton btnBack;
@@ -41,13 +53,12 @@ public class MenuAddActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_item);
 
-        edtName = findViewById(R.id.edt_name);
-        edtPrice = findViewById(R.id.edt_price);
+        binding = ActivityMenuItemBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
 
         //뒤로가기 버튼 클릭 이벤트
-        btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), StoreManageActivity.class));
@@ -56,8 +67,7 @@ public class MenuAddActivity extends BasicActivity {
         });
 
         //메뉴사진 업로드
-        ivMenu = findViewById(R.id.iv_menu);
-        ivMenu.setOnClickListener(new View.OnClickListener() {
+        binding.ivMenu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -67,36 +77,91 @@ public class MenuAddActivity extends BasicActivity {
         });
 
 
-        btnSubmit = findViewById(R.id.btn_submit);
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                name = edtName.getText().toString();
-                price = edtPrice.getText().toString();
-                if (name.length() > 0 && price.length() > 0) {
+                if (name.length() == 0 || price.length() == 0) {
+                    Toast.makeText(MenuAddActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+                }
 
-                    //DB에 메뉴 추가
-                    manageInfo.put("메뉴명", name);
-                    manageInfo.put("메뉴가격", price);
-                    manageInfo.put("메뉴사진", image);
+                else {
+                    try {
+                        FoodDto foodDto = new FoodDto(name, Integer.valueOf(price));
 
-                    setDB(manageInfo);
+                        URL url = new URL("http://www.ordering.ml/api/restaurant/" + MenuInfo.getRestaurantId() + "/food");
+                        HttpApi httpApi = new HttpApi(url, "POST");
 
-//                    //MenuManageActivity의 리사이클러뷰에 메뉴 추가
-//                    Intent intent = new Intent(getApplicationContext(), MenuManageActivity.class);
-//                    intent.putExtra("new", true);
-//                    intent.putExtra("name", name);
-//                    intent.putExtra("price", price);
-//                    startActivity(intent);
-//                    finish();
+                        new Thread() {
+                            @SneakyThrows
+                            public void run() {
+                                String json = httpApi.requestToServer(foodDto);
+                                ObjectMapper mapper = new ObjectMapper();
+                                ResultDto<Long> result = mapper.readValue(json, new TypeReference<ResultDto<Long>>() {});
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(result.getData() != null) {
+                                            MenuInfo.setFoodId(result.getData());
+                                            Log.e("foodId ",result.getData().toString());
+                                        }
+                                    }
+                                });
 
-                    /* MenuManageActivity의 리사이클러뷰에 DB에 저장된 메뉴 출력 */
+                            }
+                        }.start();
 
-                } else {
-                    showToast(MenuAddActivity.this, "빈 칸을 모두 입력해주세요.");
+                    } catch (Exception e) {
+                        Toast.makeText(MenuAddActivity.this, "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                        Log.e("e = " , e.getMessage());
+                    }
                 }
             }
         });
+
+//        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                name = edtName.getText().toString();
+//                price = edtPrice.getText().toString();
+//                if (name.length() > 0 && price.length() > 0) {
+//
+//                    try {
+//                        FoodDto foodDto = new FoodDto(name, Integer.valueOf(price));
+//
+//                        URL url = new URL("http://www.ordering.ml/api/owner/" + UserInfo.getOwnerId().toString()+ "/restaurant");
+//                        HttpApi httpApi = new HttpApi(url, "POST");
+//
+//                        new Thread() {
+//                            @SneakyThrows
+//                            public void run() {
+//                                String json = httpApi.requestToServer(foodDto);
+//                                ObjectMapper mapper = new ObjectMapper();
+//                                ResultDto<Long> result = mapper.readValue(json, new TypeReference<ResultDto<Long>>() {});
+//                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        if(result.getData() != null) {
+//                                            //UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantInfoDto);
+//                                            MenuInfo.setMenuInfo(result.getData());
+//                                            Log.e("restaurantId ",result.getData().toString());
+//                                            createQRCodes();
+//                                        }
+//                                    }
+//                                });
+//
+//                            }
+//                        }.start();
+//
+//                    } catch (Exception e) {
+//                        showToast(this,"서버 요청에 실패하였습니다.");
+//                        Log.e("e = " , e.getMessage());
+//                    }
+//
+//                } else {
+//                    showToast(MenuAddActivity.this, "빈 칸을 모두 입력해주세요.");
+//                }
+//            }
+//        });
 
 
     }

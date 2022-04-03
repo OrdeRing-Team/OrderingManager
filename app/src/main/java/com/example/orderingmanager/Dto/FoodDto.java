@@ -12,9 +12,9 @@ import lombok.Setter;
 @NoArgsConstructor(access =PROTECTED)
 public class FoodDto {
 
-    private Long foodId;
+    //private Long foodId;
     private String foodName;
     private int price;
-    private boolean soldOut;
-    private String imageUrl;
+    //private boolean soldOut;
+    //private String imageUrl;
 }

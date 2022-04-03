@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -43,20 +44,8 @@ public class MenuManageFragment extends Fragment {
         binding = FragmentMenuManageBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
-        //리사이클러뷰 임시 데이터
-//        ArrayList<ManageData> arrayList = new ArrayList<>();
-//        arrayList.add(new ManageData("후라이드 치킨", "18000"));
-//        arrayList.add(new ManageData("양념 치킨", "20000"));
-//        arrayList.add(new ManageData("간장 치킨", "20000"));
-//        arrayList.add(new ManageData("포테이토 피자", "15000"));
-//        arrayList.add(new ManageData("불고기 피자", "15000"));
-//        arrayList.add(new ManageData("후라이드 치킨 반 + 양념 치킨 반", "20000"));
-//        arrayList.add(new ManageData("양념 치킨 반 + 간장 치킨 반", "22000"));
-//        arrayList.add(new ManageData("양념 치킨 + 포테이토 피자", "32000"));
-//        arrayList.add(new ManageData("후라이드 치킨 + 포테이토 피자", "30000"));
-//        arrayList.add(new ManageData("간장 치킨 + 불고기 피자", "32000"));
-
         getMenuFromServer();
+        menuAdd();
         return view;
     }
 
@@ -92,6 +81,15 @@ public class MenuManageFragment extends Fragment {
             BasicActivity.showToast(getActivity(),"서버 요청에 실패하였습니다.");
             Log.e("e = " , e.getMessage());
         }
+    }
+
+    public void menuAdd() {
+        binding.btnMenuAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MenuAddActivity.class));
+            }
+        });
     }
 
 }

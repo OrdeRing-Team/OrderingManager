@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ public class EditPersonalInfoActivity extends BasicActivity {
         setContentView(binding.getRoot());
 
         initButtonClickListener();
+        setData();
 
     }
 
@@ -101,5 +103,16 @@ public class EditPersonalInfoActivity extends BasicActivity {
         } catch (Exception e) {
             showToast(EditPersonalInfoActivity.this,"서버 연결에 문제가 발생했습니다.");
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setData() {
+        // 각 입력 항목에 기존 정보로 세팅
+
+        // 사용자명
+        binding.tvName.setText(UserInfo.getOwnerName());
+
+        // 점주 아이디
+        binding.tvId.setText(UserInfo.getUserId());
     }
 }

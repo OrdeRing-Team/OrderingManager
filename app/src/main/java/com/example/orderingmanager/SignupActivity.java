@@ -264,7 +264,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void checkAllWritten(){
-        if(isMemberIdWritten && isPasswordWritten && isPasswordCheckAccord){
+        if(isMemberIdWritten && isPasswordWritten && isPasswordCheckAccord) {
             ButtonRelease(binding.btnSignup);
         }
         else{
