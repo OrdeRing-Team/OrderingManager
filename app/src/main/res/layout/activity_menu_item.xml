@@ -108,6 +108,7 @@
             android:textColorHint="#939393" />
 
         <EditText
+            android:id="@+id/edt_intro"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

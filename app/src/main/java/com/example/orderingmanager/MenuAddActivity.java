@@ -39,6 +39,7 @@ public class MenuAddActivity extends BasicActivity {
     String name;
     String price;
     String image;
+    String menuIntro;
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView ivMenu;
     private ActivityMenuItemBinding binding;
@@ -80,15 +81,18 @@ public class MenuAddActivity extends BasicActivity {
         binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                name = binding.edtName.getText().toString();
+                price = binding.edtPrice.getText().toString();
+                menuIntro = binding.edtIntro.getText().toString();
                 if (name.length() == 0 || price.length() == 0) {
                     Toast.makeText(MenuAddActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
                 }
 
                 else {
                     try {
-                        FoodDto foodDto = new FoodDto(name, Integer.valueOf(price));
+                        FoodDto foodDto = new FoodDto(name, Integer.parseInt(price), false, menuIntro);
 
-                        URL url = new URL("http://www.ordering.ml/api/restaurant/" + MenuInfo.getRestaurantId() + "/food");
+                        URL url = new URL("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/food");
                         HttpApi httpApi = new HttpApi(url, "POST");
 
                         new Thread() {
@@ -101,7 +105,7 @@ public class MenuAddActivity extends BasicActivity {
                                     @Override
                                     public void run() {
                                         if(result.getData() != null) {
-                                            MenuInfo.setFoodId(result.getData());
+                                            UserInfo.setFoodId(result.getData());
                                             Log.e("foodId ",result.getData().toString());
                                         }
                                     }
@@ -208,6 +212,4 @@ public class MenuAddActivity extends BasicActivity {
                     }
                 });
     }
-
-
 }
