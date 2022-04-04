@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.orderingmanager.databinding.FragmentQrBinding;
+import com.example.orderingmanager.databinding.ViewQrTableBinding;
+import com.example.orderingmanager.databinding.ViewQrTakeoutBinding;
+import com.example.orderingmanager.databinding.ViewQrWaitingBinding;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -24,13 +29,13 @@ public class QrFragment extends Fragment {
 
     //viewbinding
     private FragmentQrBinding binding;
-
     Bundle extra;
 
     Boolean storeInitInfo;
     String url;
 
     ArrayList<QrData> qrList = new ArrayList<>();
+    ArrayList<Bitmap> qrBitmapList = new ArrayList<>();
     //MultiFormatWriter multiFormatWriter;
     int table_count;
 
@@ -90,19 +95,68 @@ public class QrFragment extends Fragment {
 
     public void createQrCodesByUserInfo(){
         table_count = UserInfo.getTableCount();
-        String takeout_explain = "기다리지 말고\nQR 찍고 포장 주문하세요";
-        String waiting_explain = "줄 서지 말고\nQR 찍고 대기 등록하세요";
-        String table_explain = "테이블에서\nQR 찍고 주문하세요";
+//        String takeout_explain = "기다리지 말고\nQR 찍고 포장 주문하세요";
+//        String waiting_explain = "줄 서지 말고\nQR 찍고 대기 등록하세요";
+//        String table_explain = "테이블에서\nQR 찍고 주문하세요";
         String storeName = UserInfo.getRestaurantName();
-        qrList.add(new QrData(takeout_explain, storeName, CreateTakeoutQR()));
-        qrList.add(new QrData(waiting_explain, storeName, CreateWaitingQR()));
-        for(int tableNum = 1; tableNum<=table_count; tableNum++){
-            qrList.add(new QrData(table_explain, storeName, CreateTableQR(tableNum)));
+//        qrList.add(new QrData(takeout_explain, storeName, CreateTakeoutQR()));
+//        qrList.add(new QrData(waiting_explain, storeName, CreateWaitingQR()));
+//        for(int tableNum = 1; tableNum<=table_count; tableNum++){
+//            qrList.add(new QrData(table_explain, storeName, CreateTableQR(tableNum)));
+//        }
+        for(int i = 0; i<table_count+2;i++){
+            switch(i){
+                case 0:
+                    qrBitmapList.add(convert2Bitmap(i,CreateTakeoutQR(),storeName));
+                    break;
+                case 1:
+                    qrBitmapList.add(convert2Bitmap(i,CreateWaitingQR(),storeName));
+                    break;
+                default:
+                    qrBitmapList.add(convert2Bitmap(i,CreateTableQR(i-2),storeName));
+                    break;
+            }
         }
+
 //        RecyclerView recyclerView = binding.rvQrcode;
 //        QrAdapter qrAdapter = new QrAdapter(qrList, getActivity());
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false)) ;
 //        recyclerView.setAdapter(qrAdapter);
+    }
+
+    // 해당하는 QR 레이아웃의 view를 Bitmap으로 변환하여 반환
+    @SuppressLint("SetTextI18n")
+    private Bitmap convert2Bitmap(int listNum, Bitmap qrImage, String storeName){
+        Bitmap captureView;
+        ConstraintLayout qrContainer;
+        switch (listNum){
+            case 0:
+                ViewQrTakeoutBinding qrTakeoutBinding;
+                qrTakeoutBinding = ViewQrTakeoutBinding.inflate(getLayoutInflater());
+                qrTakeoutBinding.ivQrcoderv.setImageBitmap(qrImage);
+                qrTakeoutBinding.tvQrStoreName.setText(storeName);
+                qrContainer = getView().findViewById(R.id.view_qr_takeout_inner);
+                captureView = qrContainer.getDrawingCache();
+                break;
+            case 1:
+                ViewQrWaitingBinding qrWaitingBinding;
+                qrWaitingBinding = ViewQrWaitingBinding.inflate(getLayoutInflater());
+                qrWaitingBinding.ivQrcoderv.setImageBitmap(qrImage);
+                qrWaitingBinding.tvQrStoreName.setText(storeName);
+                qrContainer = getView().findViewById(R.id.view_qr_waiting_inner);
+                captureView = qrContainer.getDrawingCache();
+                break;
+            default:
+                ViewQrTableBinding qrTableBinding;
+                qrTableBinding = ViewQrTableBinding.inflate(getLayoutInflater());
+                qrTableBinding.tvTableNum.setText(listNum-1 + "번 테이블");
+                qrTableBinding.ivQrcoderv.setImageBitmap(qrImage);
+                qrTableBinding.tvQrStoreName.setText(storeName);
+                qrContainer = getView().findViewById(R.id.view_qr_table_inner);
+                captureView = qrContainer.getDrawingCache();
+                break;
+        }
+        return captureView;
     }
 
     private Bitmap CreateTakeoutQR(){
