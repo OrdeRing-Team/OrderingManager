@@ -7,9 +7,13 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -17,6 +21,8 @@ import com.example.orderingmanager.databinding.FragmentQrBinding;
 import com.example.orderingmanager.databinding.ViewQrTableBinding;
 import com.example.orderingmanager.databinding.ViewQrTakeoutBinding;
 import com.example.orderingmanager.databinding.ViewQrWaitingBinding;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -36,7 +42,6 @@ public class QrFragment extends Fragment {
 
     ArrayList<QrData> qrList = new ArrayList<>();
     ArrayList<Bitmap> qrBitmapList = new ArrayList<>();
-    //MultiFormatWriter multiFormatWriter;
     int table_count;
 
     @Override
@@ -46,7 +51,6 @@ public class QrFragment extends Fragment {
         if(extra != null) {
             extra = getArguments();
 
-            /* 이곳에 받아올 데이터를 추가하십셩 */
         }
 
         binding = FragmentQrBinding.inflate(inflater, container, false);
@@ -56,7 +60,30 @@ public class QrFragment extends Fragment {
         storeInfoCheck();
         if(UserInfo.getRestaurantId() != null) {
             createQrCodesByUserInfo();
+            setHasOptionsMenu(true); // 툴바 활성화
         }
+
+        //뷰페이저 세팅
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity(), 1,3);
+        binding.qrViewPager.setAdapter(adapter);
+
+        new TabLayoutMediator(binding.tabLayoutQr, binding.qrViewPager,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        switch (position){
+                            case 0:
+                                tab.setText("포장");
+                                break;
+                            case 1:
+                                tab.setText("웨이팅");
+                                break;
+                            default:
+                                tab.setText("테이블");
+                                break;
+                        }
+                    }
+                }).attach();
 
         return view;
     }
@@ -104,19 +131,21 @@ public class QrFragment extends Fragment {
 //        for(int tableNum = 1; tableNum<=table_count; tableNum++){
 //            qrList.add(new QrData(table_explain, storeName, CreateTableQR(tableNum)));
 //        }
-        for(int i = 0; i<table_count+2;i++){
-            switch(i){
-                case 0:
-                    qrBitmapList.add(convert2Bitmap(i,CreateTakeoutQR(),storeName));
-                    break;
-                case 1:
-                    qrBitmapList.add(convert2Bitmap(i,CreateWaitingQR(),storeName));
-                    break;
-                default:
-                    qrBitmapList.add(convert2Bitmap(i,CreateTableQR(i-2),storeName));
-                    break;
-            }
-        }
+
+
+//        for(int i = 0; i<table_count+2;i++){
+//            switch(i){
+//                case 0:
+//                    qrBitmapList.add(convert2Bitmap(i,CreateTakeoutQR(),storeName));
+//                    break;
+//                case 1:
+//                    qrBitmapList.add(convert2Bitmap(i,CreateWaitingQR(),storeName));
+//                    break;
+//                default:
+//                    qrBitmapList.add(convert2Bitmap(i,CreateTableQR(i-2),storeName));
+//                    break;
+//            }
+//        }
 
 //        RecyclerView recyclerView = binding.rvQrcode;
 //        QrAdapter qrAdapter = new QrAdapter(qrList, getActivity());
@@ -229,4 +258,15 @@ public class QrFragment extends Fragment {
             return bitmap;
         }
     }
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu,inflater); inflater.inflate(R.menu.menu_qr,menu);
+    }
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        int curId = item.getItemId();
+        if (curId == R.id.menu_save_all_qr) {
+            MainActivity.showToast(getActivity(), "저장 버튼 클릭");
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
