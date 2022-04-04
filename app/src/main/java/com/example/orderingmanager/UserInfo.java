@@ -59,11 +59,13 @@ public class UserInfo {
     }
 
     public static void setFood(FoodDto dto) {
-        foodId = dto.getFoodId();
+        //foodId = dto.getFoodId();
         menuName = dto.getFoodName();
         menuPrice = dto.getPrice();
         menuIntro = dto.getMenuIntro();
     }
+
+
 
     public static void init(){
 

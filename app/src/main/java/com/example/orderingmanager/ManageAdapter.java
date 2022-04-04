@@ -22,7 +22,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         //        adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
         //        itemView를 저장하는 custom viewHolder 생성
         //        findViewById & 각종 event 작업
-        TextView tvName, tvPrice;
+        TextView tvName, tvPrice, tvIntro;
         //ImageView ivMenu;
 
         public CustomViewHolder(@NonNull View itemView) {
@@ -30,6 +30,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
             //item 에 대한 클릭 이벤트 설정
             tvName = itemView.findViewById(R.id.item_name);
             tvPrice = itemView.findViewById(R.id.item_price);
+            tvIntro = itemView.findViewById(R.id.item_intro);
             //ivMenu = itemView.findViewById(R.id.item_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -38,8 +39,8 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Intent intent = new Intent(context, MenuEditActivity.class);
-                        intent.putExtra("name", arrayList.get(position).getTv_name());
-                        intent.putExtra("price", arrayList.get(position).getTv_price());
+                        intent.putExtra("name", arrayList.get(position).getName());
+                        intent.putExtra("price", arrayList.get(position).getPrice());
                         //intent.putExtra("menuImage", arrayList.get(position).getIv_menu());
                         intent.putExtra("position", position);
 
@@ -54,7 +55,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
                     if (position != RecyclerView.NO_POSITION) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("삭제")
-                                .setMessage(arrayList.get(position).getTv_name() + "을(를) 삭제하시겠습니까?")
+                                .setMessage(arrayList.get(position).getName() + "을(를) 삭제하시겠습니까?")
                                 .setPositiveButton("삭제하기", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -96,8 +97,9 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
 //        onBindViewHolder: put data of item list into xml widgets
 //        xml의 위젯과 데이터를 묶는(연결하는, setting하는) 작업.
 //        position에 해당하는 data, viewHolder의 itemView에 표시함
-        holder.tvName.setText(arrayList.get(position).getTv_name());
-        holder.tvPrice.setText(String.valueOf(arrayList.get(position).getTv_price()));
+        holder.tvName.setText(arrayList.get(position).getName());
+        holder.tvPrice.setText(String.valueOf(arrayList.get(position).getPrice()));
+        holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
         //holder.ivMenu.setImageResource(arrayList.get(position).getIv_menu());
     }
 

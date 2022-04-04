@@ -47,7 +47,6 @@ public class MenuEditActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), StoreManageActivity.class));
                 finish();
                 if (isFinishing()) {
                     // 이 화면은 오른쪽에서 왼쪽으로 슬라이딩 하면서 사라집니다.

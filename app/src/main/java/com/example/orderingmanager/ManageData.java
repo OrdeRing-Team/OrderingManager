@@ -3,13 +3,16 @@ package com.example.orderingmanager;
 public class ManageData {
 
     private int iv_menu;
-    private String tv_name;
-    private String tv_price;
+    private String name;
+    private String price;
+    private String intro;
 
-    public ManageData(String tv_name, String tv_price) {
+    public ManageData(String name, String price, String intro) {
         //this.iv_menu = iv_menu;
-        this.tv_name = tv_name;
-        this.tv_price = tv_price;
+        this.name = name;
+        this.price = price;
+        this.intro = intro;
+
     }
 
     public int getIv_menu() {
@@ -20,19 +23,27 @@ public class ManageData {
         this.iv_menu = iv_menu;
     }
 
-    public String getTv_name() {
-        return tv_name;
+    public String getName() {
+        return name;
     }
 
-    public void setTv_name(String tv_name) {
-        this.tv_name = tv_name;
+    public void setName(String tv_name) {
+        this.name = tv_name;
     }
 
-    public String getTv_price() {
-        return tv_price;
+    public String getPrice() {
+        return price;
     }
 
-    public void setTv_price(String tv_price) { this.tv_price = tv_price; }
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
+    public String getIntro() {
+        return intro;
+    }
 
+    public void setIntro(String intro) {
+        this.intro = intro;
+    }
 }

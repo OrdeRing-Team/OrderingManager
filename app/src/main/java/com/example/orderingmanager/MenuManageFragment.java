@@ -44,6 +44,7 @@ public class MenuManageFragment extends Fragment {
         binding = FragmentMenuManageBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+
         getMenuFromServer();
         menuAdd();
         return view;
@@ -64,7 +65,7 @@ public class MenuManageFragment extends Fragment {
                         @Override
                         public void run() {
                             result.getData().forEach(foodDto ->{
-                                    menuList.add(new ManageData(foodDto.getFoodName(), Integer.toString(foodDto.getPrice())));
+                                    menuList.add(new ManageData(foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro()));
                                 Log.e("data = ", foodDto.getFoodName());
                             });
                             RecyclerView recyclerView = binding.rvMenu;

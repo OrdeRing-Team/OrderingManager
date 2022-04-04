@@ -105,8 +105,7 @@ public class MenuAddActivity extends BasicActivity {
                                     @Override
                                     public void run() {
                                         if(result.getData() != null) {
-                                            UserInfo.setFoodId(result.getData());
-                                            Log.e("foodId ",result.getData().toString());
+                                            finish();
                                         }
                                     }
                                 });
@@ -122,50 +121,6 @@ public class MenuAddActivity extends BasicActivity {
             }
         });
 
-//        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                name = edtName.getText().toString();
-//                price = edtPrice.getText().toString();
-//                if (name.length() > 0 && price.length() > 0) {
-//
-//                    try {
-//                        FoodDto foodDto = new FoodDto(name, Integer.valueOf(price));
-//
-//                        URL url = new URL("http://www.ordering.ml/api/owner/" + UserInfo.getOwnerId().toString()+ "/restaurant");
-//                        HttpApi httpApi = new HttpApi(url, "POST");
-//
-//                        new Thread() {
-//                            @SneakyThrows
-//                            public void run() {
-//                                String json = httpApi.requestToServer(foodDto);
-//                                ObjectMapper mapper = new ObjectMapper();
-//                                ResultDto<Long> result = mapper.readValue(json, new TypeReference<ResultDto<Long>>() {});
-//                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if(result.getData() != null) {
-//                                            //UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantInfoDto);
-//                                            MenuInfo.setMenuInfo(result.getData());
-//                                            Log.e("restaurantId ",result.getData().toString());
-//                                            createQRCodes();
-//                                        }
-//                                    }
-//                                });
-//
-//                            }
-//                        }.start();
-//
-//                    } catch (Exception e) {
-//                        showToast(this,"서버 요청에 실패하였습니다.");
-//                        Log.e("e = " , e.getMessage());
-//                    }
-//
-//                } else {
-//                    showToast(MenuAddActivity.this, "빈 칸을 모두 입력해주세요.");
-//                }
-//            }
-//        });
 
 
     }
@@ -186,8 +141,6 @@ public class MenuAddActivity extends BasicActivity {
         }
 
     }
-
-
 
     private void setDB(Map<String, Object> manageInfo) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
