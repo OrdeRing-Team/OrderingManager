@@ -16,16 +16,45 @@
     <LinearLayout
         android:id="@+id/finishFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         >
 
+        <!-- 캘린더 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:elevation="10dp"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/baeminjua"
+                android:text="OrdeRing"
+                android:textColor="#E1695E"
+                android:textSize="34sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/textView1"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="20dp">
 
         <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             android:id="@+id/calendarView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="10dp"
             app:mcv_showOtherDates="all"
             app:mcv_selectionColor="#E1695E"
             app:mcv_headerTextAppearance="@style/CalendarWidgetHeader"
@@ -33,17 +62,56 @@
             app:mcv_selectionMode="range"
             />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"/>
+            </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
+        </LinearLayout>
+
+        <!-- 정산 결과 보여주는 부분 -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:background="#E1695E"/>
+            android:layout_height="300dp"
+            android:orientation="vertical">
+
+            <!-- 선택날짜 -->
+            <TextView
+                android:id="@+id/diaryTextView"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/baeminjua"
+                android:textColor="#E1695E"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/monthView"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- 총매출 -->
+            <TextView
+                android:id="@+id/monthView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@+id/diaryTextView" />
+
+
+            <!-- 선택날짜 매출 -->
+            <TextView
+                android:id="@+id/selectedView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="30dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@+id/monthView" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
