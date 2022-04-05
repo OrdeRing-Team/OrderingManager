@@ -58,7 +58,7 @@
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_address"
-        tools:context=".InfoActivity">
+        tools:context=".view.InfoActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
