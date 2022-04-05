@@ -11,20 +11,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.example.orderingmanager.view.BasicActivity;
 import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
-import com.example.orderingmanager.HttpApi;
-import com.example.orderingmanager.view.MainActivity;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityLoginBinding;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.net.URL;
+import com.example.orderingmanager.view.BasicActivity;
+import com.example.orderingmanager.view.MainActivity;
 
 import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends BasicActivity {
 
@@ -66,53 +67,112 @@ public class LoginActivity extends BasicActivity {
                     try {
                         SignInDto signInDto = new SignInDto(memberId, password);
 
-                        URL url = new URL("http://www.ordering.ml/api/owner/signin");
-                        HttpApi httpApi = new HttpApi(url, "POST");
+//                        URL url = new URL("http://www.ordering.ml/api/owner/signin");
+//                        HttpApi httpApi = new HttpApi(url, "POST");
 
                         new Thread() {
                             @SneakyThrows
                             public void run() {
                                 // login
-                                String json = httpApi.requestToServer(signInDto);
-                                ObjectMapper mapper = new ObjectMapper();
-                                ResultDto<OwnerSignInResultDto> result = mapper.readValue(json, new TypeReference<ResultDto<OwnerSignInResultDto>>() {});
+                                Retrofit retrofit = new Retrofit.Builder()
+                                        .baseUrl("http://www.ordering.ml/api/owner/signin/")
+                                        .addConverterFactory(GsonConverterFactory.create())
+                                        .build();
 
+                                RetrofitService service = retrofit.create(RetrofitService.class);
+                                Call<ResultDto<OwnerSignInResultDto>> call = service.ownerSignIn(signInDto);
 
-                                if(result.getData() != null){
-                                    // 아이디 비밀번호 일치할 때
-                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            UserInfo.setUserInfo(result.getData());
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                call.enqueue(new Callback<ResultDto<OwnerSignInResultDto>>() {
+                                    @Override
+                                    public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
 
+                                        ResultDto<OwnerSignInResultDto> result = response.body();
+                                        if (response.isSuccessful()) {
+                                            if(result.getData() != null){
+                                                // 아이디 비밀번호 일치할 때
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        UserInfo.setUserInfo(result.getData());
+                                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
-                                            if(result.getData().getRestaurantId() == null){
-                                                // 매장정보입력이 안되어 있을때
-                                                Log.e("getOwnerId : ",result.getData().getOwnerId().toString());
-                                                Log.e("getRestaurantId : ",result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
+                                                        if(result.getData().getRestaurantId() == null){
+                                                            // 매장정보입력이 안되어 있을때
+                                                            Log.e("getOwnerId : ",result.getData().getOwnerId().toString());
+                                                            Log.e("getRestaurantId : ",result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
 
-                                                //intent.putExtra("restaurantId", false);
+                                                            //intent.putExtra("restaurantId", false);
+                                                        }
+                                                        else{
+                                                            // 매장정보입력이 완료된 상태
+                                                            UserInfo.setRestaurantInfo(result.getData());
+                                                        }
+                                                        UserInfo.setUserId(binding.etMemberId.getText().toString());
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                });
                                             }
                                             else{
-                                                // 매장정보입력이 완료된 상태
-                                                UserInfo.setRestaurantInfo(result.getData());
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
+                                                        showLoginErrorPopup();
+                                                    }
+                                                });
                                             }
-                                            UserInfo.setUserId(binding.etMemberId.getText().toString());
-                                            startActivity(intent);
-                                            finish();
                                         }
-                                    });
-                                }
-                                else{
-                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
-                                            showLoginErrorPopup();
-                                        }
-                                    });
-                                }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResultDto<OwnerSignInResultDto>> call, Throwable t) {
+                                        Toast.makeText(LoginActivity.this,"로그인 도중 일시적인 오류가 발생하였습니다.",Toast.LENGTH_LONG).show();
+                                        Log.e("e = " , t.getMessage());
+                                    }
+                                });
+
+
+//                                String json = httpApi.requestToServer(signInDto);
+//                                ObjectMapper mapper = new ObjectMapper();
+//                                ResultDto<OwnerSignInResultDto> result = mapper.readValue(json, new TypeReference<ResultDto<OwnerSignInResultDto>>() {});
+//
+//
+//                                if(result.getData() != null){
+//                                    // 아이디 비밀번호 일치할 때
+//                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            UserInfo.setUserInfo(result.getData());
+//                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//
+//
+//                                            if(result.getData().getRestaurantId() == null){
+//                                                // 매장정보입력이 안되어 있을때
+//                                                Log.e("getOwnerId : ",result.getData().getOwnerId().toString());
+//                                                Log.e("getRestaurantId : ",result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
+//
+//                                                //intent.putExtra("restaurantId", false);
+//                                            }
+//                                            else{
+//                                                // 매장정보입력이 완료된 상태
+//                                                UserInfo.setRestaurantInfo(result.getData());
+//                                            }
+//                                            UserInfo.setUserId(binding.etMemberId.getText().toString());
+//                                            startActivity(intent);
+//                                            finish();
+//                                        }
+//                                    });
+//                                }
+//                                else{
+//                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
+//                                            showLoginErrorPopup();
+//                                        }
+//                                    });
+//                                }
                             }
                         }.start();
 
