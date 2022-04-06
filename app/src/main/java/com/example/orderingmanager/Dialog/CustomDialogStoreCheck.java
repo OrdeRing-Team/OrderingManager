@@ -12,10 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.example.orderingmanager.databinding.CustomDialogBinding;
+import com.example.orderingmanager.databinding.CustomDialogStoreCheckBinding;
 
-public class CustomDialog extends Dialog {
-    private CustomDialogBinding binding;
+public class CustomDialogStoreCheck extends Dialog {
+    private CustomDialogStoreCheckBinding binding;
     private View.OnClickListener positiveButton;
     private View.OnClickListener negativeButton;
 
@@ -30,11 +30,11 @@ public class CustomDialog extends Dialog {
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        binding = CustomDialogBinding.inflate(getLayoutInflater());
+        binding = CustomDialogStoreCheckBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        TextView titleText = binding.tvTitle;
-        TextView messages = binding.tvMessage;
+        TextView titleText = binding.dialogTitleTextView;
+        TextView messages = binding.dialogMessagesTextView;
         Button positive_btn = binding.positiveBtn;
         Button negative_btn = binding.negativeBtn;
 
@@ -47,7 +47,7 @@ public class CustomDialog extends Dialog {
         negative_btn.setOnClickListener(negativeButton);
     }
 
-    public CustomDialog(@NonNull Context context,
+    public CustomDialogStoreCheck(@NonNull Context context,
                                   String title,
                                   String contents,
                                   String positiveButtonText,

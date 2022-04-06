@@ -14,17 +14,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.orderingmanager.Dialog.CustomDialog;
+import com.example.orderingmanager.Dialog.CustomDialogStoreCheck;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
+import com.example.orderingmanager.databinding.ActivityMainBinding;
 import com.example.orderingmanager.view.FinishFragment.FinishFragment;
 import com.example.orderingmanager.view.ManageFragment.ManageFragment;
 import com.example.orderingmanager.view.OrderFragment.OrderFragment;
 import com.example.orderingmanager.view.QRFragment.QrFragment;
-import com.example.orderingmanager.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -39,13 +37,9 @@ public class MainActivity extends BasicActivity {
     public static final int FINISHFRAGMENT = 4444;
 
     private ActivityMainBinding binding;
-    private CustomDialog dialog;
+    private CustomDialogStoreCheck dialog;
 
     BottomNavigationView bottomNavigationView; //바텀네비뷰
-    UserInfo userInfo;
-
-    FirebaseUser user;
-    FirebaseFirestore db;
 
     Bundle bundle;
 
@@ -131,7 +125,7 @@ public class MainActivity extends BasicActivity {
     }
 
     private void showCustomDialog(){
-        dialog = new CustomDialog(
+        dialog = new CustomDialogStoreCheck(
                 this,
                 "등록된 매장이 없습니다.",
                 "이 서비스를 이용하기 위해서는 매장 등록이 필요합니다.\n지금 매장을 등록하시겠습니까?",
