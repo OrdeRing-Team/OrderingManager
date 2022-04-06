@@ -90,8 +90,7 @@ public class StoreManageActivity extends AppCompatActivity {
 
 
         //대표메뉴 사진 업로드
-        ivSignatureMenu = findViewById(R.id.iv_sigmenu);
-        ivSignatureMenu.setOnClickListener(new View.OnClickListener() {
+        binding.ivSigmenu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -101,8 +100,7 @@ public class StoreManageActivity extends AppCompatActivity {
         });
 
         //매장 아이콘 업로드
-        ivStoreIcon = findViewById(R.id.iv_storeIcon);
-        ivStoreIcon.setOnClickListener(new View.OnClickListener() {
+       binding.ivStoreIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
