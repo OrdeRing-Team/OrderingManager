@@ -18,7 +18,7 @@
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintHorizontal_bias="0.907"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,6 +85,7 @@
             android:textColor="#939393" />
 
         <EditText
+            android:layout_marginTop="10dp"
             android:id="@+id/edt_name"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -93,7 +94,8 @@
             android:hint="메뉴명"
             android:inputType="text"
             android:textColor="#5E5E5E"
-            android:textColorHint="#939393" />
+            android:textColorHint="#939393"
+            android:textSize="16dp"/>
 
         <EditText
             android:id="@+id/edt_price"
@@ -105,7 +107,8 @@
             android:inputType="numberDecimal"
             android:maxLength="300"
             android:textColor="#5E5E5E"
-            android:textColorHint="#939393" />
+            android:textColorHint="#939393"
+            android:textSize="16dp"/>
 
         <EditText
             android:id="@+id/edt_intro"
@@ -120,7 +123,32 @@
             android:minLines="3"
             android:scrollbars="vertical"
             android:textColor="#5E5E5E"
-            android:textColorHint="#939393" />
+            android:textColorHint="#939393"
+            android:textSize="16dp"/>
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=" 품절 여부 "
+                android:textSize="16dp"
+                android:textColor="#939393"
+                android:layout_marginRight="5dp"/>
+
+            <CheckBox
+                android:id="@+id/cb_soldout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/main"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -128,10 +156,11 @@
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="UPLOAD"
-        android:textSize="20dp"
         android:background="#E1695E"
+        android:text="메뉴 등록하기"
+        android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.12" />
+        app:layout_constraintHeight_percent="0.12"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
