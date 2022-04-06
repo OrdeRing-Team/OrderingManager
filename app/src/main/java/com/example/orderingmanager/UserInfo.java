@@ -1,5 +1,6 @@
 package com.example.orderingmanager;
 
+import com.example.orderingmanager.Dto.FoodDto;
 import com.example.orderingmanager.Dto.request.FoodCategory;
 import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
@@ -20,6 +21,11 @@ public class UserInfo {
     private static FoodCategory foodCategory;
     private static RestaurantType restaurantType;
     private static String userId;
+    // food
+    private static Long foodId;
+    private static String menuName;
+    private static Integer menuPrice;
+    private static String menuIntro;
 
     public static void setRestaurantInfo(OwnerSignInResultDto dto) {
         restaurantName = dto.getRestaurantName();
@@ -51,6 +57,16 @@ public class UserInfo {
     public static void setRestaurantId(Long id){
         restaurantId = id;
     }
+
+    public static void setFood(FoodDto dto) {
+        //foodId = dto.getFoodId();
+        menuName = dto.getFoodName();
+        menuPrice = dto.getPrice();
+        menuIntro = dto.getMenuIntro();
+    }
+
+
+
     public static void init(){
 
         ownerId = null;
@@ -60,6 +76,10 @@ public class UserInfo {
         tableCount = 0;
         foodCategory = null;
         restaurantType = null;
+        foodId = null;
+        menuName = null;
+        menuPrice = null;
+        menuIntro = null;
     }
     public static String getUserId() { return userId; }
 

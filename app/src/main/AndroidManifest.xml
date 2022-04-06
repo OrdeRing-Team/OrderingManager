@@ -6,6 +6,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!--  이미지 업로드 관련  -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -18,20 +24,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
         <activity
-            android:name=".EditStoreInfoActivity"
+            android:name=".view.ManageFragment.EditStoreInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".EditPersonalInfoActivity"
+            android:name=".view.ManageFragment.EditPersonalInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".WebViewActivity"
+            android:name=".KakaoMap.WebViewActivity"
             android:exported="false" />
         <activity
-            android:name=".MapActivity"
+            android:name=".KakaoMap.MapActivity"
             android:exported="true" /> <!-- android:theme="@style/Theme.OrderingManager"> -->
         <!-- 스플래시 -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".Splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,48 +46,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".GuidesActivity"
-            android:exported="true" />
-        <activity
-            android:name=".SignupActivity"
+            android:name=".view.login_register.SignupActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.login_register.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".InfoActivity"
+            android:name=".view.InfoActivity"
             android:exported="true" />
         <activity
-            android:name=".AuthActivity"
+            android:name=".view.login_register.AuthActivity"
             android:exported="true" />
-        <activity
-            android:name=".StartActivity"
-            android:exported="true" /> <!-- 네이티브 앱 키 추가 -->
+        <!-- 네이티브 앱 키 추가 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="271badc59f7b54a059063439c4209044" />
 
         <activity
-            android:name=".MenuAddActivity"
+            android:name=".view.ManageFragment.MenuAddActivity"
             android:exported="true" />
         <activity
-            android:name=".MenuEditActivity"
+            android:name=".view.ManageFragment.MenuEditActivity"
             android:exported="true" />
         <activity
-            android:name=".StoreManageActivity"
+            android:name=".view.ManageFragment.StoreManageActivity"
             android:exported="true" />
         <activity
-            android:name=".CreateQR"
+            android:name=".view.CreateQR"
             android:exported="true" />
         <activity
-            android:name=".CreateQRSuccessActivity"
+            android:name=".view.CreateQRSuccessActivity"
             android:exported="true" />
         <activity
-            android:name=".TestStack"
+            android:name=".test.TestStack"
             android:exported="true" />
 
     </application>

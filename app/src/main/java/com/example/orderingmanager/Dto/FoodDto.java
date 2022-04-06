@@ -12,9 +12,20 @@ import lombok.Setter;
 @NoArgsConstructor(access =PROTECTED)
 public class FoodDto {
 
+    // 불러오기
     private Long foodId;
+    private String imageUrl;
+
     private String foodName;
     private int price;
     private boolean soldOut;
-    private String imageUrl;
+    private String menuIntro;
+
+    public FoodDto(String foodName, int price, boolean soldOut, String menuIntro){
+        this.foodName = foodName;
+        this.price = price;
+        this.soldOut = soldOut;
+        this.menuIntro = menuIntro;
+    }
+
 }

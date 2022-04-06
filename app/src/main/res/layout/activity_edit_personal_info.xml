@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditPersonalInfoActivity"
+    tools:context=".view.ManageFragment.EditPersonalInfoActivity"
     android:orientation="vertical"
     android:background="@color/white">
 
@@ -59,15 +59,15 @@
             android:layout_gravity="center"
             android:layout_marginTop="35dp"/>
 
-        <EditText
-            android:id="@+id/et_nikname"
+        <TextView
+            android:id="@+id/tv_name"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="닉네임"
             android:textColor="@color/black"
             android:textSize="16dp"
             android:backgroundTint="#656565"
             android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"/>
     </LinearLayout>
@@ -81,7 +81,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이메일"
+            android:text="아이디"
             android:textColor="#000000"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -90,15 +90,14 @@
             android:layout_marginLeft="30dp"/>
 
         <TextView
-            android:id="@+id/tv_email"
+            android:id="@+id/tv_id"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginBottom="13dp"
             android:textSize="15dp"
-            android:layout_marginLeft="30dp" />
-
-
+            android:textColor="@color/black"
+            android:layout_marginLeft="55dp" />
 
     </LinearLayout>
 
