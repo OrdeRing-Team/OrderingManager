@@ -26,6 +26,12 @@ public class QrTakeoutFragment extends Fragment {
         binding = FragmentQrTakeoutBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+        initView();
+
         return view;
+    }
+
+    private void initView(){
+        binding.itemQrCardview.ivQrcodeCardview.setImageBitmap(QrList.getQrBitmap(0));
     }
 }
