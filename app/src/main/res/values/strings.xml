@@ -66,13 +66,13 @@
 
     //캘린더
     <string-array name="custom_weekdays">
-        <item>일</item>
         <item>월</item>
         <item>화</item>
         <item>수</item>
         <item>목</item>
         <item>금</item>
         <item>토</item>
+        <item>일</item>
     </string-array>
 
     <string-array name="custom_months">
@@ -89,4 +89,6 @@
         <item>11월</item>
         <item>12월</item>
     </string-array>
+
+
 </resources>

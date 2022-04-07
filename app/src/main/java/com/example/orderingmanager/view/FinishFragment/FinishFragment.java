@@ -1,24 +1,46 @@
 package com.example.orderingmanager.view.FinishFragment;
 
+import static java.util.Calendar.MONTH;
+
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentFinishBinding;
 import com.example.orderingmanager.view.MainActivity;
+import com.google.android.material.datepicker.MaterialCalendar;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import com.prolificinteractive.materialcalendarview.OnRangeSelectedListener;
+import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
+import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
+
+import java.time.Month;
+import java.util.Calendar;
+import java.util.List;
 
 public class FinishFragment extends Fragment {
+
+   // private static MaterialCalendarView materialCalendarView;
 
     private View view;
     private FragmentFinishBinding binding;
     private MaterialCalendarView calendarView;
+    public TextView diaryTextView;
 
     Bundle extra;
 
@@ -38,12 +60,53 @@ public class FinishFragment extends Fragment {
         initButtonClickListener();
         storeInfoCheck();
 
-        //calendarView = getView().findViewById(R.id.calendarView);
-
+        MaterialCalendarView materialCalendarView = view.findViewById(R.id.calendarView);
+        materialCalendarView.setSelectedDate(CalendarDay.today());
 
         // 월, 요일을 한글로 보이게 설정 (MonthArrayTitleFormatter의 작동을 확인하려면 밑의 setTitleFormatter()를 지운다)
-        //calendarView.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
-        //calendarView.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
+        materialCalendarView.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
+        materialCalendarView.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
+
+        materialCalendarView.setOnRangeSelectedListener(new OnRangeSelectedListener() {
+            @Override
+            public void onRangeSelected(@NonNull MaterialCalendarView widget, @NonNull List<CalendarDay> dates) {
+                // 선택한 시작 날짜 ~ 마지막 날짜
+                String startDay = dates.get(0).getDate().toString();
+                String endDay = dates.get(dates.size() - 1).getDate().toString();
+                // 선택한 시작 월, 마지막 월
+                int startMonth = dates.get(0).getMonth();
+                int endMonth = dates.get(dates.size() - 1).getMonth();
+                // 선택한 시작 일, 마지막 일
+                int startDate = dates.get(0).getDay();
+                int endDate = dates.get(dates.size() - 1).getDay();
+
+                Log.e("DATE", "시작일 : " + startDay + ", 종료일 : " + endDay);
+                binding.diaryTextView.setText(startDay + " ~ " + endDay);
+                binding.selectedView.setText(startMonth+ "월 " + startDate + "일 - " + endMonth + "월 " + endDate + "일 매출 : ");
+                binding.monthView.setText(startMonth + "월 총 매출 : ");
+            }
+        });
+
+        materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                String selectedDate = date.getDate().toString();
+                int selectedMonth = date.getMonth();
+                int selectedDay = date.getDay();
+
+
+                Log.e("DATE", selectedDate);
+                binding.diaryTextView.setText(selectedDate);
+                binding.selectedView.setText(selectedMonth + "월 " + selectedDay + "일 매출 : ");
+                binding.monthView.setText(selectedMonth + "월 총 매출 : ");
+            }
+        });
+
+        materialCalendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+            }
+        });
 
 
         return view;
@@ -80,5 +143,9 @@ public class FinishFragment extends Fragment {
             }
         });
     }
+
+
+
+
 }
 
