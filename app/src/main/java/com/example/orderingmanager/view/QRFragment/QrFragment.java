@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.example.orderingmanager.Dialog.CustomDialog;
 import com.example.orderingmanager.view.MainActivity;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
@@ -39,6 +40,7 @@ public class QrFragment extends Fragment {
 
     //viewbinding
     private FragmentQrBinding binding;
+    private CustomDialog dialog;
     Bundle extra;
 
     Boolean storeInitInfo;
@@ -102,7 +104,34 @@ public class QrFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+        binding.btnDownloadQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCustomDialog();
+            }
+        });
     }
+
+    private void showCustomDialog(){
+        dialog = new CustomDialog(
+                getContext(),
+                "QR코드 이미지를 모두 다운로드 하시겠습니까?",
+                "다운로드 버튼을 누르면 기기에 모든 이미지가 저장됩니다.",
+                "다운로드","취소",
+                positiveButton,negativeButton);
+
+        dialog.show();
+    }
+
+    private final View.OnClickListener positiveButton = view -> {
+        dialog.dismiss();
+        MainActivity.showToast(getActivity(), "다운로드 버튼 클릭");
+    };
+
+    private final View.OnClickListener negativeButton = view -> {
+        dialog.dismiss();
+    };
 
     public void storeInfoCheck(){
         storeInitInfo = UserInfo.getRestaurantId() != null;

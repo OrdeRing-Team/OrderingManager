@@ -26,6 +26,16 @@ public class QrWaitingFragment extends Fragment {
         binding = FragmentQrWaitingBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+        initView();
+
         return view;
+    }
+
+    private void initView(){
+        String title = "웨이팅용";
+        String secondary = "웨이팅용 QR코드입니다";
+        binding.itemQrCardview.ivQrcodeCardview.setImageBitmap(QrList.getQrBitmap(1));
+        binding.itemQrCardview.tvCardviewTitle.setText(title);
+        binding.itemQrCardview.tvCardviewSecondary.setText(secondary);
     }
 }

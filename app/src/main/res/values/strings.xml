@@ -61,6 +61,8 @@
     <string name="qr_takeout">기다리지 말고\nQR 찍고 포장 주문하세요</string>
     <string name="qr_waiting">줄 서지 말고\nQR 찍고 대기 등록하세요</string>
     <string name="qr_table">테이블에서\nQR 찍고 주문하세요</string>
+    <string name="custom_dialog_title_text">QR코드 이미지를 모두 다운로드 하시겠습니까?</string>
+    <string name="custom_dialog_message_text">다운로드 버튼을 누르면 기기에 모든 이미지가 저장됩니다.</string>
 
     //캘린더
     <string-array name="custom_weekdays">

@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--splash 화면에 사용될 테마-->
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground"></item>
     </style>
+
     <style name="CalendarWidgetHeader" parent="Theme.AppCompat.NoActionBar">
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="CalendarWidgetWeekDay" parent="Theme.AppCompat.NoActionBar">
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">#808080</item>
+    </style>
+
+    <style name="QrFragmentTheme" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:buttonTint">@color/main</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <item name="android:colorPrimary" >@color/main</item>
+        <item name="colorSecondaryContainer" >@color/light_main</item>
     </style>
 </resources>
