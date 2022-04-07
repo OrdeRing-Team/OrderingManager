@@ -128,6 +128,7 @@ public class MenuAddActivity extends BasicActivity {
                                 @Override
                                 public void run() {
                                     if(result.getData() != null) {
+                                        startActivity(new Intent(MenuAddActivity.this, StoreManageActivity.class));
                                         finish();
                                     }
                                 }

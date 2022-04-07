@@ -93,6 +93,7 @@ public class MenuManageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), MenuAddActivity.class));
+                getActivity().finish();
             }
         });
     }
