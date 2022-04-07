@@ -99,5 +99,23 @@ public class MenuManageFragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 정보 수정이 이루어지고 fragment 로 다시 돌아왔을때는 onResume 이 호출된다
+        // 뷰를 새로 다시 세팅해준다.
+        getMenuFromServer();
+
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+
+
 
 }

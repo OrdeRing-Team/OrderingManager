@@ -120,7 +120,6 @@ public class MenuAddActivity extends BasicActivity {
                                 public void run() {
                                     if(result.getData() != null) {
                                         finish();
-                                        startActivity(new Intent(getApplicationContext(), StoreManageActivity.class));
                                     }
                                 }
                             });

@@ -146,6 +146,4 @@ public class FinishFragment extends Fragment {
     }
 
 
-
-
 }
