@@ -71,6 +71,7 @@ public class MenuManageFragment extends Fragment {
                             result.getData().forEach(foodDto ->{
                                     menuList.add(new ManageData(foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro()));
                                 Log.e("data = ", foodDto.getFoodName());
+
                             });
                             RecyclerView recyclerView = binding.rvMenu;
                             ManageAdapter manageAdapter = new ManageAdapter(menuList, getActivity());
@@ -96,5 +97,7 @@ public class MenuManageFragment extends Fragment {
             }
         });
     }
+
+
 
 }

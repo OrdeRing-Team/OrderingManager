@@ -111,5 +111,6 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
 //        item list의 전체 데이터 개수 return
         return (arrayList != null ? arrayList.size() : 0);
     }
+
 }
 
