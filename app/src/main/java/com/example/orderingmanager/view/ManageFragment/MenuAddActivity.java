@@ -52,6 +52,8 @@ public class MenuAddActivity extends BasicActivity {
     private ImageView ivMenu;
     private ActivityMenuItemBinding binding;
 
+    RequestBody fileBody;
+
     //뒤로가기 버튼
     ImageButton btnBack;
 
@@ -103,7 +105,14 @@ public class MenuAddActivity extends BasicActivity {
 
 
                     // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
-                    RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
+                    //수정중...
+                    if (imageFile != null) {
+                        fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
+                    }
+                    else {
+                        Log.e("image", "file is null");
+                    }
+
                     // RequestBody로 Multipart.Part 객체 생성
                     MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
 
