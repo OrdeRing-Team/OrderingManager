@@ -20,10 +20,7 @@ import com.example.orderingmanager.databinding.ActivityLoginBinding;
 import com.example.orderingmanager.view.BasicActivity;
 import com.example.orderingmanager.view.MainActivity;
 
-import java.util.concurrent.TimeUnit;
-
 import lombok.SneakyThrows;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,15 +74,9 @@ public class LoginActivity extends BasicActivity {
                             @SneakyThrows
                             public void run() {
                                 // login
-                                OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                                        .connectTimeout(30, TimeUnit.SECONDS)
-                                        .readTimeout(30, TimeUnit.SECONDS)
-                                        .writeTimeout(30, TimeUnit.SECONDS)
-                                        .build();
 
                                 Retrofit retrofit = new Retrofit.Builder()
                                         .baseUrl("http://www.ordering.ml/api/owner/signin/")
-                                        .client(okHttpClient)
                                         .addConverterFactory(GsonConverterFactory.create())
                                         .build();
 
