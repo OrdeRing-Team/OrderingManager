@@ -135,11 +135,5 @@ public class StoreManageActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
-
 
 }

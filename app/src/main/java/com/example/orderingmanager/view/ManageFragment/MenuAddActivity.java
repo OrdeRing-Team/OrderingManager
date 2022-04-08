@@ -70,7 +70,8 @@ public class MenuAddActivity extends BasicActivity {
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BackWithAnim(); // 뒤로가기 슬라이드 (finish(); 포함되어 있음.)
+                startActivity(new Intent(MenuAddActivity.this, StoreManageActivity.class));
+                finish();
             }
         });
 
