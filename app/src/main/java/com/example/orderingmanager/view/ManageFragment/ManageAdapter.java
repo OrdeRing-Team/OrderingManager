@@ -4,14 +4,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.orderingmanager.R;
 
 import java.util.ArrayList;
@@ -25,7 +29,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         //        itemView를 저장하는 custom viewHolder 생성
         //        findViewById & 각종 event 작업
         TextView tvName, tvPrice, tvIntro;
-        //ImageView ivMenu;
+        ImageView ivMenu;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -33,7 +37,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
             tvName = itemView.findViewById(R.id.item_name);
             tvPrice = itemView.findViewById(R.id.item_price);
             tvIntro = itemView.findViewById(R.id.item_intro);
-            //ivMenu = itemView.findViewById(R.id.item_image);
+            ivMenu = itemView.findViewById(R.id.item_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,7 +106,11 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         holder.tvName.setText(arrayList.get(position).getName());
         holder.tvPrice.setText(String.valueOf(arrayList.get(position).getPrice()));
         holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
-        //holder.ivMenu.setImageResource(arrayList.get(position).getIv_menu());
+
+        // arrayList에 저장된 메뉴 이미지 url을 imageURL변수에 저장하고 Glide로 iv에 set
+        String imageURL = String.valueOf(arrayList.get(position).getIv_menu());
+        Glide.with(holder.itemView.getContext()).load(imageURL).into(holder.ivMenu);
+        Log.e("리사이클러뷰 어댑터 이미지 url", imageURL);
     }
 
     @Override

@@ -2,24 +2,24 @@ package com.example.orderingmanager.view.ManageFragment;
 
 public class ManageData {
 
-    private int iv_menu;
+    private String iv_menu;
     private String name;
     private String price;
     private String intro;
 
-    public ManageData(String name, String price, String intro) {
-        //this.iv_menu = iv_menu;
+    public ManageData(String iv_menu, String name, String price, String intro) {
+        this.iv_menu = iv_menu;
         this.name = name;
         this.price = price;
         this.intro = intro;
 
     }
 
-    public int getIv_menu() {
+    public String getIv_menu() {
         return iv_menu;
     }
 
-    public void setIv_menu(int iv_menu) {
+    public void setIv_menu(String iv_menu) {
         this.iv_menu = iv_menu;
     }
 

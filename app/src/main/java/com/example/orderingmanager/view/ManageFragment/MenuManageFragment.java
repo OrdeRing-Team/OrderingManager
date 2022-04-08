@@ -68,13 +68,13 @@ public class MenuManageFragment extends Fragment {
                         @Override
                         public void run() {
                             result.getData().forEach(foodDto ->{
-                                    menuList.add(new ManageData(foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro()));
-                                Log.e("data = ", foodDto.getFoodName());
+                                    menuList.add(new ManageData(foodDto.getImageUrl(), foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro()));
+                                Log.e("data = ", foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl());
 
                             });
                             RecyclerView recyclerView = binding.rvMenu;
                             ManageAdapter manageAdapter = new ManageAdapter(menuList, getActivity());
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity())) ;
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                             recyclerView.setAdapter(manageAdapter);
                         }
                     });
