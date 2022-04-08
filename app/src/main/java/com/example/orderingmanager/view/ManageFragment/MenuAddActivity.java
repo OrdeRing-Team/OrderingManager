@@ -104,24 +104,21 @@ public class MenuAddActivity extends BasicActivity {
 
 
                     /* Uri 타입의 파일경로를 가지는 RequestBody 객체 생성 -> 이미지를 선택하지 않는 경우에 대한 예외처리 추가 */
+                    Call<ResultDto<Long>> call;
                     //imageView가 null이 아니면 바로 fileBody에 할당
                     if (ivMenu != null) {
                         fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
+                        // RequestBody로 Multipart.Part 객체 생성
+                        MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
+                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+                        call = retrofitService.addFood(UserInfo.getRestaurantId(), foodDto, image);
                     }
-                    //imageView가 null이면 imageView에 splash(디폴트메뉴이미지)를 넣고 bitmap에 넣어서 fileBody에 할당
+                    //imageView가 null이면 foodDto에 null값 할당
                     else {
-                        binding.ivMenu.setImageResource(R.drawable.splash);
-                        BitmapDrawable drawable2 = (BitmapDrawable) binding.ivMenu.getDrawable();
-                        Bitmap bitmap2 = drawable2.getBitmap();
-                        imageFile = convertBitmapToFile(bitmap2, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
-                        fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
+                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+                        call = retrofitService.addFood(UserInfo.getRestaurantId(), foodDto, null);
                     }
 
-                    // RequestBody로 Multipart.Part 객체 생성
-                    MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
-
-                    RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<Long>> call = retrofitService.addFood(UserInfo.getRestaurantId(), foodDto, image);
 
                     call.enqueue(new Callback<ResultDto<Long>>() {
                         @Override
