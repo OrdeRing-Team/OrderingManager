@@ -1,5 +1,6 @@
 package com.example.orderingmanager.view.ManageFragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -69,6 +70,8 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
                         intent.putExtra("menuId", arrayList.get(position).getFoodId());
                         intent.putExtra("position", position);
                         context.startActivity(intent);
+                        ((Activity)context).finish();
+
                     }
                 }
             });

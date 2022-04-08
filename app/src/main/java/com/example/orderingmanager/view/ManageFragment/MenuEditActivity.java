@@ -135,13 +135,8 @@ public class MenuEditActivity extends BasicActivity {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(result.getData() != null) {
-                                        startActivity(new Intent(MenuEditActivity.this, StoreManageActivity.class));
-                                        finish();
-                                    }
-                                    else {
-                                        Toast.makeText(getApplicationContext(), "메뉴 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
-                                    }
+                                    startActivity(new Intent(MenuEditActivity.this, StoreManageActivity.class));
+                                    finish();
                                 }
                             });
                         }
