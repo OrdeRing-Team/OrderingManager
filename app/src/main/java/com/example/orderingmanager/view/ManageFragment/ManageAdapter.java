@@ -4,10 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,9 +19,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.orderingmanager.Dto.FoodDto;
+import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.R;
+import com.example.orderingmanager.UserInfo;
+import com.example.orderingmanager.databinding.ActivityMenuItemBinding;
+import com.example.orderingmanager.view.BasicActivity;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
+import lombok.SneakyThrows;
 
 public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomViewHolder> {
     ArrayList<ManageData> arrayList;
@@ -39,17 +54,20 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
             tvIntro = itemView.findViewById(R.id.item_intro);
             ivMenu = itemView.findViewById(R.id.item_image);
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Intent intent = new Intent(context, MenuEditActivity.class);
-                        intent.putExtra("name", arrayList.get(position).getName());
-                        intent.putExtra("price", arrayList.get(position).getPrice());
-                        //intent.putExtra("menuImage", arrayList.get(position).getIv_menu());
-                        intent.putExtra("position", position);
 
+                        Intent intent = new Intent(context, MenuEditActivity.class);
+                        intent.putExtra("menuName", arrayList.get(position).getName());
+                        intent.putExtra("menuPrice", arrayList.get(position).getPrice());
+                        intent.putExtra("menuImage", arrayList.get(position).getIv_menu());
+                        intent.putExtra("menuIntro", arrayList.get(position).getIntro());
+
+                        intent.putExtra("position", position);
                         context.startActivity(intent);
                     }
                 }
