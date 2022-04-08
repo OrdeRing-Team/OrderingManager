@@ -1,5 +1,6 @@
 package com.example.orderingmanager.Dto;
 
+import com.example.orderingmanager.Dto.request.OwnerSignUpDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
@@ -15,6 +16,9 @@ public interface RetrofitService {
 
    	@POST("/api/owner/signin")
 	Call<ResultDto<OwnerSignInResultDto>> ownerSignIn(@Body SignInDto signInDto);
+
+	@POST("/api/owner/signup")
+	Call<ResultDto<Long>> ownerSignUp(@Body OwnerSignUpDto ownerSignUpDto);
 
    	@Multipart
    	@POST("/api/restaurant/{restaurantId}/food")

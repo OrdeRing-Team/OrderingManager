@@ -56,7 +56,6 @@ public class QrFragment extends Fragment {
         extra = this.getArguments();
         if(extra != null) {
             extra = getArguments();
-
         }
 
         binding = FragmentQrBinding.inflate(inflater, container, false);
