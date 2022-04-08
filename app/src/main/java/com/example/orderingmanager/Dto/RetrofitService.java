@@ -4,6 +4,8 @@ import com.example.orderingmanager.Dto.request.OwnerSignUpDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
+import javax.annotation.Nullable;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,4 +25,8 @@ public interface RetrofitService {
    	@Multipart
    	@POST("/api/restaurant/{restaurantId}/food")
 	Call<ResultDto<Long>> addFood(@Path("restaurantId") Long id, @Part(value = "dto") FoodDto foodDto, @Part MultipartBody.Part file);
+
+   	@Multipart
+   	@POST("/api/restaurant/{restaurantId}/food")
+	Call<ResultDto<Long>> addFood(@Path("restaurantId") Long id, @Part(value = "dto") FoodDto foodDto);
 }
