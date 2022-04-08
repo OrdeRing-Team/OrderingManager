@@ -48,14 +48,13 @@ public class MenuAddActivity extends BasicActivity {
     String price;
     String menuIntro;
     File imageFile;
+
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView ivMenu;
     private ActivityMenuItemBinding binding;
 
     RequestBody fileBody;
 
-    //뒤로가기 버튼
-    ImageButton btnBack;
 
     Map<String, Object> manageInfo = new HashMap<>();
 
@@ -65,7 +64,7 @@ public class MenuAddActivity extends BasicActivity {
         setContentView(R.layout.activity_menu_item);
         binding = ActivityMenuItemBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        
 
         //뒤로가기 버튼 클릭 이벤트
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
@@ -104,13 +103,18 @@ public class MenuAddActivity extends BasicActivity {
                             .build();
 
 
-                    // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
-                    //수정중...
-                    if (imageFile != null) {
+                    /* Uri 타입의 파일경로를 가지는 RequestBody 객체 생성 -> 이미지를 선택하지 않는 경우에 대한 예외처리 추가 */
+                    //imageView가 null이 아니면 바로 fileBody에 할당
+                    if (ivMenu != null) {
                         fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
                     }
+                    //imageView가 null이면 imageView에 splash(디폴트메뉴이미지)를 넣고 bitmap에 넣어서 fileBody에 할당
                     else {
-                        Log.e("image", "file is null");
+                        binding.ivMenu.setImageResource(R.drawable.splash);
+                        BitmapDrawable drawable2 = (BitmapDrawable) binding.ivMenu.getDrawable();
+                        Bitmap bitmap2 = drawable2.getBitmap();
+                        imageFile = convertBitmapToFile(bitmap2, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
+                        fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
                     }
 
                     // RequestBody로 Multipart.Part 객체 생성
@@ -162,6 +166,7 @@ public class MenuAddActivity extends BasicActivity {
             Bitmap bitmap = drawable.getBitmap();
 
             imageFile = convertBitmapToFile(bitmap, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
+            Log.e("image", "imageFile is " + bitmap);
         }
     }
 
