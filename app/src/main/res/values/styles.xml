@@ -22,5 +22,6 @@
         <item name="android:colorPrimary" >@color/main</item>
         <item name="colorSurface">@color/light_main</item>
         <item name="colorSecondaryContainer" >@color/light_main</item>
+        <item name="colorPrimaryContainer">@color/light_main</item>
     </style>
 </resources>
