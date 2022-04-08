@@ -68,9 +68,9 @@ public class MenuManageFragment extends Fragment {
                         @Override
                         public void run() {
                             result.getData().forEach(foodDto ->{
-                                    menuList.add(new ManageData(foodDto.getImageUrl(), foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro()));
+                                    menuList.add(new ManageData(foodDto.getFoodId(), foodDto.getImageUrl(), foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro()));
                                 Log.e("data = ", foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl());
-
+                                Log.e("foodid = ", Long.toString(menuList.get(0).getFoodId()));
                             });
                             RecyclerView recyclerView = binding.rvMenu;
                             ManageAdapter manageAdapter = new ManageAdapter(menuList, getActivity());

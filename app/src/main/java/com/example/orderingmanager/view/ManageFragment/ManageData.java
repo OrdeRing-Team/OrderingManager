@@ -6,14 +6,20 @@ public class ManageData {
     private String name;
     private String price;
     private String intro;
+    private Long foodId;
 
-    public ManageData(String iv_menu, String name, String price, String intro) {
+    public ManageData(Long foodId, String iv_menu, String name, String price, String intro) {
+        this.foodId = foodId;
         this.iv_menu = iv_menu;
         this.name = name;
         this.price = price;
         this.intro = intro;
 
     }
+
+    public Long getFoodId() { return foodId;}
+
+    public void setFoodId(Long id){this.foodId = id;}
 
     public String getIv_menu() {
         return iv_menu;
