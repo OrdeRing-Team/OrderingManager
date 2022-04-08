@@ -129,10 +129,6 @@ public class MenuAddActivity extends BasicActivity {
                                 @Override
                                 public void run() {
                                     if(result.getData() != null) {
-                                        Intent intent = new Intent(MenuAddActivity.this, MenuEditActivity.class);
-                                        intent.putExtra("foodId", result.getData().toString());
-                                        startActivity(intent);
-                                        Log.e("foodId", result.getData().toString());
                                         startActivity(new Intent(MenuAddActivity.this, StoreManageActivity.class));
                                         finish();
                                     }

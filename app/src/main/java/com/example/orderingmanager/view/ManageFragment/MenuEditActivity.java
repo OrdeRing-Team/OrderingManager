@@ -59,14 +59,10 @@ public class MenuEditActivity extends BasicActivity {
     private ActivityMenuItemBinding binding;
     File imageFile;
 
-    String name;
-    String price;
-    String intro;
-    String imageUrl;
+    ImageView ivMenu;
+    Long foodId;
 
     RequestBody fileBody;
-
-    ArrayList<ManageData> menuList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +72,6 @@ public class MenuEditActivity extends BasicActivity {
         setContentView(binding.getRoot());
 
         setData();
-        Log.e("foodId", String.valueOf(getIntent().getStringExtra("foodId")));
 
         //뒤로가기 버튼 클릭 이벤트
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
@@ -97,76 +92,85 @@ public class MenuEditActivity extends BasicActivity {
         });
 
 
-//        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (name.length() == 0 || price.length() == 0) {
-//                    Toast.makeText(MenuEditActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                else {
-//                    FoodDto foodDto = new FoodDto(name, Integer.parseInt(price), false, intro);
-//                    Retrofit retrofit = new Retrofit.Builder()
-//                            .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/food/")
-//                            .addConverterFactory(GsonConverterFactory.create())
-//                            .build();
-//
-//
-//                    /* Uri 타입의 파일경로를 가지는 RequestBody 객체 생성 */
-//                    Call<ResultDto<Boolean>> call;
-//                    String foodId = getIntent().getStringExtra("foodId");
-//                    //파일로 변환 과정을 거쳐서 File형으로 선언된 변수에 담긴다.
-//                    //이미지를 바꿨다면 file은 null이 아니고 안바꿨으면 null이다.
-//                    if (imageFile == null) {
-//                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-//                        call = retrofitService.putFood(UserInfo.getRestaurantId(), Long.valueOf(foodId), foodDto);
-//                    }
-//
-//                    else {
-//                        fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
-//                        MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
-//                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-//                        call = retrofitService.putFood(UserInfo.getRestaurantId(), Long.valueOf(foodId), foodDto, image);
-//                    }
-//
-//                    call.enqueue(new Callback<ResultDto<Boolean>>() {
-//                        @Override
-//                        public void onResponse(Call<ResultDto<Boolean>> call, retrofit2.Response<ResultDto<Boolean>> response) {
-//                            ResultDto<Boolean> result = response.body();
-//
-//                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    if(result.getData() != null) {
-//                                        startActivity(new Intent(MenuEditActivity.this, StoreManageActivity.class));
-//                                        finish();
-//                                    }
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
-//                            Toast.makeText(getApplicationContext(), "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-//                            Log.e("e = " , t.getMessage());
-//                        }
-//                    });
-//                }
-//            }
-//        });
+        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String menuName = binding.edtName.getText().toString();
+                String menuPrice = binding.edtPrice.getText().toString();
+                String menuIntro = binding.edtIntro.getText().toString();
+                if (menuName.length() == 0 || menuPrice.length() == 0) {
+                    Toast.makeText(MenuEditActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+                }
+
+                else {
+                    FoodDto foodDto = new FoodDto(menuName, Integer.parseInt(menuPrice), false, menuIntro);
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/food/" + foodId + "/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+
+                    /* Uri 타입의 파일경로를 가지는 RequestBody 객체 생성 */
+                    Call<ResultDto<Boolean>> call;
+
+                    //파일로 변환 과정을 거쳐서 File형으로 선언된 변수에 담긴다.
+                    //이미지를 바꿨다면 file은 null이 아니고 안 바꿨으면 null이다.
+                    if (imageFile == null) {
+                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+                        call = retrofitService.putFood(UserInfo.getRestaurantId(), foodId, foodDto);
+                    }
+
+                    else {
+                        fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
+                        MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
+                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+                        call = retrofitService.putFood(UserInfo.getRestaurantId(), foodId, foodDto, image);
+                    }
+
+                    call.enqueue(new Callback<ResultDto<Boolean>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<Boolean>> call, retrofit2.Response<ResultDto<Boolean>> response) {
+                            ResultDto<Boolean> result = response.body();
+
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(result.getData() != null) {
+                                        startActivity(new Intent(MenuEditActivity.this, StoreManageActivity.class));
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(getApplicationContext(), "메뉴 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            Log.e("e = " , t.getMessage());
+                        }
+                    });
+                }
+            }
+        });
     }
 
 
     // 기존 데이터 세팅
     public void setData() {
-        name = getIntent().getStringExtra("menuName");
-        price = getIntent().getStringExtra("menuPrice");
-        intro = getIntent().getStringExtra("menuIntro");
-        imageUrl = getIntent().getStringExtra("menuImage");
+        String name = getIntent().getStringExtra("menuName");
+        String price = getIntent().getStringExtra("menuPrice");
+        String intro = getIntent().getStringExtra("menuIntro");
+        String imageUrl = getIntent().getStringExtra("menuImage");
+        foodId = getIntent().getLongExtra("menuId", 0);
+        Log.e("Selected item's foodId :", foodId.toString());
 
         binding.edtName.setText(name);
         binding.edtPrice.setText(price);
         binding.edtIntro.setText(intro);
+
         if (imageUrl != null) {
             Glide.with(this).load(imageUrl).into(binding.ivMenu);
         }
@@ -184,14 +188,15 @@ public class MenuEditActivity extends BasicActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
+            ivMenu = findViewById(R.id.iv_menu);
             Uri selectedImageUri = data.getData();
-            binding.ivMenu.setImageURI(selectedImageUri);
+            ivMenu.setImageURI(selectedImageUri);
 
-            BitmapDrawable drawable = (BitmapDrawable) binding.ivMenu.getDrawable();
+            BitmapDrawable drawable = (BitmapDrawable) ivMenu.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
 
             imageFile = convertBitmapToFile(bitmap, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
-            Log.e("image", "imageFile is " + bitmap);
+            Log.e("image", "imageFile is " + imageFile);
         }
     }
 

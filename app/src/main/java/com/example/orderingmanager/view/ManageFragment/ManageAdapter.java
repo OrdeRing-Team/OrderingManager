@@ -66,7 +66,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
                         intent.putExtra("menuPrice", arrayList.get(position).getPrice());
                         intent.putExtra("menuImage", arrayList.get(position).getIv_menu());
                         intent.putExtra("menuIntro", arrayList.get(position).getIntro());
-
+                        intent.putExtra("menuId", arrayList.get(position).getFoodId());
                         intent.putExtra("position", position);
                         context.startActivity(intent);
                     }
