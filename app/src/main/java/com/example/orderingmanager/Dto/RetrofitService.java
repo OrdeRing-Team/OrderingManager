@@ -27,6 +27,10 @@ public interface RetrofitService {
 	Call<ResultDto<Long>> addFood(@Path("restaurantId") Long id, @Part(value = "dto") FoodDto foodDto, @Part MultipartBody.Part file);
 
    	@Multipart
-   	@POST("/api/restaurant/{restaurantId}/food")
-	Call<ResultDto<Long>> addFood(@Path("restaurantId") Long id, @Part(value = "dto") FoodDto foodDto);
+   	@POST("/api/restaurant/{restaurantId}/food/{foodId}")
+	Call<ResultDto<Long>> putFood(@Path("restaurantId") Long restaurantId, @Path("foodId") Long foodId, @Part(value = "dto") FoodDto foodDto);
+
+   	@Multipart
+   	@POST("/api/restaurant/{restaurantId}/food/{foodId}")
+	Call<ResultDto<Long>> putFood(@Path("restaurantId") Long restaurantId, @Path("foodId") Long foodId, @Part(value = "dto") FoodDto foodDto,  @Part MultipartBody.Part file);
 }
