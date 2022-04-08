@@ -8,28 +8,29 @@
     <!-- TableLayout의 미흡한 점을 개선하기 위해 만든 레이아웃, 뷰들이 겹쳐지며, RowSpan이 가능함, TableRow같은 중첩구조가 없음 -->
     <!-- orientation=""을 통해 칸개수, 또는 줄개수를 지정할 수 있음-->
     <!-- orientation="horizontal"이고 columnCount="3"이면 이 레이아웃의 뷰들은 가로로 최대 3개까지만 추가되고 자동 줄바꿈이 되어 배치됨-->
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_qr_table"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnCount="2"
-            android:foregroundGravity="center"
-            android:orientation="horizontal">
+        <!--        <GridLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:columnCount="2"-->
+        <!--            android:foregroundGravity="center"-->
+        <!--            android:orientation="horizontal">-->
 
-            <include
-                android:id="@+id/item_qr_cardview"
-                layout="@layout/item_qr_cardview"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <!--            <include-->
+        <!--                android:id="@+id/item_qr_cardview"-->
+        <!--                layout="@layout/item_qr_cardview"-->
+        <!--                android:layout_width="200dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-        </GridLayout>
-    </ScrollView>
+        <!--        </GridLayout>-->
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </RelativeLayout>

@@ -51,6 +51,8 @@ public class MainActivity extends BasicActivity {
 
     Bundle bundle;
 
+    static int bottomNaviHeight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,9 @@ public class MainActivity extends BasicActivity {
         bottomNavigationView = findViewById(R.id.bottomNavi);
 
         initFragView();
+
+        int resId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        bottomNaviHeight = getResources().getDimensionPixelSize(resId);
     }
 
     private void initFragView(){
@@ -154,7 +159,7 @@ public class MainActivity extends BasicActivity {
         dialog.dismiss();
     };
 
-    private void initQrList(){
+    public void initQrList(){
         // MainActivity가 실행되면 QrList를 초기화한 뒤 UserInfo에 입력된 tableCount를 가져오고
         // QrList에 포장Qr,웨이팅Qr,테이블Qr Bitmap을 저장한다.
         // static 클래스에 저장되기 때문에 앱이 실행종료 되기전까지 리스트는 유효함
@@ -162,8 +167,8 @@ public class MainActivity extends BasicActivity {
 
         int tableCount = UserInfo.getTableCount();
         ArrayList<Bitmap> qrArrayList = new ArrayList<>();
-        qrArrayList.add(CreateTakeoutQR());
-        qrArrayList.add(CreateTakeoutQR());
+         qrArrayList.add(CreateTakeoutQR());
+        qrArrayList.add(CreateWaitingQR());
 
         if(tableCount != 0) {
             for (int i = 1; i < tableCount + 1; i++) {
@@ -173,30 +178,6 @@ public class MainActivity extends BasicActivity {
 
         QrList qrList = new QrList(qrArrayList);
     }
-
-    //해시 키 값 구하기
-    public static String getKeyHash(final Context context) {
-        PackageManager pm = context.getPackageManager();
-        try {
-            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
-            if (packageInfo == null)
-                return null;
-
-            for (Signature signature : packageInfo.signatures) {
-                try {
-                    MessageDigest md = MessageDigest.getInstance("SHA");
-                    md.update(signature.toByteArray());
-                    return android.util.Base64.encodeToString(md.digest(), android.util.Base64.NO_WRAP);
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private Bitmap CreateTakeoutQR() {
         String url;
         url = "http://www.ordering.ml/" + UserInfo.getRestaurantId() + "/takeout";
@@ -245,6 +226,34 @@ public class MainActivity extends BasicActivity {
             return bitmap;
         }
     }
+
+    //해시 키 값 구하기
+    public static String getKeyHash(final Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+            if (packageInfo == null)
+                return null;
+
+            for (Signature signature : packageInfo.signatures) {
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA");
+                    md.update(signature.toByteArray());
+                    return android.util.Base64.encodeToString(md.digest(), android.util.Base64.NO_WRAP);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static int getBottomNaviHeight(){
+        return bottomNaviHeight;
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {

@@ -23,7 +23,16 @@ public class QrList {
         qrArrayList = qrList;
     }
 
-    public static Bitmap getQrBitmap(int i) { return qrArrayList.get(i); }
+    public static Bitmap getQrBitmap(int i) {
+        return qrArrayList.get(i);
+    }
 
-    public static int getQrListSize(){return qrArrayList.size();}
+    public static int getQrListSize() {
+        return qrArrayList.size();
+    }
+
+    public static ArrayList<Bitmap> getQrArrayList() {
+        return qrArrayList;
+    }
+
 }
