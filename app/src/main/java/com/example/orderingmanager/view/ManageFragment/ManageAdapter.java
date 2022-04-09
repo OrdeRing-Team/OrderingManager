@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,11 +23,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.orderingmanager.Dto.FoodDto;
 import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.RetrofitService;
+import com.example.orderingmanager.Dto.request.MemberIdDto;
 import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityMenuItemBinding;
 import com.example.orderingmanager.view.BasicActivity;
+import com.example.orderingmanager.view.login_register.LoginActivity;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,6 +39,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.SneakyThrows;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomViewHolder> {
     ArrayList<ManageData> arrayList;
@@ -86,6 +98,39 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
                                 .setPositiveButton("삭제하기", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        /* 서버에서 삭제 */
+                                        Retrofit retrofit = new Retrofit.Builder()
+                                                .baseUrl("http://www.ordering.ml/api/restaurant/food/" + arrayList.get(position).getFoodId() + "/")
+                                                .addConverterFactory(GsonConverterFactory.create())
+                                                .build();
+
+                                        // RequestBody 객체 생성
+                                        Call<ResultDto<Boolean>> call;
+                                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+                                        call = retrofitService.deleteFood(arrayList.get(position).getFoodId());
+
+                                        call.enqueue(new Callback<ResultDto<Boolean>>() {
+                                            @Override
+                                            public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+                                                ResultDto<Boolean> result = response.body();
+
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(context.getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                                Toast.makeText(context.getApplicationContext(), "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                                Log.e("e = " , t.getMessage());
+                                            }
+                                        });
+
+
+                                        /* view에서 삭제 */
                                         arrayList.remove(position);
                                         notifyDataSetChanged();
                                     }
