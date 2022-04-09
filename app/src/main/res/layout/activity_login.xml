@@ -6,32 +6,44 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+
+    <ImageView
+        android:id="@+id/mainLogo"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:fontFamily="@font/baeminjua"
-        android:text="@string/main_logo"
-        android:textColor="#000000"
-        android:textSize="34sp"
+        android:text="OrdeRing"
+        android:textColor="@color/main"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/mainLogo" />
 
     <EditText
         android:id="@+id/et_memberId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="63dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="64dp"
-        android:maxLength="20"
+        android:backgroundTint="@color/main"
         android:hint="아이디"
-        android:textColorHint="@color/et_hint"
-        android:backgroundTint="@color/blue"
+        android:maxLength="20"
         android:textColor="@color/black"
+        android:textColorHint="@color/et_hint"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainText" />
 
@@ -40,53 +52,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="64dp"
+        android:backgroundTint="@color/main"
         android:hint="비밀번호"
-        android:textColorHint="@color/et_hint"
         android:inputType="textPassword"
         android:textColor="@color/black"
-        android:backgroundTint="@color/blue"
+        android:textColorHint="@color/et_hint"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_memberId" />
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="32dp"
-        android:background="#4747BF"
-        android:text="로그인"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordLogin" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="15dp"
         android:text="혹시, 처음 오셨나요?"
-        android:textColor="#FFFFFF"
+        android:textColor="#8A8A8A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/main"
+        android:text="로그인"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordLogin" />
+
 
     <TextView
         android:id="@+id/textViewSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="56dp"
         android:outlineProvider="none"
         android:shadowColor="#FFFFFF"
         android:text="회원가입 >"
         android:textColor="#000000"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 </androidx.constraintlayout.widget.ConstraintLayout>

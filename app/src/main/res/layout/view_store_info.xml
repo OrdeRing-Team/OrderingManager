@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:backgroundTint="#E1695E"
+        android:backgroundTint="@color/main"
         android:ems="7"
         android:inputType="text"
         android:textColor="#000000"
@@ -87,9 +87,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:background="@drawable/button_round_rectangle_background"
-                android:outlineSpotShadowColor="#C85C5C"
+                android:outlineSpotShadowColor="@color/main"
                 android:text="@string/info_search_address"
-                android:textColor="#C85C5C"
+                android:textColor="@color/main"
                 tools:ignore="UnusedAttribute" />
 
 
@@ -146,7 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:backgroundTint="#E1695E"
+        android:backgroundTint="@color/main"
         android:ems="7"
         android:inputType="text"
         android:textColor="#000000"
@@ -170,7 +170,7 @@
         android:id="@+id/radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#E1695E"
+        android:backgroundTint="@color/main"
         android:orientation="vertical"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
@@ -184,7 +184,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:buttonTint="#E1695E"
+            android:buttonTint="@color/main"
             android:text="@string/info_only_takeout"
             android:textColor="@color/black"
             android:textSize="13sp" />
@@ -194,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:buttonTint="#E1695E"
+            android:buttonTint="@color/main"
             android:text="@string/info_allowall"
             android:textColor="@color/black"
             android:textSize="13sp" />
@@ -232,7 +232,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:backgroundTint="#E1695E"
+        android:backgroundTint="@color/main"
         android:ems="3"
         android:gravity="center"
         android:inputType="number"
@@ -260,12 +260,12 @@
             android:id="@+id/radio_group_category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="#E1695E">
+            android:backgroundTint="@color/main">
             <RadioButton
                 android:id="@+id/rbtn_korean_food"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/category_korean_food"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -274,7 +274,7 @@
                 android:id="@+id/rbtn_bunsik"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/categoty_bunsik"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -282,7 +282,7 @@
                 android:id="@+id/rbtn_cafe_dessert"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/category_cafe_dessert"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -298,7 +298,7 @@
                 android:id="@+id/rbtn_chicken"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/category_chicken"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -306,7 +306,7 @@
                 android:id="@+id/rbtn_pizza"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/category_pizza"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -314,7 +314,7 @@
                 android:id="@+id/rbtn_asian"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/category_asian"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -322,7 +322,7 @@
                 android:id="@+id/rbtn_chinese_food"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/category_chinese"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -330,7 +330,7 @@
                 android:id="@+id/rbtn_jokbal_bossam"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/category_jokbal"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -338,7 +338,7 @@
                 android:id="@+id/rbtn_jjim"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/category_jjim"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -347,7 +347,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginBottom="50dp"
-                android:buttonTint="#E1695E"
+                android:buttonTint="@color/main"
                 android:text="@string/category_fast_food"
                 android:textColor="@color/black"
                 android:textSize="13sp" />

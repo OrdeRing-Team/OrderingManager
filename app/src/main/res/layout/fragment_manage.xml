@@ -36,7 +36,7 @@
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/baeminjua"
                     android:text="OrdeRing"
-                    android:textColor="#E1695E"
+                    android:textColor="@color/main"
                     android:textSize="34sp"
                     android:textStyle="bold" />
 
