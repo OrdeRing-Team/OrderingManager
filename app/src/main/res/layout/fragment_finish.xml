@@ -44,7 +44,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/baeminjua"
                 android:text="OrdeRing"
-                android:textColor="#E1695E"
+                android:textColor="@color/main"
                 android:textSize="34sp"
                 android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:mcv_showOtherDates="all"
-                    app:mcv_selectionColor="#E1695E"
+                    app:mcv_selectionColor="@color/main"
                     app:mcv_headerTextAppearance="@style/CalendarWidgetHeader"
                     app:mcv_weekDayTextAppearance="@style/CalendarWidgetWeekDay"
                     app:mcv_selectionMode="range" />
@@ -111,7 +111,7 @@
                 android:layout_marginBottom="10dp"
                 android:textAlignment="center"
                 android:fontFamily="@font/baeminjua"
-                android:textColor="#E1695E"
+                android:textColor="@color/main"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@id/monthView"
                 app:layout_constraintStart_toStartOf="parent" />
