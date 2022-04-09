@@ -48,7 +48,6 @@ public class MenuManageFragment extends Fragment {
         binding = FragmentMenuManageBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
-        menuAdd();
         getMenuFromServer();
         return view;
     }
@@ -88,15 +87,15 @@ public class MenuManageFragment extends Fragment {
         }
     }
 
-    public void menuAdd() {
-        binding.btnMenuAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MenuAddActivity.class));
-                getActivity().finish();
-            }
-        });
-    }
+//    public void menuAdd() {
+//        binding.btnMenuAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getActivity(), MenuAddActivity.class));
+//                getActivity().finish();
+//            }
+//        });
+//    }
 
 
 

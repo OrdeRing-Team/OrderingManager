@@ -64,14 +64,14 @@ public class MenuAddActivity extends BasicActivity {
         setContentView(R.layout.activity_menu_item);
         binding = ActivityMenuItemBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        
+
 
         //뒤로가기 버튼 클릭 이벤트
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MenuAddActivity.this, StoreManageActivity.class));
-                finish();
+                BackWithAnim();
             }
         });
 

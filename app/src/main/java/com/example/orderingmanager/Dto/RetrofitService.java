@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -34,4 +35,8 @@ public interface RetrofitService {
    	@Multipart
    	@PUT("/api/restaurant/{restaurantId}/food/{foodId}")
 	Call<ResultDto<Boolean>> putFood(@Path("restaurantId") Long restaurantId, @Path("foodId") Long foodId, @Part(value = "dto") FoodDto foodDto,  @Part MultipartBody.Part file);
+
+	// 서버 내 데이터 삭제
+	@DELETE("/api/restaurant/food/{foodId}")
+	Call<ResultDto<Boolean>> deleteFood(@Path("foodId") Long foodId);
 }

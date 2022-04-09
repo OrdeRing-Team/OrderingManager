@@ -78,7 +78,7 @@ public class MenuEditActivity extends BasicActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MenuEditActivity.this, StoreManageActivity.class));
-                finish();
+                BackWithAnim();
             }
         });
 

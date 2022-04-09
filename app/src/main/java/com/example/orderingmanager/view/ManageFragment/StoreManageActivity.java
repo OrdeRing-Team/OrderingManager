@@ -42,6 +42,8 @@ public class StoreManageActivity extends AppCompatActivity {
         binding = ActivityStoreManageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        menuAdd();
+
         //백버튼 이벤트
         ImageButton btnBack = findViewById(R.id.btn_backToManageFrag);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +135,16 @@ public class StoreManageActivity extends AppCompatActivity {
             ivStoreIcon.setImageURI(selectedImageUri);
         }
 
+    }
+
+    public void menuAdd() {
+        binding.btnMenuAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(StoreManageActivity.this, MenuAddActivity.class));
+                finish();
+            }
+        });
     }
 
 
