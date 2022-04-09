@@ -19,15 +19,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.OwnerSignUpDto;
-import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.databinding.ActivitySignupBinding;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +32,11 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -86,7 +88,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    private void initTextChangedListener(){
+    private void initTextChangedListener() {
 
         /* 아이디 입력란 변경 리스너 */
         binding.etMemberId.addTextChangedListener(new TextWatcher() {
@@ -107,14 +109,14 @@ public class SignupActivity extends AppCompatActivity {
 
                 String input = binding.etMemberId.getText().toString();
 
-                if(input.length()> 4 && input.length() < 21 && ps.matcher(input).matches()){
+                if (input.length() > 4 && input.length() < 21 && ps.matcher(input).matches()) {
                     isMemberIdWritten = true;
                 } else {
                     isMemberIdWritten = false;
                     binding.ivError4.setVisibility(View.VISIBLE);
                     binding.tvIdError.setVisibility(View.VISIBLE);
                 }
-                if(isMemberIdWritten){
+                if (isMemberIdWritten) {
 
                     binding.ivError4.setVisibility(View.GONE);
                     binding.tvIdError.setVisibility(View.GONE);
@@ -124,8 +126,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     // 통과 애니메이션 실행
                     binding.ivIdComplete.startAnimation(complete);
-                }
-                else{
+                } else {
                     binding.ivIdComplete.setVisibility(View.GONE);
                 }
 
@@ -155,7 +156,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     // 비밀번호확인까지 입력한 뒤 비밀번호를 수정한 경우 조건문 추가
                     if (passwordCheckText.length() > 0) {
-                        if(input.equals(passwordCheckText)){
+                        if (input.equals(passwordCheckText)) {
                             isPasswordCheckAccord = true;
                             binding.ivError3.setVisibility(View.GONE);
                             binding.tvPsAccord.setVisibility(View.GONE);
@@ -169,7 +170,7 @@ public class SignupActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    if(passwordCheckText.length() > 0){
+                    if (passwordCheckText.length() > 0) {
                         isPasswordCheckAccord = false;
                         binding.ivError3.setVisibility(View.VISIBLE);
                         binding.tvPsAccord.setVisibility(View.VISIBLE);
@@ -187,14 +188,13 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(isPasswordWritten){
+                if (isPasswordWritten) {
                     // 통과 표시 출력
                     binding.ivPsComplete.setVisibility(View.VISIBLE);
 
                     // 통과 애니메이션 실행
                     binding.ivPsComplete.startAnimation(complete);
-                }
-                else{
+                } else {
                     binding.ivPsComplete.setVisibility(View.GONE);
                 }
 
@@ -214,7 +214,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String input = binding.editTextPasswordCheck.getText().toString();
                 if (input.equals(binding.editTextPassword.getText().toString())) {
-                    if(input.length() > 0 && input.length()<6){
+                    if (input.length() > 0 && input.length() < 6) {
                         isPasswordCheckAccord = false;
                         binding.ivError3.setVisibility(View.VISIBLE);
                         binding.tvPsAccord.setVisibility(View.VISIBLE);
@@ -239,14 +239,13 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(isPasswordCheckAccord){
+                if (isPasswordCheckAccord) {
                     // 통과 표시 출력
                     binding.ivPsCheckComplete.setVisibility(View.VISIBLE);
 
                     // 통과 애니메이션 실행
                     binding.ivPsCheckComplete.startAnimation(complete);
-                }
-                else{
+                } else {
                     binding.ivPsCheckComplete.setVisibility(View.GONE);
                 }
 
@@ -255,7 +254,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void initSignupButton(){
+    private void initSignupButton() {
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -264,14 +263,14 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void checkAllWritten(){
-        if(isMemberIdWritten && isPasswordWritten && isPasswordCheckAccord) {
+    private void checkAllWritten() {
+        if (isMemberIdWritten && isPasswordWritten && isPasswordCheckAccord) {
             ButtonRelease(binding.btnSignup);
-        }
-        else{
+        } else {
             ButtonLock(binding.btnSignup);
         }
     }
+
     /* 버튼 Lock거는 함수 */
     private void ButtonLock(Button button) {
         button.setBackgroundColor(Color.parseColor("#5E5E5E"));
@@ -301,40 +300,62 @@ public class SignupActivity extends AppCompatActivity {
                 Log.e("전화번호", phoneNum);
                 OwnerSignUpDto ownerSignUpDto = new OwnerSignUpDto(memberId, password, phoneNum);
 
-                URL url = new URL("http://www.ordering.ml/api/owner/signup");
-                HttpApi httpApi = new HttpApi(url, "POST");
+//                URL url = new URL("http://www.ordering.ml/api/owner/signup");
+//                HttpApi httpApi = new HttpApi(url, "POST");
 
                 new Thread() {
                     @SneakyThrows
                     public void run() {
-                        String json = httpApi.requestToServer(ownerSignUpDto);
-                        ObjectMapper mapper = new ObjectMapper();
-                        ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
-                        if (result.getData()) {
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateDB(memberId, phoneNum);
-                                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
-                                    finish();
-                                    Log.e(TAG, "회원가입 성공\n아이디:" + memberId + "\n전화번호:" + phoneNum + "\n비밀번호:" + password);
-                                    showToast(SignupActivity.this, "회원가입을 완료하였습니다.");
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://www.ordering.ml/api/owner/signup/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        RetrofitService service = retrofit.create(RetrofitService.class);
+                        Call<ResultDto<Long>> call = service.ownerSignUp(ownerSignUpDto);
+
+                        call.enqueue(new Callback<ResultDto<Long>>() {
+                            @Override
+                            public void onResponse(Call<ResultDto<Long>> call, Response<ResultDto<Long>> response) {
+
+                                ResultDto<Long> result = response.body();
+                                if (response.isSuccessful()) {
+                                    if (result.getData() != null) {
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                updateDB(memberId, phoneNum);
+                                                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                                                finish();
+                                                Log.e(TAG, "회원가입 성공\n아이디:" + memberId + "\n전화번호:" + phoneNum + "\n비밀번호:" + password);
+                                                showToast(SignupActivity.this, "회원가입을 완료하였습니다.");
+                                            }
+                                        });
+                                    } else {
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Log.w(TAG, "회원가입 실패");
+                                                showToast(SignupActivity.this, "이미 존재하는 아이디입니다.");
+                                            }
+                                        });
+                                    }
                                 }
-                            });
-                        } else {
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.w(TAG, "회원가입 실패");
-                                    showToast(SignupActivity.this, "이미 존재하는 아이디입니다.");
-                                }
-                            });
-                        }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResultDto<Long>> call, Throwable t) {
+                                Toast.makeText(SignupActivity.this,"회원가입 도중 일시적인 오류가 발생하였습니다. 다시 시도해 주세요.",Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+
                     }
                 }.start();
 
             } catch (Exception e) {
-                Toast.makeText(this, "회원가입 도중 일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "회원가입 도중 일시적인 오류가 발생하였습니다. 다시 시도해 주세요.", Toast.LENGTH_LONG).show();
                 Log.e("e = ", e.getMessage());
             }
 

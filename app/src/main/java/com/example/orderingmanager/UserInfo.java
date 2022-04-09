@@ -6,6 +6,8 @@ import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
+import java.util.ArrayList;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +28,7 @@ public class UserInfo {
     private static String menuName;
     private static Integer menuPrice;
     private static String menuIntro;
+    private static ArrayList<String> menuInfo;
 
     public static void setRestaurantInfo(OwnerSignInResultDto dto) {
         restaurantName = dto.getRestaurantName();
@@ -59,7 +62,7 @@ public class UserInfo {
     }
 
     public static void setFood(FoodDto dto) {
-        //foodId = dto.getFoodId();
+        foodId = dto.getFoodId();
         menuName = dto.getFoodName();
         menuPrice = dto.getPrice();
         menuIntro = dto.getMenuIntro();
@@ -113,5 +116,11 @@ public class UserInfo {
 
     public static RestaurantType getRestaurantType() {
         return restaurantType;
+    }
+
+    public static String getMenuName() { return menuName; }
+
+    public static Long getFoodId() {
+        return foodId;
     }
 }

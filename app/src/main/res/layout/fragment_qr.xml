@@ -33,6 +33,7 @@
         <androidx.appcompat.widget.Toolbar
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/toolbar"
+            android:background="@color/light_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -45,14 +46,6 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/baeminjua">
             </TextView>
-            <Button
-                android:id="@+id/btn_download_qr"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                style="@style/Theme.Design.NoActionBar"
-                android:background="@drawable/ic_baseline_download_24"/>
 
         </androidx.appcompat.widget.Toolbar>
         <com.google.android.material.tabs.TabLayout
@@ -90,4 +83,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_download_qr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/ic_download"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

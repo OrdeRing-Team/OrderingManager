@@ -48,12 +48,13 @@ public class MenuAddActivity extends BasicActivity {
     String price;
     String menuIntro;
     File imageFile;
+
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView ivMenu;
     private ActivityMenuItemBinding binding;
 
-    //뒤로가기 버튼
-    ImageButton btnBack;
+    RequestBody fileBody;
+
 
     Map<String, Object> manageInfo = new HashMap<>();
 
@@ -63,14 +64,14 @@ public class MenuAddActivity extends BasicActivity {
         setContentView(R.layout.activity_menu_item);
         binding = ActivityMenuItemBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        
 
         //뒤로가기 버튼 클릭 이벤트
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), StoreManageActivity.class));
-                BackWithAnim(); // 뒤로가기 슬라이드 (finish(); 포함되어 있음.)
+                startActivity(new Intent(MenuAddActivity.this, StoreManageActivity.class));
+                finish();
             }
         });
 
@@ -103,13 +104,22 @@ public class MenuAddActivity extends BasicActivity {
                             .build();
 
 
-                    // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
-                    RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
-                    // RequestBody로 Multipart.Part 객체 생성
-                    MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
+                    /* Uri 타입의 파일경로를 가지는 RequestBody 객체 생성 -> 이미지를 선택하지 않는 경우에 대한 예외처리 추가 */
+                    Call<ResultDto<Long>> call;
+                    //imageView가 null이 아니면 바로 fileBody에 할당
+                    if (ivMenu != null) {
+                        fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
+                        // RequestBody로 Multipart.Part 객체 생성
+                        MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
+                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+                        call = retrofitService.addFood(UserInfo.getRestaurantId(), foodDto, image);
+                    }
+                    //imageView가 null이면 foodDto에 null값 할당
+                    else {
+                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+                        call = retrofitService.addFood(UserInfo.getRestaurantId(), foodDto, null);
+                    }
 
-                    RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<Long>> call = retrofitService.addFood(UserInfo.getRestaurantId(), foodDto, image);
 
                     call.enqueue(new Callback<ResultDto<Long>>() {
                         @Override
@@ -120,6 +130,7 @@ public class MenuAddActivity extends BasicActivity {
                                 @Override
                                 public void run() {
                                     if(result.getData() != null) {
+                                        startActivity(new Intent(MenuAddActivity.this, StoreManageActivity.class));
                                         finish();
                                     }
                                 }
@@ -153,6 +164,7 @@ public class MenuAddActivity extends BasicActivity {
             Bitmap bitmap = drawable.getBitmap();
 
             imageFile = convertBitmapToFile(bitmap, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
+            Log.e("image", "imageFile is " + bitmap);
         }
     }
 

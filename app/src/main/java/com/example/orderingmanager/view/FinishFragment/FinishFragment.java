@@ -29,7 +29,7 @@ import java.util.List;
 
 public class FinishFragment extends Fragment {
 
-   // private static MaterialCalendarView materialCalendarView;
+    // private static MaterialCalendarView materialCalendarView;
 
     private View view;
     private FragmentFinishBinding binding;
@@ -152,7 +152,4 @@ public class FinishFragment extends Fragment {
     }
 
 
-
-
 }
-
