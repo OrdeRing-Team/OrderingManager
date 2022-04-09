@@ -1,26 +1,22 @@
 package com.example.orderingmanager.view.FinishFragment;
 
-import static java.util.Calendar.MONTH;
-
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentFinishBinding;
 import com.example.orderingmanager.view.MainActivity;
-import com.google.android.material.datepicker.MaterialCalendar;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -29,8 +25,6 @@ import com.prolificinteractive.materialcalendarview.OnRangeSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
-import java.time.Month;
-import java.util.Calendar;
 import java.util.List;
 
 public class FinishFragment extends Fragment {
@@ -41,6 +35,7 @@ public class FinishFragment extends Fragment {
     private FragmentFinishBinding binding;
     private MaterialCalendarView calendarView;
     public TextView diaryTextView;
+    private Button btn_graph;
 
     Bundle extra;
 
@@ -57,6 +52,9 @@ public class FinishFragment extends Fragment {
 
             /* 이곳에 받아올 데이터를 추가하십셩 */
         }
+
+        //btn_graph = view.findViewById(R.id.btn_graph);
+
         initButtonClickListener();
         storeInfoCheck();
 
@@ -113,6 +111,7 @@ public class FinishFragment extends Fragment {
     }
 
 
+
     public void storeInfoCheck(){
         storeInitInfo = UserInfo.getRestaurantId() != null;
         if(!storeInitInfo){
@@ -140,6 +139,14 @@ public class FinishFragment extends Fragment {
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), MainActivity.class));
                 getActivity().finish();
+            }
+        });
+
+        binding.btnGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GraphActivity.class);
+                startActivity(intent);
             }
         });
     }

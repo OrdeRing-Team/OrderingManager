@@ -20,14 +20,21 @@
         android:orientation="vertical"
         >
 
-        <!-- 캘린더 -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:elevation="10dp"
             android:orientation="vertical"
             >
+
+            <androidx.appcompat.widget.Toolbar
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/white"
+                >
 
             <TextView
                 android:id="@+id/textView1"
@@ -41,43 +48,66 @@
                 android:textSize="34sp"
                 android:textStyle="bold" />
 
+            <ImageButton
+                android:id="@+id/btn_graph"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/ic_bar_chart"
+                android:background="@drawable/round_rectangle_background"
+                />
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+            <!-- 캘린더 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/textView1"
                 android:paddingRight="20dp"
                 android:paddingLeft="20dp"
-                android:paddingBottom="20dp">
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/background_custom_white"
+                android:elevation="5dp">
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            app:mcv_showOtherDates="all"
-            app:mcv_selectionColor="#E1695E"
-            app:mcv_headerTextAppearance="@style/CalendarWidgetHeader"
-            app:mcv_weekDayTextAppearance="@style/CalendarWidgetWeekDay"
-            app:mcv_selectionMode="range"
-            />
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:mcv_showOtherDates="all"
+                    app:mcv_selectionColor="#E1695E"
+                    app:mcv_headerTextAppearance="@style/CalendarWidgetHeader"
+                    app:mcv_weekDayTextAppearance="@style/CalendarWidgetWeekDay"
+                    app:mcv_selectionMode="range" />
 
             </LinearLayout>
 
         </LinearLayout>
 
+
         <!-- 정산 결과 보여주는 부분 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/white"
+            >
 
             <!-- 선택날짜 -->
             <TextView
                 android:id="@+id/diaryTextView"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
                 android:textAlignment="center"
                 android:fontFamily="@font/baeminjua"

@@ -4,9 +4,7 @@
     package="com.example.orderingmanager">
     <!-- twilio와의 retrofit 통신으로 인한 인터넷 권한 요구 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <!--  이미지 업로드 관련  -->
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 이미지 업로드 관련 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -47,7 +45,7 @@
         </activity>
         <activity
             android:name=".view.MainActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".view.login_register.SignupActivity"
             android:exported="true"
@@ -59,9 +57,11 @@
             android:name=".view.InfoActivity"
             android:exported="true" />
         <activity
-            android:name=".view.login_register.AuthActivity"
+            android:name=".view.FinishFragment.GraphActivity"
             android:exported="true" />
-        <!-- 네이티브 앱 키 추가 -->
+        <activity
+            android:name=".view.login_register.AuthActivity"
+            android:exported="true" /> <!-- 네이티브 앱 키 추가 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="271badc59f7b54a059063439c4209044" />
