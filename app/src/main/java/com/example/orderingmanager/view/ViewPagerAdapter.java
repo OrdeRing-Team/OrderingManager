@@ -11,7 +11,7 @@ import com.example.orderingmanager.view.QRFragment.QrTableFragment;
 import com.example.orderingmanager.view.QRFragment.QrTakeoutFragment;
 import com.example.orderingmanager.view.QRFragment.QrWaitingFragment;
 
-public class ViewPagerAdapter extends FragmentStateAdapter {
+public class  ViewPagerAdapter extends FragmentStateAdapter {
     int num, count;
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity,int num, int count) {
         super(fragmentActivity);

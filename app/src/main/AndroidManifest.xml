@@ -23,6 +23,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
         <activity
+            android:name=".view.FinishFragment.MonthlySalesFragment"
+            android:exported="false" />
+        <activity
+            android:name=".view.FinishFragment.DailySalesFragment"
+            android:exported="false" />
+        <activity
             android:name=".view.ManageFragment.EditStoreInfoActivity"
             android:exported="false" />
         <activity
@@ -85,7 +91,6 @@
         <activity
             android:name=".test.TestStack"
             android:exported="true" />
-
     </application>
 
 </manifest>
