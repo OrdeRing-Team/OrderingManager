@@ -67,7 +67,7 @@ public class StoreManageActivity extends AppCompatActivity {
 
         //툴바 타이틀 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("매장명");
+        toolbar.setTitle(UserInfo.getRestaurantName());
 
 
         //뷰페이저 세팅

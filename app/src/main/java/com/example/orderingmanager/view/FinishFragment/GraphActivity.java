@@ -41,6 +41,7 @@ public class GraphActivity extends AppCompatActivity {
 
 
         BarChart barChart = findViewById(R.id.barChart);
+        int[] colorArray = new int[] {Color.rgb(255, 162, 162), Color.rgb(255, 198, 198),Color.rgb(255, 180, 180)};
 
         //샘플 데이터
         ArrayList<BarEntry> sales = new ArrayList<>();
@@ -78,10 +79,16 @@ public class GraphActivity extends AppCompatActivity {
         BarDataSet barDataSet = new BarDataSet(sales, "일일 매출");
 
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(16f);
+
+        /* 그래프 y값 텍스트 스타일 설정 */
+        //barDataSet.setValueTextColor(Color.BLACK);
+        //barDataSet.setValueTextSize(16f);
+
+        /* 그래프 텍스트 없애기 */
+        barDataSet.setDrawValues(false);
 
         BarData barData = new BarData(barDataSet);
+        barDataSet.setColors(colorArray);
 
         barChart.setFitBars(true);
         barChart.setData(barData);

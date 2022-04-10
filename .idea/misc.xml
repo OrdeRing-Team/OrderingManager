@@ -5,6 +5,7 @@
       <map>
         <entry key="../../../layout/custom_preview.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/background_splash.xml" value="0.14270833333333333" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.186" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/button_round_rectangle_background.xml" value="0.378125" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/edittext_background.xml" value="0.2140625" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1734375" />
@@ -39,6 +40,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_temp.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/activity_web_view.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/custom_dialog.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/custom_dialog_store_check.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/frag_qr_waiting.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/fragment_finish.xml" value="0.3054054054054054" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/fragment_manage.xml" value="0.3619791666666667" />
@@ -58,42 +60,35 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/test.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/view_error_page.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/view_qr_table.xml" value="0.3619791666666667" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/view_qr_takeout.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/layout/view_store_info.xml" value="0.4510108864696734" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/menu/menu_actions.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrderingManager/app/src/main/res/menu/menu_qr.xml" value="0.19739583333333333" />
-        <entry key="app/src/main/res/drawable-v24/ic_graph.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable-v24/ic_graph_white.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable-v24/outline_equalizer_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/activity_menu_item.xml" value="0.440625" />
-        <entry key="app/src/main/res/drawable/background_custom_white.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/background_custom_white.xml" value="0.251" />
         <entry key="app/src/main/res/drawable/background_splash.xml" value="0.2604166666666667" />
-        <entry key="app/src/main/res/drawable/bar_chart.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/btn_back.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/btn_custom.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/btn_home.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/button_round_rectangle_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/btn_back.xml" value="0.38177083333333334" />
+        <entry key="app/src/main/res/drawable/btn_custom.xml" value="0.38177083333333334" />
+        <entry key="app/src/main/res/drawable/btn_home.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/drawable/dot.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/drawable_left_image_customise.xml" value="0.1675925925925926" />
-        <entry key="app/src/main/res/drawable/ic_bar_chart.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_close_24_sizeup.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/drawable/ic_check.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/drawable/ic_odering_background.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/drawable/ic_refresh.xml" value="0.38177083333333334" />
-        <entry key="app/src/main/res/drawable/menu_selector_color.xml" value="0.22565663655598958" />
+        <entry key="app/src/main/res/drawable/menu_selector_color.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/drawable/menumanage1_custom.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/drawable/menumanage2_custom.xml" value="0.25277777777777777" />
         <entry key="app/src/main/res/drawable/menumanage3_custom.xml" value="0.25277777777777777" />
         <entry key="app/src/main/res/drawable/menumange_info_edit_custom.xml" value="0.25277777777777777" />
         <entry key="app/src/main/res/drawable/recycler_custom.xml" value="0.2660675051314999" />
         <entry key="app/src/main/res/drawable/round_background.xml" value="0.16510416666666666" />
-        <entry key="app/src/main/res/drawable/round_rectangle_background.xml" value="0.23005421956380206" />
+        <entry key="app/src/main/res/drawable/round_rectangle_background.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/drawable/round_rectangle_locked.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/drawable/shadow.xml" value="0.262037037037037" />
-        <entry key="app/src/main/res/drawable/shape_rectangle_with_radius.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/tab_test.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/drawable/textview_round_rectangle_background.xml" value="0.2755" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/activity_create_qr.xml" value="0.2210144927536232" />
         <entry key="app/src/main/res/layout/activity_create_qr_success.xml" value="0.307518115942029" />
         <entry key="app/src/main/res/layout/activity_edit.xml" value="0.3392210144927536" />
         <entry key="app/src/main/res/layout/activity_edit_personal_info.xml" value="0.335" />
@@ -102,7 +97,7 @@
         <entry key="app/src/main/res/layout/activity_guide2.xml" value="0.16847826086956522" />
         <entry key="app/src/main/res/layout/activity_info.xml" value="0.28558052434456926" />
         <entry key="app/src/main/res/layout/activity_item.xml" value="0.3392210144927536" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1778115501519757" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/activity_menu_add.xml" value="0.3392210144927536" />
@@ -116,12 +111,14 @@
         <entry key="app/src/main/res/layout/activity_temp.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/activity_test_stack.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.17239583333333333" />
-        <entry key="app/src/main/res/layout/fragment_finish.xml" value="0.1830044781720197" />
+        <entry key="app/src/main/res/layout/fragment_finish.xml" value="0.20881968203460574" />
         <entry key="app/src/main/res/layout/fragment_manage.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_menu_manage.xml" value="0.2306570777215986" />
         <entry key="app/src/main/res/layout/fragment_menumanage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_order.xml" value="0.23324275362318841" />
         <entry key="app/src/main/res/layout/fragment_qr.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/fragment_qr_table.xml" value="0.33106884057971014" />
+        <entry key="app/src/main/res/layout/fragment_qr_waiting.xml" value="0.33106884057971014" />
         <entry key="app/src/main/res/layout/fragment_review_manage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_reviewmanage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/item_list.xml" value="0.25" />
@@ -136,6 +133,8 @@
         <entry key="app/src/main/res/layout/recycler_custom.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/recyclerview_item.xml" value="0.2871376811594203" />
         <entry key="app/src/main/res/layout/tabtest.xml" value="0.3319746376811594" />
+        <entry key="app/src/main/res/layout/view_qr_table.xml" value="0.33106884057971014" />
+        <entry key="app/src/main/res/layout/view_qr_takeout.xml" value="0.33106884057971014" />
         <entry key="app/src/main/res/layout/view_qr_waiting.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/view_store_info.xml" value="0.37397404570729936" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.335" />
