@@ -17,22 +17,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.example.orderingmanager.view.BasicActivity;
-import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
 import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.databinding.ActivityAuthBinding;
+import com.example.orderingmanager.view.BasicActivity;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.net.URL;
@@ -55,8 +48,6 @@ public class AuthActivity extends BasicActivity {
     private String mVerificationId; // 코드를 담을 변수
 
     private static final String TAG = "SIGNUP_TAG";
-
-    private FirebaseAuth firebaseAuth;
 
     int minute, second;
     String totalPhoneNum;
@@ -294,20 +285,6 @@ public class AuthActivity extends BasicActivity {
         }
     }
 
-
-    /* 문자 전송 함수 */
-    /* Firebase PhoneNumberVerification */
-    /*private void startPhoneNumberVerification(String phoneNum) {
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(firebaseAuth)
-                        .setPhoneNumber(phoneNum)
-                        .setTimeout(120L, TimeUnit.SECONDS)
-                        .setActivity(this)
-                        .setCallbacks(mCallbacks)
-                        .build();
-        PhoneAuthProvider.verifyPhoneNumber(options);
-    }*/
-
     /* twilio PhoneNumberVerification */
     public void startPhoneNumberVerification(){
         try {
@@ -459,66 +436,6 @@ public class AuthActivity extends BasicActivity {
         startActivity(intent);
 
         FinishWithAnim();
-    }
-    /* 계정 생성 함수 */
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        // ProgressBar 실행
-        binding.progressBar.setVisibility(View.VISIBLE);
-
-        firebaseAuth.signInWithCredential(credential)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        // 계정 생성 성공시
-
-                        // ProgressBar 제거
-                        binding.progressBar.setVisibility(View.GONE);
-
-                        String phoneNum = "0" + firebaseAuth.getCurrentUser().getPhoneNumber().substring(3);
-                        Log.e("AuthActivity: signInWithPhoneAuthCredential", "PhoneNum = " + phoneNum);
-                        Toast.makeText(AuthActivity.this, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-
-                        // 휴대폰으로 생성된 계정은 탈퇴처리
-                        FirebaseAuth.getInstance().getCurrentUser().delete();
-
-                        Intent intent = new Intent(AuthActivity.this, SignupActivity.class);
-                        intent.putExtra("phoneNum", phoneNum);
-                        startActivity(intent);
-
-                        FinishWithAnim();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // 계정 생성 실패시
-
-                        Animation error = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
-
-                        // ProgressBar 제거
-                        binding.progressBar.setVisibility(View.GONE);
-
-                        // 에러메세지 출력
-                        binding.ivError.setVisibility(View.VISIBLE);
-                        binding.tvErrorcode.setVisibility(View.VISIBLE);
-
-                        // 에러메세지 애니메이션 실행
-                        binding.ivError.startAnimation(error);
-                        binding.tvErrorcode.startAnimation(error);
-
-                        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        long[] pattern = {10, 50, 10, 50}; // miliSecond
-                        //               대기,진동,대기,진동
-                        // 짝수 인덱스 : 대기시간
-                        // 홀수 인덱스 : 진동시간
-                        vibrator.vibrate(pattern, -1);
-                        // 0 : 무한반복, -1: 반복없음,
-                        // 양의정수 : 진동패턴배열의 해당 인덱스부터 진동 무한반복
-
-                        //Toast.makeText(AuthActivity.this, "인증번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
     }
 
     @Override

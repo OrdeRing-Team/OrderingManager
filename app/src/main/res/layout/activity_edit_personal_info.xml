@@ -122,6 +122,7 @@
             android:id="@+id/et_nowPW"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:backgroundTint="#656565"
             android:layout_marginLeft="10dp" />
 
@@ -159,6 +160,7 @@
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#656565"
+            android:textColor="@color/black"
             android:layout_marginLeft="10dp" />
 
         <ImageView
@@ -195,6 +197,7 @@
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#656565"
+            android:textColor="@color/black"
             android:layout_marginLeft="10dp" />
 
         <ImageView
@@ -258,6 +261,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#656565"
             android:layout_marginLeft="30dp"
+            android:textColor="@color/black"
             android:layout_weight="1"/>
 
         <Button
@@ -301,9 +305,6 @@
             android:textColor="#6A6A6A"
             android:text="회원탈퇴"
             android:textSize="12dp"/>
-
-
-
 
     </LinearLayout>
 
