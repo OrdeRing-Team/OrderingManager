@@ -75,10 +75,8 @@ public class LoginActivity extends BasicActivity {
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!getLocalData()) {
-                    memberId = binding.etMemberId.getText().toString();
-                    password = binding.etPassword.getText().toString();
-                }
+                memberId = binding.etMemberId.getText().toString();
+                password = binding.etPassword.getText().toString();
                 // 로그인 조건 처리
                 if (memberId.length() > 0 && password.length() > 0) {
                     login();
@@ -112,8 +110,8 @@ public class LoginActivity extends BasicActivity {
                         @Override
                         public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
 
-                            result = response.body();
                             if (response.isSuccessful()) {
+                                result = response.body();
                                 if (result.getData() != null) {
                                     // 아이디 비밀번호 일치할 때
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -136,9 +134,9 @@ public class LoginActivity extends BasicActivity {
                                             if (binding.cbAutologin.isChecked()) {
                                                 // 자동로그인 체크되어있으면
                                                 // SharedPreferences 에 로그인 정보를 저장
-                                                SharedPreferences loginData = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                                                loginSP = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
 
-                                                SharedPreferences.Editor autoLoginEdit = loginData.edit();
+                                                SharedPreferences.Editor autoLoginEdit = loginSP.edit();
                                                 autoLoginEdit.putString("signInId", memberId);
                                                 autoLoginEdit.putString("password", password);
                                                 autoLoginEdit.commit();

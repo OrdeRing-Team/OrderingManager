@@ -38,6 +38,9 @@ public class BasicActivity extends AppCompatActivity {
     public static void showToast(Activity activity, String msg){
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
     }
+    public static void showLongToast(Activity activity, String msg){
+        Toast.makeText(activity, msg, Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onBackPressed() {

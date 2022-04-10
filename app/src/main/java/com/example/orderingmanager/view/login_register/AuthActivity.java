@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
 import com.example.orderingmanager.HttpApi;
@@ -33,6 +34,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AuthActivity extends BasicActivity {
 
@@ -289,45 +295,57 @@ public class AuthActivity extends BasicActivity {
     public void startPhoneNumberVerification(){
         try {
             String phoneNum = binding.etPhoneSignup.getText().toString();
-            Log.e("phoneNum", phoneNum);
+
             PhoneNumberDto phoneNumberDto = new PhoneNumberDto(phoneNum);
 
-            URL url = new URL("http://www.ordering.ml/api/owner/verification/get");
-            HttpApi httpApi = new HttpApi(url, "POST");
-
-            /* 3.15 오늘의 교훈 http 요청은 쓰레드 새로 파서 하자!!!!!!!!!!!!!!!!!!!!!!!!!! 꼭!!!!!!!!! */
-            // 안드로이드는 기본적으로 https 프로토콜만 지원함 http를 사용하려면 예외 처리를 해주어야 한다
-            // 매니페스트에서 cleartext HTTP를 활성화 시켜주면 끝!
             new Thread() {
                 @SneakyThrows
                 public void run() {
-                    String json = httpApi.requestToServer(phoneNumberDto);
-                    ObjectMapper mapper = new ObjectMapper();
-                    ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
-                    Log.e(TAG,result.getData().toString());
-                    if(result.getData()){
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                onCodeSent();
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/owner/verification/get/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<Boolean>> call = service.phoneNumber(phoneNumberDto);
+
+                    call.enqueue(new Callback<ResultDto<Boolean>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<Boolean> result;
+                                result = response.body();
+                                if (result.getData()) {
+                                    // 아이디 비밀번호 일치할 때
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            onCodeSent();
+                                        }
+                                    });
+                                } else {
+                                    binding.progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(AuthActivity.this, "이미 가입된 전화번호 입니다.", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(AuthActivity.this, LoginActivity.class));
+                                    finish();
+                                }
                             }
-                        });
-                    }else{
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                binding.progressBar.setVisibility(View.GONE);
-                                Toast.makeText(AuthActivity.this, "이미 가입된 전화번호 입니다.", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(AuthActivity.this, LoginActivity.class));
-                                finish();
-                            }
-                        });
-                    }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                            Toast.makeText(AuthActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
                 }
             }.start();
 
-        } catch ( Exception e) {
-            Log.e("e = " , e.getMessage());
+        } catch (Exception e) {
+            Toast.makeText(AuthActivity.this, "로그인 도중 일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
         }
     }
 

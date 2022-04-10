@@ -1,8 +1,10 @@
 package com.example.orderingmanager.Dto;
 
 import com.example.orderingmanager.Dto.request.OwnerSignUpDto;
+import com.example.orderingmanager.Dto.request.PasswordChangeDto;
 import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
+import com.example.orderingmanager.Dto.request.VerificationDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
 import okhttp3.MultipartBody;
@@ -25,6 +27,15 @@ public interface RetrofitService {
 
 	@POST("/api/owner/verification/get")
 	Call<ResultDto<Boolean>> phoneNumber(@Body PhoneNumberDto phoneNumberDto);
+
+	@POST("/api/owner/verification/check")
+	Call<ResultDto<Boolean>> verification(@Body VerificationDto verificationDto);
+
+	@PUT("/api/owner/{owner_id}/password")
+	Call<ResultDto<Boolean>> changePassword(@Path("owner_id") Long ownerId, @Body PasswordChangeDto passwordChangeDto);
+
+	@PUT("/api/owner/{owner_id}/phone_number")
+	Call<ResultDto<Boolean>> reverify(@Path("owner_id") Long ownerId, @Body PhoneNumberDto phoneNumberDto);
 
    	@Multipart
    	@POST("/api/restaurant/{restaurantId}/food")

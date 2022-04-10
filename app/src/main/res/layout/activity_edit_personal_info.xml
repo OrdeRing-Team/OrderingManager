@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ManageFragment.EditPersonalInfoActivity"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".view.ManageFragment.EditPersonalInfoActivity">
 
-    <LinearLayout
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -17,87 +26,102 @@
             android:id="@+id/btn_backToManageFrag"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:backgroundTint="@color/black"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- 오른쪽 정렬을 위한 View -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="50dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/fui_transparent"
-            android:textColor="@color/black"
-            android:text="저장"
-            android:textSize="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="개인정보수정"
             android:textStyle="bold"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"/>
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
 
-    </LinearLayout>
+        <!--        <Button-->
+        <!--            android:id="@+id/btn_save"-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="@color/fui_transparent"-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:text="저장"-->
+        <!--            android:textSize="15dp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:layout_marginRight="10dp"/>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/gray"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/menumanage2_custom"
         android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp">
+        android:background="@drawable/menumanage2_custom"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/iv_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
             android:layout_gravity="center"
-            android:layout_marginTop="35dp"/>
+            android:layout_marginTop="35dp"
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:backgroundTint="#656565"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="#656565"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="13dp"
             android:text="아이디"
             android:textColor="#000000"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginTop="13dp"
-            android:layout_marginBottom="13dp"
-            android:layout_marginLeft="30dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_id"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
             android:layout_marginTop="13dp"
             android:layout_marginBottom="13dp"
-            android:textSize="15dp"
             android:textColor="@color/black"
-            android:layout_marginLeft="55dp" />
+            android:textSize="15dp" />
 
     </LinearLayout>
 
@@ -105,111 +129,109 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_nowPW"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
             android:text="현재 비밀번호"
             android:textColor="#000000"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="30dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_nowPW"
             android:layout_width="220dp"
+            android:inputType="textPassword"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:paddingStart="10dp"
             android:backgroundTint="#656565"
-            android:layout_marginLeft="10dp" />
+            android:textColor="@color/black" />
 
-        <ImageView
-            android:id="@+id/iv_nowPWcomplete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_check"
-            tools:ignore="ContentDescription"
-            tools:visibility="visible"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_newPW"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
             android:text="신규 비밀번호"
             android:textColor="#000000"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="30dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_newPW"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:paddingStart="10dp"
+            android:inputType="textPassword"
+            android:hint="6자 이상 입력해 주세요"
+            android:textColorHint="@color/gray"
             android:backgroundTint="#656565"
-            android:textColor="@color/black"
-            android:layout_marginLeft="10dp" />
+            android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/iv_newPWcomplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_check"
             tools:ignore="ContentDescription"
-            tools:visibility="visible"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"/>
+            tools:visibility="visible" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_checkPW"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
             android:text="비밀번호 확인"
             android:textColor="#000000"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="30dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_checkPW"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:paddingStart="10dp"
+            android:inputType="textPassword"
             android:backgroundTint="#656565"
-            android:textColor="@color/black"
-            android:layout_marginLeft="10dp" />
+            android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/iv_checkPWcomplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_check"
             tools:ignore="ContentDescription"
-            tools:visibility="visible"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"/>
+            tools:visibility="visible" />
 
     </LinearLayout>
 
@@ -225,6 +247,7 @@
             android:layout_weight="1" />
 
         <Button
+            android:id="@+id/btn_change_password"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
@@ -242,11 +265,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="휴대폰 인증"
+            android:layout_marginLeft="30dp"
+            android:text="휴대폰 번호 변경"
             android:textColor="#000000"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="30dp"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -259,37 +282,42 @@
             android:id="@+id/et_phoneNum"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:paddingStart="10dp"
+            android:inputType="phone"
+            android:hint="'-'없이 입력해 주세요"
+            android:textColorHint="@color/gray"
+            android:layout_weight="1"
             android:backgroundTint="#656565"
-            android:layout_marginLeft="30dp"
-            android:textColor="@color/black"
-            android:layout_weight="1"/>
+            android:textColor="@color/black" />
 
         <Button
+            android:id="@+id/btn_reverify"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#F8EBEB"
-            android:text="재인증"
-            android:textColor="#232323"
             android:layout_marginRight="30dp"
-            android:outlineProvider="none" />
+            android:backgroundTint="#F8EBEB"
+            android:outlineProvider="none"
+            android:text="재인증"
+            android:textColor="#232323" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_logout"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:background="@color/fui_transparent"
-            android:textColor="#6A6A6A"
             android:text="로그아웃"
-            android:textSize="12dp"/>
+            android:textColor="#6A6A6A"
+            android:textSize="12dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -302,12 +330,25 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:background="@color/fui_transparent"
-            android:textColor="#6A6A6A"
             android:text="회원탈퇴"
-            android:textSize="12dp"/>
+            android:textColor="#6A6A6A"
+            android:textSize="12dp" />
 
     </LinearLayout>
 
 
-
 </LinearLayout>
+
+    <ProgressBar
+    android:id="@+id/progressBar"
+    style="?android:attr/progressBarStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_marginBottom="50dp"
+    android:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
