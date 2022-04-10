@@ -1,12 +1,15 @@
 package com.example.orderingmanager.view.login_register;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -32,6 +35,11 @@ public class LoginActivity extends BasicActivity {
     //viewbinding
     private ActivityLoginBinding binding;
 
+    ResultDto<OwnerSignInResultDto> result;
+
+    String memberId, password;
+    SharedPreferences loginSP;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +50,19 @@ public class LoginActivity extends BasicActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // 자동로그인
+        if(getLocalData()){
+            binding.etMemberId.setText(memberId);
+            binding.etPassword.setText(password);
+            binding.cbAutologin.setChecked(true);
+            login();
+        }
+
         initButtonClickListener();
 
     }
 
-    private void initButtonClickListener(){
+    private void initButtonClickListener() {
         binding.textViewSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,146 +75,139 @@ public class LoginActivity extends BasicActivity {
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String memberId = binding.etMemberId.getText().toString();
-                String password = binding.editTextPasswordLogin.getText().toString();
-
+                if(!getLocalData()) {
+                    memberId = binding.etMemberId.getText().toString();
+                    password = binding.etPassword.getText().toString();
+                }
                 // 로그인 조건 처리
                 if (memberId.length() > 0 && password.length() > 0) {
-                    try {
-                        SignInDto signInDto = new SignInDto(memberId, password);
-
-//                        URL url = new URL("http://www.ordering.ml/api/owner/signin");
-//                        HttpApi httpApi = new HttpApi(url, "POST");
-
-                        new Thread() {
-                            @SneakyThrows
-                            public void run() {
-                                // login
-
-                                Retrofit retrofit = new Retrofit.Builder()
-                                        .baseUrl("http://www.ordering.ml/api/owner/signin/")
-                                        .addConverterFactory(GsonConverterFactory.create())
-                                        .build();
-
-                                RetrofitService service = retrofit.create(RetrofitService.class);
-                                Call<ResultDto<OwnerSignInResultDto>> call = service.ownerSignIn(signInDto);
-
-                                call.enqueue(new Callback<ResultDto<OwnerSignInResultDto>>() {
-                                    @Override
-                                    public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
-
-                                        ResultDto<OwnerSignInResultDto> result = response.body();
-                                        if (response.isSuccessful()) {
-                                            if(result.getData() != null){
-                                                // 아이디 비밀번호 일치할 때
-                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        UserInfo.setUserInfo(result.getData());
-                                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
-                                                        if(result.getData().getRestaurantId() == null){
-                                                            // 매장정보입력이 안되어 있을때
-                                                            Log.e("getOwnerId : ",result.getData().getOwnerId().toString());
-                                                            Log.e("getRestaurantId : ",result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
-
-                                                            //intent.putExtra("restaurantId", false);
-                                                        }
-                                                        else{
-                                                            // 매장정보입력이 완료된 상태
-                                                            UserInfo.setRestaurantInfo(result.getData());
-                                                        }
-                                                        UserInfo.setUserId(binding.etMemberId.getText().toString());
-                                                        startActivity(intent);
-                                                        finish();
-                                                    }
-                                                });
-                                            }
-                                            else{
-                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
-                                                        showLoginErrorPopup();
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<ResultDto<OwnerSignInResultDto>> call, Throwable t) {
-                                        Toast.makeText(LoginActivity.this,"로그인 도중 일시적인 오류가 발생하였습니다.",Toast.LENGTH_LONG).show();
-                                        Log.e("e = " , t.getMessage());
-                                    }
-                                });
-
-
-//                                String json = httpApi.requestToServer(signInDto);
-//                                ObjectMapper mapper = new ObjectMapper();
-//                                ResultDto<OwnerSignInResultDto> result = mapper.readValue(json, new TypeReference<ResultDto<OwnerSignInResultDto>>() {});
-//
-//
-//                                if(result.getData() != null){
-//                                    // 아이디 비밀번호 일치할 때
-//                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            UserInfo.setUserInfo(result.getData());
-//                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//
-//
-//                                            if(result.getData().getRestaurantId() == null){
-//                                                // 매장정보입력이 안되어 있을때
-//                                                Log.e("getOwnerId : ",result.getData().getOwnerId().toString());
-//                                                Log.e("getRestaurantId : ",result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
-//
-//                                                //intent.putExtra("restaurantId", false);
-//                                            }
-//                                            else{
-//                                                // 매장정보입력이 완료된 상태
-//                                                UserInfo.setRestaurantInfo(result.getData());
-//                                            }
-//                                            UserInfo.setUserId(binding.etMemberId.getText().toString());
-//                                            startActivity(intent);
-//                                            finish();
-//                                        }
-//                                    });
-//                                }
-//                                else{
-//                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
-//                                            showLoginErrorPopup();
-//                                        }
-//                                    });
-//                                }
-                            }
-                        }.start();
-
-                    } catch (Exception e) {
-                        Toast.makeText(LoginActivity.this,"로그인 도중 일시적인 오류가 발생하였습니다.",Toast.LENGTH_LONG).show();
-                        Log.e("e = " , e.getMessage());
-                    }
+                    login();
                 } else {
-                    Toast.makeText(LoginActivity.this, "아이디와 비밀번호를 모두 입력해주세요.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "아이디와 비밀번호를 모두 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void showLoginErrorPopup(){
+    private void login() {
+        try {
+            showProgress();
+
+            SignInDto signInDto = new SignInDto(memberId, password);
+
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    // login
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/owner/signin/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<OwnerSignInResultDto>> call = service.ownerSignIn(signInDto);
+
+                    call.enqueue(new Callback<ResultDto<OwnerSignInResultDto>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
+
+                            result = response.body();
+                            if (response.isSuccessful()) {
+                                if (result.getData() != null) {
+                                    // 아이디 비밀번호 일치할 때
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            UserInfo.setUserInfo(result.getData());
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+                                            if (result.getData().getRestaurantId() == null) {
+                                                // 매장정보입력이 안되어 있을때
+                                                Log.e("getOwnerId : ", result.getData().getOwnerId().toString());
+                                                Log.e("getRestaurantId : ", result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
+
+                                                //intent.putExtra("restaurantId", false);
+                                            } else {
+                                                // 매장정보입력이 완료된 상태
+                                                UserInfo.setRestaurantInfo(result.getData());
+                                            }
+                                            // 자동로그인 여부
+                                            if (binding.cbAutologin.isChecked()) {
+                                                // 자동로그인 체크되어있으면
+                                                // SharedPreferences 에 로그인 정보를 저장
+                                                SharedPreferences loginData = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+
+                                                SharedPreferences.Editor autoLoginEdit = loginData.edit();
+                                                autoLoginEdit.putString("signInId", memberId);
+                                                autoLoginEdit.putString("password", password);
+                                                autoLoginEdit.commit();
+                                            }
+                                            UserInfo.setUserId(memberId);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
+                                } else {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
+                                            hideProgress();
+                                            showLoginErrorPopup();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<OwnerSignInResultDto>> call, Throwable t) {
+                            Toast.makeText(LoginActivity.this, "로그인 도중 일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            hideProgress();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(LoginActivity.this, "로그인 도중 일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            hideProgress();
+            Log.e("e = ", e.getMessage());
+        }
+
+    }
+
+    private void showLoginErrorPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("로그인 실패").setMessage("아이디와 비밀번호를 다시 확인해 주세요.");
-        builder.setPositiveButton("닫기", new DialogInterface.OnClickListener(){
+        builder.setPositiveButton("닫기", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int id)
-            {
+            public void onClick(DialogInterface dialog, int id) {
                 return;
             }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private boolean getLocalData(){
+        loginSP = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+        memberId = loginSP.getString("signInId", null);
+        password = loginSP.getString("password", null);
+
+        return (memberId != null && password != null);
+    }
+
+    private void showProgress(){
+        binding.progressBar.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void hideProgress(){
+        binding.progressBar.setVisibility(View.GONE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }

@@ -1,10 +1,9 @@
 package com.example.orderingmanager.Dto;
 
 import com.example.orderingmanager.Dto.request.OwnerSignUpDto;
+import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
-
-import javax.annotation.Nullable;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -23,6 +22,9 @@ public interface RetrofitService {
 
 	@POST("/api/owner/signup")
 	Call<ResultDto<Long>> ownerSignUp(@Body OwnerSignUpDto ownerSignUpDto);
+
+	@POST("/api/owner/verification/get")
+	Call<ResultDto<Boolean>> phoneNumber(@Body PhoneNumberDto phoneNumberDto);
 
    	@Multipart
    	@POST("/api/restaurant/{restaurantId}/food")

@@ -1,19 +1,21 @@
 package com.example.orderingmanager.view.ManageFragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.orderingmanager.view.BasicActivity;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.request.MemberIdDto;
 import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityEditPersonalInfoBinding;
+import com.example.orderingmanager.view.BasicActivity;
 import com.example.orderingmanager.view.login_register.LoginActivity;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,7 +40,7 @@ public class EditPersonalInfoActivity extends BasicActivity {
 
     }
 
-    private void initButtonClickListener(){
+    private void initButtonClickListener() {
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,8 +65,11 @@ public class EditPersonalInfoActivity extends BasicActivity {
     /* 로그아웃 */
     public void logout() {
         startActivity(new Intent(this, LoginActivity.class));
+        clearSharedPreferences();
         Toast.makeText(this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-        finish();
+
+        // 켜져있던 모든 activity 종료
+        finishAffinity();
     }
 
     /* 회원탈퇴 */
@@ -72,7 +77,7 @@ public class EditPersonalInfoActivity extends BasicActivity {
         try {
             MemberIdDto memberIdDto = new MemberIdDto(UserInfo.getOwnerId());
 
-            URL url = new URL("http://www.ordering.ml/api/owner/"+ UserInfo.getOwnerId().toString());
+            URL url = new URL("http://www.ordering.ml/api/owner/" + UserInfo.getOwnerId().toString());
             HttpApi httpApi = new HttpApi(url, "DELETE");
 
             new Thread() {
@@ -80,24 +85,27 @@ public class EditPersonalInfoActivity extends BasicActivity {
                 public void run() {
                     String json = httpApi.requestToServer(memberIdDto);
                     ObjectMapper mapper = new ObjectMapper();
-                    ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
+                    ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {
+                    });
 
 
-                    if(result.getData() != null){
+                    if (result.getData() != null) {
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                showToast(EditPersonalInfoActivity.this,"회원탈퇴 되었습니다.");
-                                startActivity(new Intent(EditPersonalInfoActivity.this,LoginActivity.class));
-                                finish();
+                                showToast(EditPersonalInfoActivity.this, "회원탈퇴 되었습니다.");
+                                clearSharedPreferences();
+                                startActivity(new Intent(EditPersonalInfoActivity.this, LoginActivity.class));
+
+                                // 켜져있던 모든 activity 종료
+                                finishAffinity();
                             }
                         });
-                    }
-                    else{
+                    } else {
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                showToast(EditPersonalInfoActivity.this,"서버 연결에 문제가 발생했습니다.");
+                                showToast(EditPersonalInfoActivity.this, "서버 연결에 문제가 발생했습니다.");
                             }
                         });
                     }
@@ -105,7 +113,7 @@ public class EditPersonalInfoActivity extends BasicActivity {
             }.start();
 
         } catch (Exception e) {
-            showToast(EditPersonalInfoActivity.this,"서버 연결에 문제가 발생했습니다.");
+            showToast(EditPersonalInfoActivity.this, "서버 연결에 문제가 발생했습니다.");
         }
     }
 
@@ -118,5 +126,12 @@ public class EditPersonalInfoActivity extends BasicActivity {
 
         // 점주 아이디
         binding.tvId.setText(UserInfo.getUserId());
+    }
+
+    private void clearSharedPreferences(){
+        SharedPreferences loginSP = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor spEdit = loginSP.edit();
+        spEdit.clear();
+        spEdit.commit();
     }
 }
