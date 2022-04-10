@@ -26,16 +26,11 @@ import com.example.orderingmanager.Dto.request.MemberIdDto;
 import com.example.orderingmanager.Dto.request.PasswordChangeDto;
 import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
-import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityEditPersonalInfoBinding;
 import com.example.orderingmanager.view.BasicActivity;
 import com.example.orderingmanager.view.login_register.LoginActivity;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.net.URL;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -117,45 +112,68 @@ public class EditPersonalInfoActivity extends BasicActivity {
     /* 회원탈퇴 */
     public void deleteAccount() {
         try {
-            MemberIdDto memberIdDto = new MemberIdDto(UserInfo.getOwnerId());
+            showProgress();
 
-            URL url = new URL("http://www.ordering.ml/api/owner/" + UserInfo.getOwnerId().toString());
-            HttpApi httpApi = new HttpApi(url, "DELETE");
+            MemberIdDto memberId = new MemberIdDto(UserInfo.getOwnerId());
 
             new Thread() {
                 @SneakyThrows
                 public void run() {
-                    String json = httpApi.requestToServer(memberIdDto);
-                    ObjectMapper mapper = new ObjectMapper();
-                    ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {
+                    // login
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/owner/"+ UserInfo.getOwnerId().toString()+"/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<Boolean>> call = service.deleteaccount(UserInfo.getOwnerId());
+
+                    call.enqueue(new Callback<ResultDto<Boolean>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<Boolean> result;
+                                result = response.body();
+                                if (result.getData() != null) {
+                                    // 아이디 비밀번호 일치할 때
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast(EditPersonalInfoActivity.this, "회원탈퇴 되었습니다.");
+                                            clearSharedPreferences();
+                                            startActivity(new Intent(EditPersonalInfoActivity.this, LoginActivity.class));
+
+                                            // 켜져있던 모든 activity 종료
+                                            finishAffinity();
+                                        }
+                                    });
+                                } else {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast(EditPersonalInfoActivity.this, "서버 연결에 문제가 발생했습니다.");
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                            Toast.makeText(EditPersonalInfoActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            hideProgress();
+                            Log.e("e = ", t.getMessage());
+                        }
                     });
-
-
-                    if (result.getData() != null) {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                showToast(EditPersonalInfoActivity.this, "회원탈퇴 되었습니다.");
-                                clearSharedPreferences();
-                                startActivity(new Intent(EditPersonalInfoActivity.this, LoginActivity.class));
-
-                                // 켜져있던 모든 activity 종료
-                                finishAffinity();
-                            }
-                        });
-                    } else {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                showToast(EditPersonalInfoActivity.this, "서버 연결에 문제가 발생했습니다.");
-                            }
-                        });
-                    }
                 }
             }.start();
 
         } catch (Exception e) {
-            showToast(EditPersonalInfoActivity.this, "서버 연결에 문제가 발생했습니다.");
+            Toast.makeText(EditPersonalInfoActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            hideProgress();
+            Log.e("e = ", e.getMessage());
         }
     }
 
@@ -345,10 +363,8 @@ public class EditPersonalInfoActivity extends BasicActivity {
                             @Override
                             public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
 
-                                ResultDto<Boolean> result;
-                                result = response.body();
                                 if (response.isSuccessful()) {
-                                    if (result.getData()) {
+                                    if (response.body().getData()) {
                                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                                             @Override
                                             public void run() {
@@ -356,8 +372,10 @@ public class EditPersonalInfoActivity extends BasicActivity {
                                                 hideProgress();
                                             }
                                         });
+                                    } else {
+                                        showPhoneNumberErrorPopup();
+                                        hideProgress();
                                     }
-                                }else{
                                 }
                             }
 
@@ -424,7 +442,7 @@ public class EditPersonalInfoActivity extends BasicActivity {
                         public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
                             showLongToast(EditPersonalInfoActivity.this, "일시적인 오류가 발생했습니다");
                             hideProgress();
-                            Log.e("e = ", t.getMessage());
+                            Log.e("e = onFailure : ", t.getMessage());
                         }
                     });
                 }
@@ -432,7 +450,7 @@ public class EditPersonalInfoActivity extends BasicActivity {
         } catch (Exception e) {
             Toast.makeText(EditPersonalInfoActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             hideProgress();
-            Log.e("e = ", e.getMessage());
+            Log.e("e = catchException : ", e.getMessage());
         }
     }
 
@@ -446,24 +464,27 @@ public class EditPersonalInfoActivity extends BasicActivity {
                 @SneakyThrows
                 public void run() {
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/owner/"+UserInfo.getOwnerId()+"/phone_number")
+                            .baseUrl("http://www.ordering.ml/api/owner/"+UserInfo.getOwnerId()+"/phone_number/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
                     Call<ResultDto<Boolean>> call = service.reverify(UserInfo.getOwnerId(), phoneNumberDto);
-
+                    Log.e("run()","aaaaaaaaaaa");
                     call.enqueue(new Callback<ResultDto<Boolean>>() {
                         @Override
                         public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
-
+                            Log.e("onResponse","aaaaaaaaaaa");
                             ResultDto<Boolean> result;
                             result = response.body();
                             if (response.isSuccessful()) {
+                                Log.e("response.isSuccessful","aaaaaaaaaaa");
                                 if (result.getData()) {
+                                    Log.e("result.getData",Boolean.toString(result.getData()));
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
+                                            Log.e("run2","zzzzzzzzzzzz");
                                             hideProgress();
                                             showLongToast(EditPersonalInfoActivity.this,"휴대폰 번호를 변경하였습니다");
                                             finish();
@@ -471,10 +492,13 @@ public class EditPersonalInfoActivity extends BasicActivity {
                                     });
                                 }
                                 else{
+                                    Log.e("result.getData",Boolean.toString(result.getData()));
                                     showLongToast(EditPersonalInfoActivity.this, "일시적인 오류가 발생했습니다.");
                                     hideProgress();
                                 }
                             }else{
+                                showLongToast(EditPersonalInfoActivity.this, "일시적인 오류가 발생했습니다.");
+                                hideProgress();
                             }
                         }
 
@@ -495,14 +519,26 @@ public class EditPersonalInfoActivity extends BasicActivity {
     }
 
     private void showCustomDialogInputType(){
-        dialog = new CustomDialogInputType(
-                getApplicationContext(),
+        dialog = new CustomDialogInputType(this,
                 "휴대폰 인증",
                 "문자로 받은 6자리 인증번호를 입력해 주세요",
                 "인증","취소",
                 positiveButton,negativeButton);
 
         dialog.show();
+    }
+
+    private void showPhoneNumberErrorPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("휴대폰 번호 변경 실패").setMessage("이미 등록된 번호입니다.\n자세한 사항은 관리자에게 문의해 주세요.");
+        builder.setPositiveButton("닫기", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                return;
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private final View.OnClickListener positiveButton = view -> {
@@ -524,4 +560,5 @@ public class EditPersonalInfoActivity extends BasicActivity {
         binding.progressBar.setVisibility(View.GONE);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
+
 }
