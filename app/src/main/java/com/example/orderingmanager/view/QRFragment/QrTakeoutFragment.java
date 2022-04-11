@@ -1,5 +1,6 @@
 package com.example.orderingmanager.view.QRFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +28,21 @@ public class QrTakeoutFragment extends Fragment {
         view = binding.getRoot();
 
         initView();
+        initButtonListener();
 
         return view;
     }
 
     private void initView(){
         binding.itemQrCardview.ivQrcodeCardview.setImageBitmap(QrList.getQrBitmap(0));
+    }
+
+    private void initButtonListener(){
+        binding.itemQrCardview.btnPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), QrPreviewActivity.class));
+            }
+        });
     }
 }

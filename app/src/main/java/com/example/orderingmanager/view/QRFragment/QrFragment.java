@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,20 +13,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.orderingmanager.Dialog.CustomDialog;
-import com.example.orderingmanager.view.MainActivity;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
-import com.example.orderingmanager.view.ViewPagerAdapter;
 import com.example.orderingmanager.databinding.FragmentQrBinding;
 import com.example.orderingmanager.databinding.ViewQrTableBinding;
 import com.example.orderingmanager.databinding.ViewQrTakeoutBinding;
 import com.example.orderingmanager.databinding.ViewQrWaitingBinding;
+import com.example.orderingmanager.view.MainActivity;
+import com.example.orderingmanager.view.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.zxing.BarcodeFormat;
@@ -33,6 +35,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class QrFragment extends Fragment {
@@ -48,6 +51,8 @@ public class QrFragment extends Fragment {
 
     ArrayList<QrData> qrList = new ArrayList<>();
     ArrayList<Bitmap> qrBitmapList = new ArrayList<>();
+    private static ArrayList<Bitmap> qrImagePreviewList = new ArrayList<>();
+
     int table_count;
 
     @Override
@@ -64,8 +69,9 @@ public class QrFragment extends Fragment {
         initButtonClickListener();
         storeInfoCheck();
         if(UserInfo.getRestaurantId() != null) {
-            createQrCodesByUserInfo();
-            setHasOptionsMenu(true); // 툴바 활성화
+//            createQrCodesByUserInfo();
+//            setHasOptionsMenu(true); // 툴바 활성화
+            extractQrViews();
         }
 
         //뷰페이저 세팅
@@ -93,6 +99,17 @@ public class QrFragment extends Fragment {
         return view;
     }
 
+    private void extractQrViews(){
+        showProgress();
+        binding.viewQrTakeout.setVisibility(View.VISIBLE);
+        binding.ivQrcodervTakeout.setImageBitmap(QrList.getQrBitmap(0));
+        binding.tvQrStoreNameTakeout.setText(UserInfo.getRestaurantName());
+//        View takeoutQrLayout = binding.viewQrTakeout;
+        qrImagePreviewList.add(MakeCache(binding.viewQrTakeout, "takeoutQR"));
+        hideProgress();
+        binding.viewQrTakeout.setVisibility(View.GONE);
+        MainActivity.showLongToast(getActivity(), "QR완성");
+    }
 
     private void initButtonClickListener(){
         // 버튼 기능 추가
@@ -152,12 +169,12 @@ public class QrFragment extends Fragment {
         binding = null;
     }
 
-    public void createQrCodesByUserInfo(){
-        table_count = UserInfo.getTableCount();
+//    public void createQrCodesByUserInfo(){
+//        table_count = UserInfo.getTableCount();
 //        String takeout_explain = "기다리지 말고\nQR 찍고 포장 주문하세요";
 //        String waiting_explain = "줄 서지 말고\nQR 찍고 대기 등록하세요";
 //        String table_explain = "테이블에서\nQR 찍고 주문하세요";
-        String storeName = UserInfo.getRestaurantName();
+//        String storeName = UserInfo.getRestaurantName();
 //        qrList.add(new QrData(takeout_explain, storeName, CreateTakeoutQR()));
 //        qrList.add(new QrData(waiting_explain, storeName, CreateWaitingQR()));
 //        for(int tableNum = 1; tableNum<=table_count; tableNum++){
@@ -183,7 +200,7 @@ public class QrFragment extends Fragment {
 //        QrAdapter qrAdapter = new QrAdapter(qrList, getActivity());
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false)) ;
 //        recyclerView.setAdapter(qrAdapter);
-    }
+//    }
 
     // 해당하는 QR 레이아웃의 view를 Bitmap으로 변환하여 반환
     @SuppressLint("SetTextI18n")
@@ -194,8 +211,8 @@ public class QrFragment extends Fragment {
             case 0:
                 ViewQrTakeoutBinding qrTakeoutBinding;
                 qrTakeoutBinding = ViewQrTakeoutBinding.inflate(getLayoutInflater());
-                qrTakeoutBinding.ivQrcoderv.setImageBitmap(qrImage);
-                qrTakeoutBinding.tvQrStoreName.setText(storeName);
+                qrTakeoutBinding.ivQrcodervTakeout.setImageBitmap(qrImage);
+                qrTakeoutBinding.tvQrStoreNameTakeout.setText(storeName);
                 qrContainer = getView().findViewById(R.id.view_qr_takeout_inner);
                 captureView = qrContainer.getDrawingCache();
                 break;
@@ -301,4 +318,48 @@ public class QrFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    private void showProgress(){
+        binding.progressBar.setVisibility(View.VISIBLE);
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void hideProgress(){
+        binding.progressBar.setVisibility(View.GONE);
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private Bitmap MakeCache(View v,String filename){
+
+        String StoragePath =
+                Environment.getExternalStorageDirectory().getAbsolutePath();
+        String savePath = StoragePath + "/ordering";
+        File f = new File(savePath);
+        if (!f.isDirectory())f.mkdirs();
+
+        //v = getActivity().getWindow().getDecorView().getRootView();
+        v.setDrawingCacheEnabled(true);
+        v.buildDrawingCache();
+//        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+        Bitmap bitmap = v.getDrawingCache();
+        v.setDrawingCacheEnabled(false);
+
+//        FileOutputStream fos;
+//        try{
+//            SimpleDateFormat sdf = new SimpleDateFormat( "yyyyMMddHHmmss"); //년,월,일,시간 포멧 설정
+//            Date time = new Date(); //파일명 중복 방지를 위해 사용될 현재시간
+//            String current_time = sdf.format(time); //String형 변수에 저장
+//            fos = new FileOutputStream(savePath+"/"+filename+"_"+current_time);
+//            bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
+//            Log.e("bitmap","저장완료");
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+
+        return bitmap;
+    }
+
+    public static Bitmap getQrPreviewList(int pos){
+        return qrImagePreviewList.get(pos);
+    }
 }

@@ -167,7 +167,7 @@ public class MainActivity extends BasicActivity {
 
         int tableCount = UserInfo.getTableCount();
         ArrayList<Bitmap> qrArrayList = new ArrayList<>();
-         qrArrayList.add(CreateTakeoutQR());
+        qrArrayList.add(CreateTakeoutQR());
         qrArrayList.add(CreateWaitingQR());
 
         if(tableCount != 0) {

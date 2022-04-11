@@ -32,7 +32,7 @@ public class QrWaitingFragment extends Fragment {
     }
 
     private void initView(){
-        String title = "웨이팅용";
+        String title = "웨이팅QR";
         String secondary = "웨이팅용 QR코드입니다";
         binding.itemQrCardview.ivQrcodeCardview.setImageBitmap(QrList.getQrBitmap(1));
         binding.itemQrCardview.tvCardviewTitle.setText(title);

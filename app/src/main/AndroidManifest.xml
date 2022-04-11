@@ -89,6 +89,9 @@
             android:name=".view.CreateQRSuccessActivity"
             android:exported="true" />
         <activity
+            android:name=".view.QRFragment.QrPreviewActivity"
+            android:exported="true" />
+        <activity
             android:name=".test.TestStack"
             android:exported="true" />
     </application>
