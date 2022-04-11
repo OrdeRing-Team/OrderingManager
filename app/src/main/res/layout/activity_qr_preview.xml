@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_preview_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_qr_preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ll_transview"
@@ -24,7 +18,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/transview_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#CC000000"
@@ -55,12 +53,14 @@
                 app:layout_constraintTop_toTopOf="@id/btn_back">
 
                 <TextView
+                    android:id="@+id/tv_storeName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="매장명"
                     android:textColor="@color/white" />
 
                 <TextView
+                    android:id="@+id/tv_previewName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="테이블 1번" />
@@ -79,6 +79,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:id="@+id/transview_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#CC000000"
@@ -95,7 +96,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <Button
+                <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
@@ -111,7 +112,24 @@
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_transparent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/fui_transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/transview_top"
+            app:layout_constraintBottom_toTopOf="@id/transview_bottom"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ImageView
+        android:id="@+id/iv_qr_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
