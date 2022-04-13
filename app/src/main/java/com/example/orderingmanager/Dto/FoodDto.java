@@ -27,4 +27,12 @@ public class FoodDto {
         this.menuIntro = menuIntro;
     }
 
+
+    public boolean getSoldOut() {
+        return soldOut;
+    }
+
+    public void setSoldOut(boolean soldOut) {
+        this.soldOut = soldOut;
+    }
 }

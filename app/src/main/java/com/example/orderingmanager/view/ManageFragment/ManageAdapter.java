@@ -39,17 +39,19 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         //        adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
         //        itemView를 저장하는 custom viewHolder 생성
         //        findViewById & 각종 event 작업
-        TextView tvName, tvPrice, tvIntro;
+        TextView tvName, tvPrice, tvIntro, tvSoldout;
         ImageView ivMenu;
+
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             //item 에 대한 클릭 이벤트 설정
+
             tvName = itemView.findViewById(R.id.item_name);
             tvPrice = itemView.findViewById(R.id.item_price);
             tvIntro = itemView.findViewById(R.id.item_intro);
             ivMenu = itemView.findViewById(R.id.item_image);
-
+            tvSoldout = itemView.findViewById(R.id.item_soldout);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,6 +71,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
                         menuData.putString("menuIntro", arrayList.get(position).getIntro());
                         menuData.putLong("menuId", arrayList.get(position).getFoodId());
                         menuData.putLong("position", position);
+                        menuData.putBoolean("menuSoldout", arrayList.get(position).getSoldout());
                         bottomSheetDialog.setArguments(menuData);
                     }
                 }
@@ -105,14 +108,23 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
 //        onBindViewHolder: put data of item list into xml widgets
 //        xml의 위젯과 데이터를 묶는(연결하는, setting하는) 작업.
 //        position에 해당하는 data, viewHolder의 itemView에 표시함
+
         holder.tvName.setText(arrayList.get(position).getName());
         holder.tvPrice.setText(String.valueOf(arrayList.get(position).getPrice()));
+        holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
         holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
 
         // arrayList에 저장된 메뉴 이미지 url을 imageURL변수에 저장하고 Glide로 iv에 set
         String imageURL = String.valueOf(arrayList.get(position).getIv_menu());
         Glide.with(holder.itemView.getContext()).load(imageURL).into(holder.ivMenu);
         Log.e("리사이클러뷰 어댑터 이미지 url", imageURL);
+
+        // 품절 정보 불러와서 true이면 리사이클러뷰에 "품절" 출력하기
+        boolean soldout = arrayList.get(position).getSoldout();
+        if (soldout == true) {
+            holder.tvSoldout.setVisibility(View.VISIBLE);
+            holder.tvSoldout.setText("품절");
+        }
     }
 
     @Override

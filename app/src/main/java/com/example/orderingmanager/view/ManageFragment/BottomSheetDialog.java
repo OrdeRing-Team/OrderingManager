@@ -40,8 +40,9 @@ public class BottomSheetDialog extends BottomSheetDialogFragment{
     private LinearLayout btn_delete;
     private TextView tv_soldout;
 
-    public Long menuId;
     public Bundle menuData;
+    public Long menuId;
+    boolean soldout;
 
     @Nullable
     @Override
@@ -53,14 +54,26 @@ public class BottomSheetDialog extends BottomSheetDialogFragment{
         btn_delete = (LinearLayout) view.findViewById(R.id.btn_delete);
         tv_soldout = view.findViewById(R.id.tv_soldout);
 
-        // bundle에 담긴 menuIdf를 Long형의 전역변수인 menuId에 선언
+        // bundle에 담긴 menuId를 Long형의 전역변수인 menuId에 선언
         menuData = getArguments();
         menuId = menuData.getLong("menuId");
+        // bundle에 담긴 menuSoldout을 boolean형의 전역 변수인 soldout에 선언
+        soldout = menuData.getBoolean("menuSoldout");
+
+
+        //bundle에서 받아온 soldout
+        // 즉 리사이클러뷰의 품절 상태에 따라 bottomsheetdialog의 품절 선택 텍스트를 달리 한다.
+        if (soldout) {  // soldout이 true일 때
+            tv_soldout.setText("품절 해제하기");
+        }
+        else {  // soldout이 false일 때
+            tv_soldout.setText("품절 등록하기");
+        }
 
         btn_soldout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(),"Sold Out",Toast.LENGTH_SHORT).show();
+                soldout = !soldout;
                 putSoldOut();
             }
         });
@@ -136,7 +149,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment{
 
     private void putSoldOut() {
 
-        FoodStatusDto foodStatusDto = new FoodStatusDto(true);
+        FoodStatusDto foodStatusDto = new FoodStatusDto(soldout);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.ordering.ml/api/restaurant/food/" + menuId + "/status/")
@@ -155,11 +168,16 @@ public class BottomSheetDialog extends BottomSheetDialogFragment{
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        tv_soldout.setText("품절 해제하기");
-                        //Log.e("soldout", )
                         startActivity(new Intent(getActivity(), StoreManageActivity.class));
                         getActivity().finish();
-                        Toast.makeText(getActivity(), "품절 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+
+                        // soldout 상태에 따라 토스트 메시지 다르게 출력하기
+                        if (soldout) {
+                            Toast.makeText(getActivity(), "품절 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "품절 해제가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 });

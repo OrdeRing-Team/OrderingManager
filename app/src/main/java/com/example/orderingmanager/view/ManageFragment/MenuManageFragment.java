@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orderingmanager.Dto.FoodDto;
+import com.example.orderingmanager.Dto.FoodStatusDto;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.R;
@@ -41,6 +42,7 @@ public class MenuManageFragment extends Fragment {
 
     ArrayList<ManageData> menuList = new ArrayList<>();
     public Object position;
+
 
     @Nullable
     @Override
@@ -81,8 +83,8 @@ public class MenuManageFragment extends Fragment {
                                         @Override
                                         public void run() {
                                             result.getData().forEach(foodDto ->{
-                                                menuList.add(new ManageData(foodDto.getFoodId(), foodDto.getImageUrl(), foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro()));
-                                                Log.e("data = ", foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl());
+                                                menuList.add(new ManageData(foodDto.getFoodId(), foodDto.getImageUrl(), foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro(), foodDto.getSoldOut()));
+                                                Log.e("data = ", foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl() + ", sold out = " + foodDto.getSoldOut());
                                                 Log.e("foodid = ", Long.toString(menuList.get(0).getFoodId()));
                                             });
 
@@ -110,7 +112,6 @@ public class MenuManageFragment extends Fragment {
             Log.e("e = ", e.getMessage());
         }
     }
-
 
 //    public void menuAdd() {
 //        binding.btnMenuAdd.setOnClickListener(new View.OnClickListener() {

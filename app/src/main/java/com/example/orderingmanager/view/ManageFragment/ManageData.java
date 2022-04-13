@@ -9,13 +9,13 @@ public class ManageData {
     private Long foodId;
     private boolean soldout;
 
-    public ManageData(Long foodId, String iv_menu, String name, String price, String intro) {
+    public ManageData(Long foodId, String iv_menu, String name, String price, String intro, boolean soldout) {
         this.foodId = foodId;
         this.iv_menu = iv_menu;
         this.name = name;
         this.price = price;
         this.intro = intro;
-        //this.soldout = soldout;
+        this.soldout = soldout;
 
     }
 
@@ -54,4 +54,8 @@ public class ManageData {
     public void setIntro(String intro) {
         this.intro = intro;
     }
+
+    public boolean getSoldout() { return soldout; }
+
+    public void setSoldout(boolean soldout) { this.soldout = soldout; }
 }
