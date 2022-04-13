@@ -176,7 +176,6 @@ public class MenuAddActivity extends BasicActivity {
             tempFile.createNewFile();
 
             FileOutputStream out = new FileOutputStream(tempFile);
-
             bitmap.compress(Bitmap.CompressFormat.PNG, 0, out);
 
             out.close();
@@ -187,12 +186,5 @@ public class MenuAddActivity extends BasicActivity {
             Log.e("Menu Image","IOException : " + e.getMessage());
         }
         return null;
-    }
-
-    // sold out 확인 함수
-    public void checkSoldOut() {
-        if (binding.cbSoldout.isChecked()) {
-            Log.e("soldout", "TRUE");
-        }
     }
 }
