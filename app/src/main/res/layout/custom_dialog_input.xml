@@ -46,6 +46,7 @@
         android:inputType="number"
         android:gravity="center"
         android:hint="인증번호"
+        android:maxLength="6"
         android:textSize="14sp"
         android:textColorHint="@color/gray"
         android:backgroundTint="@color/black"

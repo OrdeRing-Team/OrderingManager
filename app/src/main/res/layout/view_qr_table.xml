@@ -3,18 +3,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/view_qr_table"
     android:background="@color/white"
     android:orientation="vertical">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/view_qr_table_inner">
+            <View
+                android:id="@+id/view_top"
+                android:layout_width="0dp"
+                android:layout_height="5dp"
+                android:background="@color/light_main"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
+            <View
+                android:id="@+id/view_end"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/light_main"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <View
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/light_main"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_qrcode"
                 android:layout_width="match_parent"
@@ -150,5 +171,4 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 </LinearLayout>

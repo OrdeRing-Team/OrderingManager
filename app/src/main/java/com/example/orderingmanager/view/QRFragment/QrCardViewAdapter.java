@@ -2,6 +2,7 @@ package com.example.orderingmanager.view.QRFragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,12 +90,14 @@ public class QrCardViewAdapter extends RecyclerView.Adapter<QrCardViewAdapter.Cu
         // 테이블 프래그먼트에서만 qrCode 이미지뷰 width(=match_parent), height(=wrap_content)로 변경
         holder.ivQrImage.setLayoutParams(parms);
 
-//        holder.btnPreview.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                MainActivity.showToast(QrFragment.class,Integer.toString(position) + "번 째 카드뷰");
-//            }
-//        });
+        holder.btnPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,QrPreviewActivity.class);
+                intent.putExtra("cardViewType",position+2);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

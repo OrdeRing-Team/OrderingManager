@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -51,6 +53,8 @@ public class MainActivity extends BasicActivity {
 
     Bundle bundle;
 
+    public static ProgressBar progressBar;
+
     static int bottomNaviHeight;
 
     @Override
@@ -66,7 +70,10 @@ public class MainActivity extends BasicActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.progressBar.setVisibility(View.VISIBLE);
+
+        progressBar = binding.progressBarMain;
+
+        showProgress();
         bottomNavigationView = findViewById(R.id.bottomNavi);
 
         initFragView();
@@ -167,7 +174,7 @@ public class MainActivity extends BasicActivity {
 
         int tableCount = UserInfo.getTableCount();
         ArrayList<Bitmap> qrArrayList = new ArrayList<>();
-         qrArrayList.add(CreateTakeoutQR());
+        qrArrayList.add(CreateTakeoutQR());
         qrArrayList.add(CreateWaitingQR());
 
         if(tableCount != 0) {
@@ -285,4 +292,16 @@ public class MainActivity extends BasicActivity {
 //            }
 //        }
     }
+
+    public void showProgress(){
+        binding.progressBarMain.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public void hideProgress(){
+        binding.progressBarMain.setVisibility(View.GONE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
 }

@@ -19,32 +19,41 @@ import retrofit2.http.Path;
 
 public interface RetrofitService {
 
+	// 로그인
    	@POST("/api/owner/signin")
 	Call<ResultDto<OwnerSignInResultDto>> ownerSignIn(@Body SignInDto signInDto);
 
+   	// 회원가입
 	@POST("/api/owner/signup")
 	Call<ResultDto<Long>> ownerSignUp(@Body OwnerSignUpDto ownerSignUpDto);
 
+	// 인증요청
 	@POST("/api/owner/verification/get")
 	Call<ResultDto<Boolean>> phoneNumber(@Body PhoneNumberDto phoneNumberDto);
 
+	// 인증번호 확인
 	@POST("/api/owner/verification/check")
 	Call<ResultDto<Boolean>> verification(@Body VerificationDto verificationDto);
 
+	// 비밀번호 변경
 	@PUT("/api/owner/{owner_id}/password")
 	Call<ResultDto<Boolean>> changePassword(@Path("owner_id") Long ownerId, @Body PasswordChangeDto passwordChangeDto);
 
+	// 전화번호 변경
 	@PUT("/api/owner/{owner_id}/phone_number")
 	Call<ResultDto<Boolean>> reverify(@Path("owner_id") Long ownerId, @Body PhoneNumberDto phoneNumberDto);
 
+	// 메뉴 추가
    	@Multipart
    	@POST("/api/restaurant/{restaurantId}/food")
 	Call<ResultDto<Long>> addFood(@Path("restaurantId") Long id, @Part(value = "dto") FoodDto foodDto, @Part MultipartBody.Part file);
 
+   	// 메뉴 수정
    	@Multipart
    	@PUT("/api/restaurant/{restaurantId}/food/{foodId}")
 	Call<ResultDto<Boolean>> putFood(@Path("restaurantId") Long restaurantId, @Path("foodId") Long foodId, @Part(value = "dto") FoodDto foodDto);
 
+   	// 메뉴 수정(이미지 포함)
    	@Multipart
    	@PUT("/api/restaurant/{restaurantId}/food/{foodId}")
 	Call<ResultDto<Boolean>> putFood(@Path("restaurantId") Long restaurantId, @Path("foodId") Long foodId, @Part(value = "dto") FoodDto foodDto,  @Part MultipartBody.Part file);
@@ -56,4 +65,8 @@ public interface RetrofitService {
 	// 서버 내 데이터 삭제
 	@DELETE("/api/restaurant/food/{foodId}")
 	Call<ResultDto<Boolean>> deleteFood(@Path("foodId") Long foodId);
+
+	// 회원탈퇴
+	@DELETE("/api/owner/{ownerId}")
+	Call<ResultDto<Boolean>> deleteaccount(@Path("ownerId") Long ownerId);
 }
