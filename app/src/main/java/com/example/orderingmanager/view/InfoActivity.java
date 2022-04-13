@@ -1,10 +1,14 @@
 package com.example.orderingmanager.view;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Vibrator;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,9 +21,9 @@ import com.example.orderingmanager.Dto.request.FoodCategory;
 import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.HttpApi;
+import com.example.orderingmanager.KakaoMap.WebViewActivity;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
-import com.example.orderingmanager.KakaoMap.WebViewActivity;
 import com.example.orderingmanager.databinding.ActivityInfoBinding;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,9 +72,39 @@ public class InfoActivity extends BasicActivity {
         binding.viewActivityInfo.tablenum.setVisibility(View.GONE);
 
         initButtonClickListener();
+        initTextChangedListener();
     }
 
+    private void initTextChangedListener(){
+        binding.viewActivityInfo.tablenum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try{
+                    int input = Integer.parseInt(binding.viewActivityInfo.tablenum.getText().toString());
+                    if (input > 100) {
+                        binding.viewActivityInfo.tablenum.setText("100");
+                        input = 100;
+
+                        showLongToast(InfoActivity.this, "테이블 수는 100개 까지만 입력할 수 있습니다.");
+                        // 짧은 진동을 울림
+                        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        vibrator.vibrate(300);
+                    }
+                } catch (NumberFormatException e){
+                    Log.e("NumberFormatException",e.getMessage());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
     private void initButtonClickListener(){
         // 매장식사/포장 라디오 버튼 클릭 이벤트
         binding.viewActivityInfo.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

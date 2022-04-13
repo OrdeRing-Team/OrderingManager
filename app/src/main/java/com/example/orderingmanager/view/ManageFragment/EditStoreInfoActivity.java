@@ -1,12 +1,16 @@
 package com.example.orderingmanager.view.ManageFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Vibrator;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,18 +18,18 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.orderingmanager.view.BasicActivity;
-import com.example.orderingmanager.view.CreateQR;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.request.FoodCategory;
 import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.HttpApi;
-import com.example.orderingmanager.view.MainActivity;
+import com.example.orderingmanager.KakaoMap.WebViewActivity;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
-import com.example.orderingmanager.KakaoMap.WebViewActivity;
 import com.example.orderingmanager.databinding.ActivityEditStoreInfoBinding;
+import com.example.orderingmanager.view.BasicActivity;
+import com.example.orderingmanager.view.CreateQR;
+import com.example.orderingmanager.view.MainActivity;
 import com.example.orderingmanager.view.QRFragment.QrList;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +64,42 @@ public class EditStoreInfoActivity extends BasicActivity {
         setContentView(binding.getRoot());
 
         initClickListener();
+        initTextChangedListener();
         setData();
+    }
+
+    private void initTextChangedListener(){
+        binding.viewActivityEditStoreInfo.tablenum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try{
+                    int input = Integer.parseInt(binding.viewActivityEditStoreInfo.tablenum.getText().toString());
+                    if (input > 100) {
+                        binding.viewActivityEditStoreInfo.tablenum.setText("100");
+                        input = 100;
+
+                        showLongToast(EditStoreInfoActivity.this, "테이블 수는 100개 까지만 입력할 수 있습니다.");
+                        // 짧은 진동을 울림
+                        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        vibrator.vibrate(300);
+                    }
+                } catch (NumberFormatException e){
+                    Log.e("NumberFormatException",e.getMessage());
+                }
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void initClickListener(){
@@ -213,46 +252,57 @@ public class EditStoreInfoActivity extends BasicActivity {
             case KOREAN_FOOD:
                 foodCategory = FoodCategory.KOREAN_FOOD;
                 binding.viewActivityEditStoreInfo.rbtnKoreanFood.setChecked(true);
+                hideKeybord();
                 break;
             case BUNSIK:
                 foodCategory = FoodCategory.BUNSIK;
                 binding.viewActivityEditStoreInfo.rbtnBunsik.setChecked(true);
+                hideKeybord();
                 break;
             case CAFE_DESSERT:
                 foodCategory = FoodCategory.CAFE_DESSERT;
                 binding.viewActivityEditStoreInfo.rbtnCafeDessert.setChecked(true);
+                hideKeybord();
                 break;
             case PORK_CUTLET_ROW_FISH_SUSHI:
                 foodCategory = FoodCategory.PORK_CUTLET_ROW_FISH_SUSHI;
                 binding.viewActivityEditStoreInfo.rbtnJapaneseFood.setChecked(true);
+                hideKeybord();
                 break;
             case CHICKEN:
                 foodCategory = FoodCategory.CHICKEN;
                 binding.viewActivityEditStoreInfo.rbtnChicken.setChecked(true);
+                hideKeybord();
                 break;
             case PIZZA:
                 foodCategory = FoodCategory.PIZZA;
                 binding.viewActivityEditStoreInfo.rbtnPizza.setChecked(true);
+                hideKeybord();
                 break;
             case ASIAN_FOOD_WESTERN_FOOD:
                 foodCategory = FoodCategory.ASIAN_FOOD_WESTERN_FOOD;
                 binding.viewActivityEditStoreInfo.rbtnAsian.setChecked(true);
+                hideKeybord();
                 break;
             case CHINESE_FOOD:
                 foodCategory = FoodCategory.CHINESE_FOOD;
                 binding.viewActivityEditStoreInfo.rbtnChineseFood.setChecked(true);
+                hideKeybord();
                 break;
             case JOKBAL_BOSSAM:
                 foodCategory = FoodCategory.JOKBAL_BOSSAM;
                 binding.viewActivityEditStoreInfo.rbtnJokbalBossam.setChecked(true);
+                hideKeybord();
                 break;
             case JJIM_TANG:
                 foodCategory = FoodCategory.JJIM_TANG;
                 binding.viewActivityEditStoreInfo.rbtnJjim.setChecked(true);
+                hideKeybord();
                 break;
             case FAST_FOOD:
                 foodCategory = FoodCategory.FAST_FOOD;
                 binding.viewActivityEditStoreInfo.rbtnFastFood.setChecked(true);
+                hideKeybord();
                 break;
         }
 
