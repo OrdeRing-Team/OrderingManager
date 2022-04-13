@@ -113,6 +113,11 @@ public class StoreManageActivity extends AppCompatActivity {
 
         //매장명 설정
         binding.tvStoreName.setText(UserInfo.getRestaurantName());
+
+        int storeNameLength = UserInfo.getRestaurantName().length();
+        //매장명의 길이가 길 경우 textsize 조절
+        if(storeNameLength > 11 && storeNameLength < 14) binding.tvStoreName.setTextSize(16.f);
+        else if(storeNameLength > 13) binding.tvStoreName.setTextSize(14.f);
     }
 
 
