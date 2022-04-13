@@ -84,8 +84,7 @@ public class MenuManageFragment extends Fragment {
                                         public void run() {
                                             result.getData().forEach(foodDto ->{
                                                 menuList.add(new ManageData(foodDto.getFoodId(), foodDto.getImageUrl(), foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro(), foodDto.getSoldOut()));
-                                                Log.e("data = ", foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl() + ", sold out = " + foodDto.getSoldOut());
-                                                Log.e("foodid = ", Long.toString(menuList.get(0).getFoodId()));
+                                                Log.e("매장 메뉴 정보", "foodid = " + foodDto.getFoodId() + ", data = " + foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl() + ", sold out = " + foodDto.getSoldOut());
                                             });
 
                                             RecyclerView recyclerView = binding.rvMenu;

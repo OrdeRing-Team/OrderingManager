@@ -147,6 +147,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment{
         });
     }
 
+    // 서버에 메뉴 품절 상태를 저장하는 함수
     private void putSoldOut() {
 
         FoodStatusDto foodStatusDto = new FoodStatusDto(soldout);
