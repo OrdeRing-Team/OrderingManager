@@ -7,6 +7,7 @@ public class ManageData {
     private String price;
     private String intro;
     private Long foodId;
+    private boolean soldout;
 
     public ManageData(Long foodId, String iv_menu, String name, String price, String intro) {
         this.foodId = foodId;
@@ -14,6 +15,7 @@ public class ManageData {
         this.name = name;
         this.price = price;
         this.intro = intro;
+        //this.soldout = soldout;
 
     }
 

@@ -49,6 +49,10 @@ public interface RetrofitService {
    	@PUT("/api/restaurant/{restaurantId}/food/{foodId}")
 	Call<ResultDto<Boolean>> putFood(@Path("restaurantId") Long restaurantId, @Path("foodId") Long foodId, @Part(value = "dto") FoodDto foodDto,  @Part MultipartBody.Part file);
 
+   	// 메뉴 품절 정보 PUT
+	@PUT("/api/restaurant/food/{food_id}/status")
+	Call<ResultDto<Boolean>> putSoldout(@Path("food_id") Long foodId, @Body FoodStatusDto foodStatusDto);
+
 	// 서버 내 데이터 삭제
 	@DELETE("/api/restaurant/food/{foodId}")
 	Call<ResultDto<Boolean>> deleteFood(@Path("foodId") Long foodId);

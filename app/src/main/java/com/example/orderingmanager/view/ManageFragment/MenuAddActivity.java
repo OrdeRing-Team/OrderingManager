@@ -96,7 +96,7 @@ public class MenuAddActivity extends BasicActivity {
                 }
 
                 else {
-                    FoodDto foodDto = new FoodDto(name, Integer.parseInt(price), false, menuIntro);
+                    FoodDto foodDto = new FoodDto(name, Integer.parseInt(price), menuIntro);
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/food/")
                             .addConverterFactory(GsonConverterFactory.create())
@@ -187,5 +187,12 @@ public class MenuAddActivity extends BasicActivity {
             Log.e("Menu Image","IOException : " + e.getMessage());
         }
         return null;
+    }
+
+    // sold out 확인 함수
+    public void checkSoldOut() {
+        if (binding.cbSoldout.isChecked()) {
+            Log.e("soldout", "TRUE");
+        }
     }
 }

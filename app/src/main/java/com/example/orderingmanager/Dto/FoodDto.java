@@ -21,10 +21,9 @@ public class FoodDto {
     private boolean soldOut;
     private String menuIntro;
 
-    public FoodDto(String foodName, int price, boolean soldOut, String menuIntro){
+    public FoodDto(String foodName, int price, String menuIntro){
         this.foodName = foodName;
         this.price = price;
-        this.soldOut = soldOut;
         this.menuIntro = menuIntro;
     }
 

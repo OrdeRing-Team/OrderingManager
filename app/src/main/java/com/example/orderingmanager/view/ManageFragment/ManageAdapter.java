@@ -1,47 +1,30 @@
 package com.example.orderingmanager.view.ManageFragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.orderingmanager.Dto.FoodDto;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
-import com.example.orderingmanager.Dto.request.MemberIdDto;
-import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.R;
-import com.example.orderingmanager.UserInfo;
-import com.example.orderingmanager.databinding.ActivityMenuItemBinding;
-import com.example.orderingmanager.view.BasicActivity;
-import com.example.orderingmanager.view.login_register.LoginActivity;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
-import lombok.SneakyThrows;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,71 +57,20 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
 
-                        Intent intent = new Intent(context, MenuEditActivity.class);
-                        intent.putExtra("menuName", arrayList.get(position).getName());
-                        intent.putExtra("menuPrice", arrayList.get(position).getPrice());
-                        intent.putExtra("menuImage", arrayList.get(position).getIv_menu());
-                        intent.putExtra("menuIntro", arrayList.get(position).getIntro());
-                        intent.putExtra("menuId", arrayList.get(position).getFoodId());
-                        intent.putExtra("position", position);
-                        context.startActivity(intent);
-                        ((Activity)context).finish();
+                        // Bundle에 담아서 BottomSheetDialog로 보낸다.
 
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
+                        bottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(),"bottomSheet");
+
+                        Bundle menuData = new Bundle();
+                        menuData.putString("menuName", arrayList.get(position).getName());
+                        menuData.putString("menuPrice", arrayList.get(position).getPrice());
+                        menuData.putString("menuImage", arrayList.get(position).getIv_menu());
+                        menuData.putString("menuIntro", arrayList.get(position).getIntro());
+                        menuData.putLong("menuId", arrayList.get(position).getFoodId());
+                        menuData.putLong("position", position);
+                        bottomSheetDialog.setArguments(menuData);
                     }
-                }
-            });
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("삭제")
-                                .setMessage(arrayList.get(position).getName() + "을(를) 삭제하시겠습니까?")
-                                .setPositiveButton("삭제하기", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        /* 서버에서 삭제 */
-                                        Retrofit retrofit = new Retrofit.Builder()
-                                                .baseUrl("http://www.ordering.ml/api/restaurant/food/" + arrayList.get(position).getFoodId() + "/")
-                                                .addConverterFactory(GsonConverterFactory.create())
-                                                .build();
-
-                                        // RequestBody 객체 생성
-                                        Call<ResultDto<Boolean>> call;
-                                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-                                        call = retrofitService.deleteFood(arrayList.get(position).getFoodId());
-
-                                        call.enqueue(new Callback<ResultDto<Boolean>>() {
-                                            @Override
-                                            public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
-                                                ResultDto<Boolean> result = response.body();
-
-                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        Toast.makeText(context.getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
-                                                Toast.makeText(context.getApplicationContext(), "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                                                Log.e("e = " , t.getMessage());
-                                            }
-                                        });
-
-
-                                        /* view에서 삭제 */
-                                        arrayList.remove(position);
-                                        notifyDataSetChanged();
-                                    }
-                                })
-                                .setNeutralButton("취소", null)
-                                .show();
-                    }
-                    return false;
                 }
             });
         }
@@ -149,11 +81,15 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         this.arrayList = arrayList;
     }
 
+
     public ManageAdapter(ArrayList<ManageData> arrayList, Context context) {
 //        adapter constructor for needing context part
         this.arrayList = arrayList;
         this.context = context;
     }
+
+
+
 
     @NonNull
     @Override
@@ -184,6 +120,12 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
 //        getItemCount: return the size of the item list
 //        item list의 전체 데이터 개수 return
         return (arrayList != null ? arrayList.size() : 0);
+    }
+
+    public void deleteItem(int position) {
+        /* view에서 삭제 */
+        arrayList.remove(position);
+        notifyDataSetChanged();
     }
 
 }

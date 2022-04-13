@@ -1,6 +1,5 @@
 package com.example.orderingmanager.view.ManageFragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,6 +38,7 @@ public class MenuManageFragment extends Fragment {
     private FragmentMenuManageBinding binding;
 
     ArrayList<ManageData> menuList = new ArrayList<>();
+    public Object position;
 
     @Nullable
     @Override
@@ -71,6 +71,7 @@ public class MenuManageFragment extends Fragment {
                                 Log.e("data = ", foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl());
                                 Log.e("foodid = ", Long.toString(menuList.get(0).getFoodId()));
                             });
+
                             RecyclerView recyclerView = binding.rvMenu;
                             ManageAdapter manageAdapter = new ManageAdapter(menuList, getActivity());
                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -87,6 +88,7 @@ public class MenuManageFragment extends Fragment {
         }
     }
 
+
 //    public void menuAdd() {
 //        binding.btnMenuAdd.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -96,10 +98,5 @@ public class MenuManageFragment extends Fragment {
 //            }
 //        });
 //    }
-
-
-
-
-
 
 }

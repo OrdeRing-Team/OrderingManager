@@ -104,7 +104,7 @@ public class MenuEditActivity extends BasicActivity {
                 }
 
                 else {
-                    FoodDto foodDto = new FoodDto(menuName, Integer.parseInt(menuPrice), false, menuIntro);
+                    FoodDto foodDto = new FoodDto(menuName, Integer.parseInt(menuPrice), menuIntro);
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/food/" + foodId + "/")
                             .addConverterFactory(GsonConverterFactory.create())
