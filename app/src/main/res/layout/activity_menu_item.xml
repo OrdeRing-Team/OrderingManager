@@ -127,30 +127,6 @@
             android:textColorHint="#939393"
             android:textSize="16dp"/>
 
-        <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text=" 품절 여부 "
-                android:textSize="16dp"
-                android:textColor="#939393"
-                android:layout_marginRight="5dp"/>
-
-            <CheckBox
-                android:id="@+id/cb_soldout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/main"/>
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <Button
