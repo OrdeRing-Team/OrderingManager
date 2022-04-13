@@ -3,7 +3,6 @@ package com.example.orderingmanager.view.QRFragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -14,29 +13,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.orderingmanager.Dialog.CustomDialog;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentQrBinding;
-import com.example.orderingmanager.databinding.ViewQrTableBinding;
-import com.example.orderingmanager.databinding.ViewQrTakeoutBinding;
-import com.example.orderingmanager.databinding.ViewQrWaitingBinding;
 import com.example.orderingmanager.view.MainActivity;
 import com.example.orderingmanager.view.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class QrFragment extends Fragment {
     private View view;
@@ -69,8 +66,6 @@ public class QrFragment extends Fragment {
         initButtonClickListener();
         storeInfoCheck();
         if(UserInfo.getRestaurantId() != null) {
-//            createQrCodesByUserInfo();
-//            setHasOptionsMenu(true); // 툴바 활성화
             extractQrViews();
         }
 
@@ -99,16 +94,61 @@ public class QrFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     private void extractQrViews(){
-        showProgress();
-        binding.viewQrTakeout.setVisibility(View.VISIBLE);
-        binding.ivQrcodervTakeout.setImageBitmap(QrList.getQrBitmap(0));
-        binding.tvQrStoreNameTakeout.setText(UserInfo.getRestaurantName());
-//        View takeoutQrLayout = binding.viewQrTakeout;
-        qrImagePreviewList.add(MakeCache(binding.viewQrTakeout, "takeoutQR"));
-        hideProgress();
-        binding.viewQrTakeout.setVisibility(View.GONE);
-        MainActivity.showLongToast(getActivity(), "QR완성");
+
+        // qrFragment로 올때마다 add시키면 안되니까
+        // 매번 초기화 시켜줌
+        qrImagePreviewList = new ArrayList<>();
+
+        for(int i = 0; i < UserInfo.getTableCount()+2; i++){
+            binding.ivQrcoderv.setImageBitmap(QrList.getQrBitmap(i));
+            binding.tvQrStoreName.setText(UserInfo.getRestaurantName());
+
+            // i == 0, 포장용 QR
+            // i == 1, 웨이팅용 QR
+            // i >= 2, 테이블 QR
+            switch (i){
+                case 0:
+                    binding.tvExplain.setText("기다리지 말고\nQR 찍고 포장 주문하세요");
+                    binding.tvTableNum.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    binding.tvExplain.setText("줄 서지 말고\nQR 찍고 대기 등록하세요");
+                    binding.tvTableNum.setVisibility(View.GONE);
+                    break;
+                default:
+                    binding.tvTableNum.setVisibility(View.VISIBLE);
+                    binding.tvTableNum.setText( i-1 + "번 테이블");
+                    binding.tvExplain.setText("테이블에서\nQR 찍고 주문하세요");
+            }
+            capture();
+        }
+        MainActivity.progressBar.setVisibility(View.GONE);
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void capture(){
+        LinearLayout linearlayout = binding.viewQrCapture;
+
+        // width와  height가 null로 유지되지 않도록 보기를 미리 측정해둔다.
+        linearlayout.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+        // view와 모든 하위 항목에 크기와 위치 지정
+        linearlayout.layout(0, 0, linearlayout.getMeasuredWidth(), linearlayout.getMeasuredHeight());
+
+        linearlayout.setDrawingCacheEnabled(true);
+        linearlayout.buildDrawingCache(true);
+        Bitmap bitmap = Bitmap.createBitmap(linearlayout.getDrawingCache());
+
+        // 포장, 웨이팅, 테이블 마다 내부 text가 변경되므로
+        // setDrawingCacheEnabled(false)를 해줘야한다.
+        // 안하면 캡쳐 결과물에 수정이 반영되지 않음
+        linearlayout.setDrawingCacheEnabled(false);
+
+        addQrPreviewList(bitmap);
+
     }
 
     private void initButtonClickListener(){
@@ -142,7 +182,26 @@ public class QrFragment extends Fragment {
 
     private final View.OnClickListener positiveButton = view -> {
         dialog.dismiss();
-        MainActivity.showToast(getActivity(), "다운로드 버튼 클릭");
+
+        MainActivity.progressBar.setVisibility(View.VISIBLE);
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyyMMddHHmmss"); //년,월,일,시간 포멧 설정
+        Date time = new Date(); //파일명 중복 방지를 위해 사용될 현재시간
+        String current_time = sdf.format(time); //String형 변수에 저장
+        String fileName;
+        for(int qrNum = 0; qrNum < qrImagePreviewList.size(); qrNum++){
+
+            // 파일명 지정
+            if(qrNum == 0) fileName = "TakeoutQR_"+current_time;
+            else if(qrNum == 1) fileName = "WaitingQR_"+current_time;
+            else fileName = "TableQR_" + Integer.toString(qrNum-1) + "_" + current_time;
+
+            // bitmap이미지를 jpeg로 저장
+            saveBitmaptoJpeg(qrImagePreviewList.get(qrNum),fileName);
+        }
+
+        MainActivity.progressBar.setVisibility(View.GONE);
+        MainActivity.showToast(getActivity(), "다운로드 완료");
     };
 
     private final View.OnClickListener negativeButton = view -> {
@@ -169,144 +228,6 @@ public class QrFragment extends Fragment {
         binding = null;
     }
 
-//    public void createQrCodesByUserInfo(){
-//        table_count = UserInfo.getTableCount();
-//        String takeout_explain = "기다리지 말고\nQR 찍고 포장 주문하세요";
-//        String waiting_explain = "줄 서지 말고\nQR 찍고 대기 등록하세요";
-//        String table_explain = "테이블에서\nQR 찍고 주문하세요";
-//        String storeName = UserInfo.getRestaurantName();
-//        qrList.add(new QrData(takeout_explain, storeName, CreateTakeoutQR()));
-//        qrList.add(new QrData(waiting_explain, storeName, CreateWaitingQR()));
-//        for(int tableNum = 1; tableNum<=table_count; tableNum++){
-//            qrList.add(new QrData(table_explain, storeName, CreateTableQR(tableNum)));
-//        }
-
-
-//        for(int i = 0; i<table_count+2;i++){
-//            switch(i){
-//                case 0:
-//                    qrBitmapList.add(convert2Bitmap(i,CreateTakeoutQR(),storeName));
-//                    break;
-//                case 1:
-//                    qrBitmapList.add(convert2Bitmap(i,CreateWaitingQR(),storeName));
-//                    break;
-//                default:
-//                    qrBitmapList.add(convert2Bitmap(i,CreateTableQR(i-2),storeName));
-//                    break;
-//            }
-//        }
-
-//        RecyclerView recyclerView = binding.rvQrcode;
-//        QrAdapter qrAdapter = new QrAdapter(qrList, getActivity());
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false)) ;
-//        recyclerView.setAdapter(qrAdapter);
-//    }
-
-    // 해당하는 QR 레이아웃의 view를 Bitmap으로 변환하여 반환
-    @SuppressLint("SetTextI18n")
-    private Bitmap convert2Bitmap(int listNum, Bitmap qrImage, String storeName){
-        Bitmap captureView;
-        ConstraintLayout qrContainer;
-        switch (listNum){
-            case 0:
-                ViewQrTakeoutBinding qrTakeoutBinding;
-                qrTakeoutBinding = ViewQrTakeoutBinding.inflate(getLayoutInflater());
-                qrTakeoutBinding.ivQrcodervTakeout.setImageBitmap(qrImage);
-                qrTakeoutBinding.tvQrStoreNameTakeout.setText(storeName);
-                qrContainer = getView().findViewById(R.id.view_qr_takeout_inner);
-                captureView = qrContainer.getDrawingCache();
-                break;
-            case 1:
-                ViewQrWaitingBinding qrWaitingBinding;
-                qrWaitingBinding = ViewQrWaitingBinding.inflate(getLayoutInflater());
-                qrWaitingBinding.ivQrcoderv.setImageBitmap(qrImage);
-                qrWaitingBinding.tvQrStoreName.setText(storeName);
-                qrContainer = getView().findViewById(R.id.view_qr_waiting_inner);
-                captureView = qrContainer.getDrawingCache();
-                break;
-            default:
-                ViewQrTableBinding qrTableBinding;
-                qrTableBinding = ViewQrTableBinding.inflate(getLayoutInflater());
-                qrTableBinding.tvTableNum.setText(listNum-1 + "번 테이블");
-                qrTableBinding.ivQrcoderv.setImageBitmap(qrImage);
-                qrTableBinding.tvQrStoreName.setText(storeName);
-                qrContainer = getView().findViewById(R.id.view_qr_table_inner);
-                captureView = qrContainer.getDrawingCache();
-                break;
-        }
-        return captureView;
-    }
-
-    private Bitmap CreateTakeoutQR(){
-        url = "http://www.ordering.ml/"+ UserInfo.getRestaurantId() +"/takeout";
-        try{
-            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-            Log.e("takeout qr ","성공");
-            return bitmap;
-        }catch (Exception e){
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
-            Log.e("takeout qr ",e.toString());
-            Log.e("url = ",url);
-            return bitmap;
-        }
-
-//        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);;
-//        new Handler().postDelayed(new Runnable(){
-//            @Override
-//            public void run(){
-//                url = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/takeout";
-//                try{
-//                    BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
-//                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-//                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            bitmap = barcodeEncoder.createBitmap(bitMatrix);
-//                            Log.e("takeout qr ","성공");
-//                        }
-//                    });
-//                }catch (Exception e){
-//                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
-//                    Log.e("takeout qr ",e.toString());
-//                    Log.e("url = ",url);
-//                }
-//            }
-//        },200);
-//        return bitmap;
-    }
-
-    private Bitmap CreateWaitingQR(){
-        url = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/waiting";
-        try{
-            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-
-            return bitmap;
-        }catch (Exception e){
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
-            return bitmap;
-        }
-    }
-
-    private Bitmap CreateTableQR(int i){
-        url = "http://ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + i;
-        try{
-            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-
-            return bitmap;
-        }catch (Exception e){
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
-            return bitmap;
-        }
-    }
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu,inflater); inflater.inflate(R.menu.menu_qr,menu);
     }
@@ -319,47 +240,83 @@ public class QrFragment extends Fragment {
     }
 
     private void showProgress(){
-        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.progressBarFragment.setVisibility(View.VISIBLE);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     private void hideProgress(){
-        binding.progressBar.setVisibility(View.GONE);
+        binding.progressBarFragment.setVisibility(View.GONE);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
-    private Bitmap MakeCache(View v,String filename){
+    public static void saveBitmaptoJpeg(Bitmap bitmap, String name){
+        String ex_storage = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String foler_name = "/"+"ordering"+"/";
+        String file_name = name+".jpg";
+        String string_path = ex_storage+foler_name;
 
-        String StoragePath =
-                Environment.getExternalStorageDirectory().getAbsolutePath();
-        String savePath = StoragePath + "/ordering";
-        File f = new File(savePath);
-        if (!f.isDirectory())f.mkdirs();
+        File file_path;
 
-        //v = getActivity().getWindow().getDecorView().getRootView();
-        v.setDrawingCacheEnabled(true);
-        v.buildDrawingCache();
-//        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
-        Bitmap bitmap = v.getDrawingCache();
-        v.setDrawingCacheEnabled(false);
+        try{
+            file_path = new File(string_path);
 
-//        FileOutputStream fos;
-//        try{
-//            SimpleDateFormat sdf = new SimpleDateFormat( "yyyyMMddHHmmss"); //년,월,일,시간 포멧 설정
-//            Date time = new Date(); //파일명 중복 방지를 위해 사용될 현재시간
-//            String current_time = sdf.format(time); //String형 변수에 저장
-//            fos = new FileOutputStream(savePath+"/"+filename+"_"+current_time);
-//            bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
-//            Log.e("bitmap","저장완료");
-//        }catch (Exception e){
+            if(!file_path.isDirectory()){
+                file_path.mkdirs();
+            }
+            FileOutputStream out = new FileOutputStream(string_path+file_name);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.close();
+        }
+        catch(FileNotFoundException exception){
+            Log.e("FileNotFoundException", exception.getMessage());
+        }
+        catch(IOException exception){
+            Log.e("IOException", exception.getMessage());
+        }
+
+//        ContentValues values = new ContentValues();
+//        values.put(MediaStore.Images.Media.DISPLAY_NAME, file_name);
+//        values.put(MediaStore.Images.Media.MIME_TYPE, "image/*");
+//        // 파일을 write중이라면 다른곳에서 데이터요구를 무시하겠다는 의미입니다.
+//        values.put(MediaStore.Images.Media.IS_PENDING, 1);
+//        ContentResolver contentResolver = getContentResolver();
+//        Uri collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+//        // ContentResolver을 통해 insert를 해주고 해당 insert가 되는 위치의 Uri를 리턴받는다.
+//        // 이후로는 해당 Uri를 통해 파일 관리를 해줄 수 있다.
+//        Uri item = contentResolver.insert(collection, values);
+//        try {
+//            // Uri(item)의 위치에 파일을 생성해준다.
+//            ParcelFileDescriptor pdf =
+//                    contentResolver.openFileDescriptor(item, "w", null);
+//            if (pdf == null) { }
+//            else {
+//                InputStream inputStream = getImageInputStram();
+//                byte[] strToByte = getBytes(inputStream);
+//                FileOutputStream fos = new FileOutputStream(pdf.getFileDescriptor());
+//                fos.write(strToByte);
+//                fos.close();
+//                inputStream.close();
+//                pdf.close();
+//                contentResolver.update(item, values, null, null);
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+//        values.clear();
+//        // 파일을 모두 write하고 다른곳에서 사용할 수 있도록 0으로 업데이트를 해줍니다.
+//        values.put(MediaStore.Images.Media.IS_PENDING, 0);
+//        contentResolver.update(item, values, null, null);
 
-        return bitmap;
     }
+//    private InputStream getImageInputStram() { ByteArrayOutputStream bytes = new ByteArrayOutputStream(); bmp.compress(Bitmap.CompressFormat.PNG, 100, bytes); byte[] bitmapData = bytes.toByteArray(); ByteArrayInputStream bs = new ByteArrayInputStream(bitmapData); return bs; } public byte[] getBytes(InputStream inputStream) throws IOException { ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream(); int bufferSize = 1024; byte[] buffer = new byte[bufferSize]; int len = 0; while ((len = inputStream.read(buffer)) != -1) { byteBuffer.write(buffer, 0, len); } return byteBuffer.toByteArray(); }
 
     public static Bitmap getQrPreviewList(int pos){
         return qrImagePreviewList.get(pos);
+    }
+    public static void addQrPreviewList(Bitmap bitmap){
+        qrImagePreviewList.add(bitmap);
     }
 }

@@ -20,7 +20,7 @@
         tools:ignore="MissingConstraints" />
     <!-- app:layoutVisibilityMode="unlabeled" 아이콘만 보여주고 싶을 때 사용 -->
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBar_main"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

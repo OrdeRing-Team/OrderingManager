@@ -24,11 +24,15 @@ public class QrPreviewActivity extends AppCompatActivity {
 
     Animation alpha;
 
+    int cardViewType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityQrPreviewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        cardViewType = getIntent().getIntExtra("cardViewType", 0);
 
         initViews();
         initButtonListeners();
@@ -36,11 +40,20 @@ public class QrPreviewActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     public void initViews(){
-        Bitmap bitmap = QrFragment.getQrPreviewList(0);
-        binding.ivQrPreview.setImageBitmap(bitmap);
+        switch (cardViewType){
+            case 0:
+                binding.tvPreviewName.setText("포장용QR");
+                break;
+            case 1:
+                binding.tvPreviewName.setText("웨이팅용QR");
+                break;
+            default:
+                binding.tvPreviewName.setText(cardViewType-1 + "번 테이블");
+                break;
+        }
 
+        Bitmap bitmap = QrFragment.getQrPreviewList(cardViewType);
         binding.tvStoreName.setText(UserInfo.getRestaurantName());
-        binding.tvPreviewName.setText("포장용QR");
 
         binding.llTransview.setAlpha(1);
         alpha = new AlphaAnimation(0, 1);
@@ -48,6 +61,9 @@ public class QrPreviewActivity extends AppCompatActivity {
         alpha.setFillAfter(true);
         alpha.setStartOffset(500);
         binding.llTransview.setAnimation(alpha);
+
+        binding.ivQrPreview.setImageBitmap(bitmap);
+
     }
 
     public void initButtonListeners(){
@@ -86,14 +102,14 @@ public class QrPreviewActivity extends AppCompatActivity {
                     alpha.setFillAfter(true);
                     alpha.setStartOffset(0);
                     binding.llTransview.setAnimation(alpha);
+                    binding.llTransview.setVisibility(View.GONE);
 
                     // 중간 투명 뷰의 영역을 matchParent로 변경한다.
                     // -> 투명 이미지뷰의 영역을 클릭했을 때 뷰를 보이게/안보이게 해야함
                     // 만약 위를 설정해 주지 않으면 위 아래 양쪽 투명바(?)를 클릭했을 때도 뷰가 보여짐/안보여짐
                     // 이를 막기 위해 이미지뷰의 영역을 클릭했을때만 변경되도록 설정
+                    /**현재 작동 안됨 ㅣ 이유 살펴볼 것**/
                     reduceArea();
-
-                    binding.llTransview.setVisibility(View.GONE);
                     Log.e("alpha","안보임");
                     transViewVisible = false;
                     buttonLock();
@@ -105,11 +121,10 @@ public class QrPreviewActivity extends AppCompatActivity {
                     alpha.setFillAfter(true);
                     alpha.setStartOffset(0);
                     binding.llTransview.setAnimation(alpha);
+                    binding.llTransview.setVisibility(View.VISIBLE);
 
                     // expandArea()와 이유는 동일
                     expandArea();
-
-                    binding.llTransview.setVisibility(View.VISIBLE);
                     Log.e("alpha","보임");
                     transViewVisible = true;
                     buttonLock();

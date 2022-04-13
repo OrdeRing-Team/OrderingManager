@@ -41,7 +41,9 @@ public class QrTakeoutFragment extends Fragment {
         binding.itemQrCardview.btnPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), QrPreviewActivity.class));
+                Intent intent = new Intent(getActivity(),QrPreviewActivity.class);
+                intent.putExtra("cardViewType",0);
+                startActivity(intent);
             }
         });
     }
