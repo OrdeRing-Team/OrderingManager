@@ -7,6 +7,8 @@ import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -61,6 +63,10 @@ public interface RetrofitService {
    	// 메뉴 품절 정보 PUT
 	@PUT("/api/restaurant/food/{food_id}/status")
 	Call<ResultDto<Boolean>> putSoldout(@Path("food_id") Long foodId, @Body FoodStatusDto foodStatusDto);
+
+	// 매장 모든 음식 불러오기
+	@POST("/api/restaurant/{restaurantId}/foods")
+	Call<ResultDto<List<FoodDto>>> getFood(@Path("restaurantId") Long restaurantId);
 
 	// 서버 내 데이터 삭제
 	@DELETE("/api/restaurant/food/{foodId}")

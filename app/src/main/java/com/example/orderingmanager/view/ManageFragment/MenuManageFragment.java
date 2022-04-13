@@ -7,27 +7,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.orderingmanager.view.BasicActivity;
 import com.example.orderingmanager.Dto.FoodDto;
 import com.example.orderingmanager.Dto.ResultDto;
-import com.example.orderingmanager.HttpApi;
+import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentMenuManageBinding;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MenuManageFragment extends Fragment {
@@ -53,38 +55,59 @@ public class MenuManageFragment extends Fragment {
     }
 
     public void getMenuFromServer(){
+        // 매장 모든 음식 불러오기
         try {
-            URL url = new URL("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/foods");
-            HttpApi httpApi = new HttpApi(url, "POST");
-
             new Thread() {
                 @SneakyThrows
                 public void run() {
-                    String json = httpApi.requestToServer();
-                    ObjectMapper mapper = new ObjectMapper();
-                    ResultDto<List<FoodDto>> result = mapper.readValue(json, new TypeReference<ResultDto<List<FoodDto>>>() {});
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            result.getData().forEach(foodDto ->{
-                                    menuList.add(new ManageData(foodDto.getFoodId(), foodDto.getImageUrl(), foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro()));
-                                Log.e("data = ", foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl());
-                                Log.e("foodid = ", Long.toString(menuList.get(0).getFoodId()));
-                            });
 
-                            RecyclerView recyclerView = binding.rvMenu;
-                            ManageAdapter manageAdapter = new ManageAdapter(menuList, getActivity());
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            recyclerView.setAdapter(manageAdapter);
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/"+UserInfo.getRestaurantId()+"/foods/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<List<FoodDto>>> call = service.getFood(UserInfo.getRestaurantId());
+
+                    call.enqueue(new Callback<ResultDto<List<FoodDto>>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<List<FoodDto>>> call, Response<ResultDto<List<FoodDto>>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<List<FoodDto>> result;
+                                result = response.body();
+                                if (result.getData() != null) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            result.getData().forEach(foodDto ->{
+                                                menuList.add(new ManageData(foodDto.getFoodId(), foodDto.getImageUrl(), foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro()));
+                                                Log.e("data = ", foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl());
+                                                Log.e("foodid = ", Long.toString(menuList.get(0).getFoodId()));
+                                            });
+
+                                            RecyclerView recyclerView = binding.rvMenu;
+                                            ManageAdapter manageAdapter = new ManageAdapter(menuList, getActivity());
+                                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                            recyclerView.setAdapter(manageAdapter);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<List<FoodDto>>> call, Throwable t) {
+                            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
                         }
                     });
-
                 }
             }.start();
 
         } catch (Exception e) {
-            BasicActivity.showToast(getActivity(),"서버 요청에 실패하였습니다.");
-            Log.e("e = " , e.getMessage());
+            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
         }
     }
 
