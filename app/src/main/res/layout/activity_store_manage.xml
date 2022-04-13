@@ -82,7 +82,7 @@
                         android:layout_marginTop="28dp"
                         android:text="매장명"
                         android:textColor="@color/black"
-                        android:textSize="23dp"
+                        android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.509"
                         app:layout_constraintStart_toEndOf="@+id/iv_storeIcon"
