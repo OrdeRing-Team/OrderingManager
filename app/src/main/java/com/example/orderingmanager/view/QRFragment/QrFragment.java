@@ -1,10 +1,16 @@
 package com.example.orderingmanager.view.QRFragment;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,7 +33,6 @@ import com.example.orderingmanager.view.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -104,7 +109,7 @@ public class QrFragment extends Fragment {
         for(int i = 0; i < UserInfo.getTableCount()+2; i++){
             binding.ivQrcoderv.setImageBitmap(QrList.getQrBitmap(i));
             binding.tvQrStoreName.setText(UserInfo.getRestaurantName());
-
+            Log.e("i",Integer.toString(i));
             // i == 0, 포장용 QR
             // i == 1, 웨이팅용 QR
             // i >= 2, 테이블 QR
@@ -121,6 +126,7 @@ public class QrFragment extends Fragment {
                     binding.tvTableNum.setVisibility(View.VISIBLE);
                     binding.tvTableNum.setText( i-1 + "번 테이블");
                     binding.tvExplain.setText("테이블에서\nQR 찍고 주문하세요");
+                    break;
             }
             capture();
         }
@@ -184,24 +190,14 @@ public class QrFragment extends Fragment {
         dialog.dismiss();
 
         MainActivity.progressBar.setVisibility(View.VISIBLE);
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat sdf = new SimpleDateFormat( "yyyyMMddHHmmss"); //년,월,일,시간 포멧 설정
-        Date time = new Date(); //파일명 중복 방지를 위해 사용될 현재시간
-        String current_time = sdf.format(time); //String형 변수에 저장
-        String fileName;
         for(int qrNum = 0; qrNum < qrImagePreviewList.size(); qrNum++){
 
-            // 파일명 지정
-            if(qrNum == 0) fileName = "TakeoutQR_"+current_time;
-            else if(qrNum == 1) fileName = "WaitingQR_"+current_time;
-            else fileName = "TableQR_" + Integer.toString(qrNum-1) + "_" + current_time;
-
             // bitmap이미지를 jpeg로 저장
-            saveBitmaptoJpeg(qrImagePreviewList.get(qrNum),fileName);
+            saveBitmaptoJpeg(getContext(), qrNum, qrImagePreviewList.get(qrNum));
         }
 
         MainActivity.progressBar.setVisibility(View.GONE);
-        MainActivity.showToast(getActivity(), "다운로드 완료");
+        MainActivity.showToast(getActivity(), "QR이미지가 모두 저장 되었습니다.");
     };
 
     private final View.OnClickListener negativeButton = view -> {
@@ -250,68 +246,60 @@ public class QrFragment extends Fragment {
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
-    public static void saveBitmaptoJpeg(Bitmap bitmap, String name){
-        String ex_storage = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String foler_name = "/"+"ordering"+"/";
-        String file_name = name+".jpg";
-        String string_path = ex_storage+foler_name;
+    public static void saveBitmaptoJpeg(Context context, int qrNum, Bitmap bitmap){
+        String fileName;
 
-        File file_path;
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyyMMddHHmmss"); //년,월,일,시간 포멧 설정
+        Date time = new Date(); //파일명 중복 방지를 위해 사용될 현재시간
+        String current_time = sdf.format(time); //String형 변수에 저장
+
+        // 파일명 지정
+        if(qrNum == 0) fileName = "TakeoutQR_"+current_time;
+        else if(qrNum == 1) fileName = "WaitingQR_"+current_time;
+        else fileName = "TableQR_" + Integer.toString(qrNum-1) + "_" + current_time;
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName + ".JPG");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // 현재 is_pending 상태임을 만들어준다.
+            // 다른 곳에서 이 데이터를 요구하면 무시하라는 의미로, 해당 저장소를 독점할 수 있다.
+            values.put(MediaStore.Images.Media.IS_PENDING, 1);
+        }
+
+        ContentResolver contentResolver = context.getContentResolver();
+        Uri collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+
+        // 이미지를 저장할 uri를 미리 설정함
+        Uri item = contentResolver.insert(collection, values);
 
         try{
-            file_path = new File(string_path);
+            ParcelFileDescriptor pdf = contentResolver.openFileDescriptor(item, "w", null);
 
-            if(!file_path.isDirectory()){
-                file_path.mkdirs();
+            if(pdf == null){
+                Log.e("pdf","null");
             }
-            FileOutputStream out = new FileOutputStream(string_path+file_name);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.close();
-        }
-        catch(FileNotFoundException exception){
-            Log.e("FileNotFoundException", exception.getMessage());
-        }
-        catch(IOException exception){
-            Log.e("IOException", exception.getMessage());
-        }
+            else{
+                FileOutputStream fos = new FileOutputStream(pdf.getFileDescriptor());
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.close();
 
-//        ContentValues values = new ContentValues();
-//        values.put(MediaStore.Images.Media.DISPLAY_NAME, file_name);
-//        values.put(MediaStore.Images.Media.MIME_TYPE, "image/*");
-//        // 파일을 write중이라면 다른곳에서 데이터요구를 무시하겠다는 의미입니다.
-//        values.put(MediaStore.Images.Media.IS_PENDING, 1);
-//        ContentResolver contentResolver = getContentResolver();
-//        Uri collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
-//        // ContentResolver을 통해 insert를 해주고 해당 insert가 되는 위치의 Uri를 리턴받는다.
-//        // 이후로는 해당 Uri를 통해 파일 관리를 해줄 수 있다.
-//        Uri item = contentResolver.insert(collection, values);
-//        try {
-//            // Uri(item)의 위치에 파일을 생성해준다.
-//            ParcelFileDescriptor pdf =
-//                    contentResolver.openFileDescriptor(item, "w", null);
-//            if (pdf == null) { }
-//            else {
-//                InputStream inputStream = getImageInputStram();
-//                byte[] strToByte = getBytes(inputStream);
-//                FileOutputStream fos = new FileOutputStream(pdf.getFileDescriptor());
-//                fos.write(strToByte);
-//                fos.close();
-//                inputStream.close();
-//                pdf.close();
-//                contentResolver.update(item, values, null, null);
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        values.clear();
-//        // 파일을 모두 write하고 다른곳에서 사용할 수 있도록 0으로 업데이트를 해줍니다.
-//        values.put(MediaStore.Images.Media.IS_PENDING, 0);
-//        contentResolver.update(item, values, null, null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    values.clear();
 
+                    // IS_PENDING 값을 0으로 설정해 주고 다른 곳에서 사용 가능하도록 복구
+                    values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                    contentResolver.update(item, values, null, null);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-//    private InputStream getImageInputStram() { ByteArrayOutputStream bytes = new ByteArrayOutputStream(); bmp.compress(Bitmap.CompressFormat.PNG, 100, bytes); byte[] bitmapData = bytes.toByteArray(); ByteArrayInputStream bs = new ByteArrayInputStream(bitmapData); return bs; } public byte[] getBytes(InputStream inputStream) throws IOException { ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream(); int bufferSize = 1024; byte[] buffer = new byte[bufferSize]; int len = 0; while ((len = inputStream.read(buffer)) != -1) { byteBuffer.write(buffer, 0, len); } return byteBuffer.toByteArray(); }
 
     public static Bitmap getQrPreviewList(int pos){
         return qrImagePreviewList.get(pos);

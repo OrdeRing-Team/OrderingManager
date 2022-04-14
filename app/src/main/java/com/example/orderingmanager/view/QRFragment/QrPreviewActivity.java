@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
@@ -26,6 +27,8 @@ public class QrPreviewActivity extends AppCompatActivity {
 
     int cardViewType;
 
+    Bitmap bitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,7 @@ public class QrPreviewActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         cardViewType = getIntent().getIntExtra("cardViewType", 0);
+        bitmap = QrFragment.getQrPreviewList(cardViewType);
 
         initViews();
         initButtonListeners();
@@ -52,7 +56,6 @@ public class QrPreviewActivity extends AppCompatActivity {
                 break;
         }
 
-        Bitmap bitmap = QrFragment.getQrPreviewList(cardViewType);
         binding.tvStoreName.setText(UserInfo.getRestaurantName());
 
         binding.llTransview.setAlpha(1);
@@ -88,7 +91,10 @@ public class QrPreviewActivity extends AppCompatActivity {
         binding.llBtnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.showLongToast(QrPreviewActivity.this, "다운로드버튼 클릭");
+                showProgress();
+                QrFragment.saveBitmaptoJpeg(getApplicationContext(),cardViewType, bitmap);
+                MainActivity.showLongToast(QrPreviewActivity.this, "이미지가 저장되었습니다.");
+                hideProgress();
             }
         });
 
@@ -109,7 +115,7 @@ public class QrPreviewActivity extends AppCompatActivity {
                     // 만약 위를 설정해 주지 않으면 위 아래 양쪽 투명바(?)를 클릭했을 때도 뷰가 보여짐/안보여짐
                     // 이를 막기 위해 이미지뷰의 영역을 클릭했을때만 변경되도록 설정
                     /**현재 작동 안됨 ㅣ 이유 살펴볼 것**/
-                    reduceArea();
+                    expandArea();
                     Log.e("alpha","안보임");
                     transViewVisible = false;
                     buttonLock();
@@ -124,7 +130,7 @@ public class QrPreviewActivity extends AppCompatActivity {
                     binding.llTransview.setVisibility(View.VISIBLE);
 
                     // expandArea()와 이유는 동일
-                    expandArea();
+                    reduceArea();
                     Log.e("alpha","보임");
                     transViewVisible = true;
                     buttonLock();
@@ -215,6 +221,17 @@ public class QrPreviewActivity extends AppCompatActivity {
         set.connect(binding.ivTransparent.getId(), ConstraintSet.BOTTOM, binding.transviewBottom.getId(), ConstraintSet.TOP);
         set.applyTo(binding.clPreviewRoot);
         Log.e("expandArea","영역축소됨");
+    }
+
+    private void showProgress(){
+        binding.progressBarMain.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void hideProgress(){
+        binding.progressBarMain.setVisibility(View.GONE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
 }
