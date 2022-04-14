@@ -1,7 +1,9 @@
 package com.example.orderingmanager.view.QRFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,10 +13,16 @@ import android.view.animation.Animation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.FileProvider;
 
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityQrPreviewBinding;
 import com.example.orderingmanager.view.MainActivity;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class QrPreviewActivity extends AppCompatActivity {
 
@@ -83,7 +91,36 @@ public class QrPreviewActivity extends AppCompatActivity {
         binding.btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.showLongToast(QrPreviewActivity.this,"공유버튼 클릭");
+                // 비트맵 자체를 바로 공유하면 오류가 발생함
+                // 비트맵을 png로 변환하고 그것을 캐시에 저장을 함 -> 갤러리에는 안보임
+                File cachePath = new File(getExternalCacheDir(), "my_images/");
+                cachePath.mkdirs();
+
+                File file = new File(cachePath, "Image_123.png");
+                FileOutputStream fileOutputStream;
+                try
+                {
+                    fileOutputStream = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+
+                } catch (FileNotFoundException e)
+                {
+                    e.printStackTrace();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+
+                Uri myImageFileUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.putExtra(Intent.EXTRA_STREAM, myImageFileUri);
+                intent.setType("image/png");
+                startActivity(Intent.createChooser(intent, "Share with"));
             }
         });
 
@@ -92,7 +129,7 @@ public class QrPreviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showProgress();
-                QrFragment.saveBitmaptoJpeg(getApplicationContext(),cardViewType, bitmap);
+                QrFragment.saveBitmaptoPng(getApplicationContext(),cardViewType, bitmap);
                 MainActivity.showLongToast(QrPreviewActivity.this, "이미지가 저장되었습니다.");
                 hideProgress();
             }

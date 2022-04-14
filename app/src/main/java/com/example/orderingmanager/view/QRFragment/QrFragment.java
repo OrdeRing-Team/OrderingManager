@@ -193,7 +193,7 @@ public class QrFragment extends Fragment {
         for(int qrNum = 0; qrNum < qrImagePreviewList.size(); qrNum++){
 
             // bitmap이미지를 jpeg로 저장
-            saveBitmaptoJpeg(getContext(), qrNum, qrImagePreviewList.get(qrNum));
+            saveBitmaptoPng(getContext(), qrNum, qrImagePreviewList.get(qrNum));
         }
 
         MainActivity.progressBar.setVisibility(View.GONE);
@@ -246,7 +246,7 @@ public class QrFragment extends Fragment {
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
-    public static void saveBitmaptoJpeg(Context context, int qrNum, Bitmap bitmap){
+    public static void saveBitmaptoPng(Context context, int qrNum, Bitmap bitmap){
         String fileName;
 
         @SuppressLint("SimpleDateFormat")
@@ -260,8 +260,8 @@ public class QrFragment extends Fragment {
         else fileName = "TableQR_" + Integer.toString(qrNum-1) + "_" + current_time;
 
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName + ".JPG");
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName + ".PNG");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             // 현재 is_pending 상태임을 만들어준다.
@@ -283,7 +283,7 @@ public class QrFragment extends Fragment {
             }
             else{
                 FileOutputStream fos = new FileOutputStream(pdf.getFileDescriptor());
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 fos.close();
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
