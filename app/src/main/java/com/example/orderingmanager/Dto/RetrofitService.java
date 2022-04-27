@@ -7,6 +7,7 @@ import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
+import java.io.File;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -45,6 +46,15 @@ public interface RetrofitService {
 	@PUT("/api/owner/{owner_id}/phone_number")
 	Call<ResultDto<Boolean>> reverify(@Path("owner_id") Long ownerId, @Body PhoneNumberDto phoneNumberDto);
 
+	// 매장 아이콘 변경
+	@Multipart
+	@PUT("/api/restaurant/{restaurant_id}/profile_image")
+	Call<ResultDto<Boolean>> putStoreIcon(@Path("restaurant_id") Long restaurantId, @Part MultipartBody.Part file);
+
+	// 매장 대표 메뉴 변경
+	@PUT("/api/restaurant/{restaurant_id}/background_image")
+	Call<ResultDto<Boolean>> putStoreSigMenu(@Path("restaurant_id") Long restaurantId, @Part MultipartBody.Part file);
+
 	// 메뉴 추가
    	@Multipart
    	@POST("/api/restaurant/{restaurantId}/food")
@@ -68,7 +78,7 @@ public interface RetrofitService {
 	@POST("/api/restaurant/{restaurantId}/foods")
 	Call<ResultDto<List<FoodDto>>> getFood(@Path("restaurantId") Long restaurantId);
 
-	// 서버 내 데이터 삭제
+	// 서버 내 메뉴 데이터 삭제
 	@DELETE("/api/restaurant/food/{foodId}")
 	Call<ResultDto<Boolean>> deleteFood(@Path("foodId") Long foodId);
 
