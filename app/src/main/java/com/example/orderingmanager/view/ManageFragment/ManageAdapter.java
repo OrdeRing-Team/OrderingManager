@@ -61,7 +61,6 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
                     if (position != RecyclerView.NO_POSITION) {
 
                         // Bundle에 담아서 BottomSheetDialog로 보낸다.
-
                         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
                         bottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(),"bottomSheet");
 
@@ -81,13 +80,13 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
     }
 
     public ManageAdapter(ArrayList<ManageData> arrayList) {
-//        adapter constructor
+    // adapter constructor
         this.arrayList = arrayList;
     }
 
 
     public ManageAdapter(ArrayList<ManageData> arrayList, Context context) {
-//        adapter constructor for needing context part
+    // adapter constructor for needing context part
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -98,17 +97,17 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        onCreateViewHolder: make xml as an object using LayoutInflater & create viewHolder with the object
-//        layoutInflater로 xml객체화. viewHolder 생성.
+    // onCreateViewHolder: make xml as an object using LayoutInflater & create viewHolder with the object
+    // layoutInflater로 xml객체화. viewHolder 생성.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu, parent, false);
         return new CustomViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-//        onBindViewHolder: put data of item list into xml widgets
-//        xml의 위젯과 데이터를 묶는(연결하는, setting하는) 작업.
-//        position에 해당하는 data, viewHolder의 itemView에 표시함
+    // onBindViewHolder: put data of item list into xml widgets
+    // xml의 위젯과 데이터를 묶는(연결하는, setting하는) 작업.
+    // position에 해당하는 data, viewHolder의 itemView에 표시함
 
         holder.tvName.setText(arrayList.get(position).getName());
         holder.tvPrice.setText(String.valueOf(arrayList.get(position).getPrice()));
@@ -118,7 +117,6 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         // arrayList에 저장된 메뉴 이미지 url을 imageURL변수에 저장하고 Glide로 iv에 set
         String imageURL = String.valueOf(arrayList.get(position).getIv_menu());
         Glide.with(holder.itemView.getContext()).load(imageURL).into(holder.ivMenu);
-        Log.e("리사이클러뷰 어댑터 이미지 url", imageURL);
 
         // 품절 정보 불러와서 true이면 리사이클러뷰에 "품절" 출력하기
         boolean soldout = arrayList.get(position).getSoldout();
@@ -130,8 +128,8 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
 
     @Override
     public int getItemCount() {
-//        getItemCount: return the size of the item list
-//        item list의 전체 데이터 개수 return
+    // getItemCount: return the size of the item list
+    // item list의 전체 데이터 개수 return
         return (arrayList != null ? arrayList.size() : 0);
     }
 

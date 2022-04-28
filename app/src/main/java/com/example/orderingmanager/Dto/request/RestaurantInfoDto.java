@@ -19,4 +19,6 @@ public class RestaurantInfoDto {
     private FoodCategory foodCategory;
     private RestaurantType restaurantType;
 
+    //private String storeIcon;
+
 }

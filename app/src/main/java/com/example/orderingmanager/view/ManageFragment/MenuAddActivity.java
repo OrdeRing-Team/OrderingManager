@@ -163,7 +163,7 @@ public class MenuAddActivity extends BasicActivity {
             Bitmap bitmap = drawable.getBitmap();
 
             imageFile = convertBitmapToFile(bitmap, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
-            Log.e("image", "imageFile is " + bitmap);
+            Log.e("image", "imageFile is " + imageFile);
         }
     }
 
