@@ -113,6 +113,7 @@
         <entry key="app/src/main/res/layout/activity_menu_edit.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_menu_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_menu_manage.xml" value="0.22304362919255596" />
+        <entry key="app/src/main/res/layout/activity_qr_preview.xml" value="0.2667572463768116" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.16701604448685992" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splash2.xml" value="0.1778115501519757" />
@@ -121,7 +122,7 @@
         <entry key="app/src/main/res/layout/activity_test_stack.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.21770833333333334" />
-        <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.24728260869565216" />
         <entry key="app/src/main/res/layout/custom_dialog_store_check.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_daily_sales.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_finish.xml" value="0.1830044781720197" />

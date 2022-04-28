@@ -60,7 +60,7 @@ public class QrFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        extra = this.getArguments();
+
         if(extra != null) {
             extra = getArguments();
         }
