@@ -8,6 +8,11 @@
     tools:context=".view.ManageFragment.ManageFragment">
 
     <!-- 매장정보입력 안 되어 있을 경우 -->
+    <include
+        android:id="@+id/view_error_load_store"
+        layout="@layout/view_error_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!-- 매장정보입력 되어 있을 경우 -->
 
@@ -130,13 +135,6 @@
                             android:background="@color/fui_transparent"/>
 
                     </LinearLayout>
-
-                    <include
-                        android:id="@+id/view_error_load_store"
-                        layout="@layout/view_error_page"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

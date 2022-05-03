@@ -71,7 +71,6 @@ public class UserInfo {
 
 
     public static void init(){
-
         ownerId = null;
         restaurantName = null;
         ownerName = null;

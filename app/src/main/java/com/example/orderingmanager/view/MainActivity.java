@@ -65,8 +65,7 @@ public class MainActivity extends BasicActivity {
         Log.e("getKeyHash", ""+getKeyHash(MainActivity.this));
         bundle = new Bundle();
 
-        // 유저 DB Init
-        getUserDB();
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -75,6 +74,9 @@ public class MainActivity extends BasicActivity {
 
         showProgress();
         bottomNavigationView = findViewById(R.id.bottomNavi);
+
+        // 유저 DB Init
+        getUserDB();
 
         initFragView();
 
@@ -163,6 +165,7 @@ public class MainActivity extends BasicActivity {
     };
 
     private final View.OnClickListener negativeButton = view -> {
+        hideProgress();
         dialog.dismiss();
     };
 

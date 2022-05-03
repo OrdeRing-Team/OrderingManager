@@ -285,11 +285,9 @@ public class SignupActivity extends AppCompatActivity {
 
     /* 이메일 계정 생성 */
     private void createAccount() {
-
         String memberId = binding.etMemberId.getText().toString();
         String password = binding.editTextPassword.getText().toString();
         String phoneNum = binding.tvSignupPhoneNum.getText().toString();
-
 
         // 이메일 계정 생성 시작
         if (memberId.length() > 4 && memberId.length() < 21 && password.length() > 5) {
