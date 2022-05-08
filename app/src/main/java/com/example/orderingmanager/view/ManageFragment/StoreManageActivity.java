@@ -10,7 +10,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,18 +17,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.orderingmanager.Dto.FoodDto;
+import com.bumptech.glide.Glide;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
-import com.example.orderingmanager.view.ViewPagerAdapter;
 import com.example.orderingmanager.databinding.ActivityStoreManageBinding;
-import com.firebase.ui.auth.data.model.User;
+import com.example.orderingmanager.view.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -37,16 +33,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-import lombok.SneakyThrows;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -62,6 +54,7 @@ public class StoreManageActivity extends AppCompatActivity {
     File imageFile_sig;
     RequestBody fileBody;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +63,10 @@ public class StoreManageActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         menuAdd();
+
+        getStoreIcon();
+        getStoreSigMenu();
+
 
         //백버튼 이벤트
         ImageButton btnBack = findViewById(R.id.btn_backToManageFrag);
@@ -165,6 +162,8 @@ public class StoreManageActivity extends AppCompatActivity {
             imageFile_icon = convertBitmapToFile(bitmap, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
             Log.e("image", "imageFile is " + bitmap);
 
+            putStoreSigMenu();
+
         }
 
         // 매장 아이콘일 경우
@@ -175,11 +174,13 @@ public class StoreManageActivity extends AppCompatActivity {
 
             BitmapDrawable drawable = (BitmapDrawable) binding.ivStoreIcon.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
+            Log.e("bitmap", String.valueOf(bitmap));
 
             imageFile_icon = convertBitmapToFile(bitmap, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
             Log.e("image", "imageFile is " + imageFile_icon);
 
             putStoreIcon();
+
         }
 
     }
@@ -228,8 +229,8 @@ public class StoreManageActivity extends AppCompatActivity {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
+                        //UserInfo.setRestrauntIcon(binding.);
                         Log.e("StoreIcon", "is uploaded.");
-
                     }
                 });
             }
@@ -243,61 +244,58 @@ public class StoreManageActivity extends AppCompatActivity {
     }
 
     // 매장 아이콘 불러오기 함수
-//    public void getStoreIcon(){
-//        try {
-//            new Thread() {
-//                @SneakyThrows
-//                public void run() {
-//
-//                    Retrofit retrofit = new Retrofit.Builder()
-//                            .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/profile_image/")
-//                            .addConverterFactory(GsonConverterFactory.create())
-//                            .build();
-//
-//                    RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-//                    Call<ResultDto<Boolean>> call = retrofitService.putStoreIcon(UserInfo.getRestaurantId(), image);
-//
-//                    call.enqueue(new Callback<ResultDto<List<FoodDto>>>() {
-//                        @Override
-//                        public void onResponse(Call<ResultDto<List<FoodDto>>> call, Response<ResultDto<List<FoodDto>>> response) {
-//
-//                            if (response.isSuccessful()) {
-//                                ResultDto<List<FoodDto>> result;
-//                                result = response.body();
-//                                if (result.getData() != null) {
-//                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            result.getData().forEach(foodDto ->{
-//                                                menuList.add(new ManageData(foodDto.getFoodId(), foodDto.getImageUrl(), foodDto.getFoodName(), Integer.toString(foodDto.getPrice()), foodDto.getMenuIntro(), foodDto.getSoldOut()));
-//                                                Log.e("매장 메뉴 정보", "foodid = " + foodDto.getFoodId() + ", data = " + foodDto.getFoodName() + ", image url = " + foodDto.getImageUrl() + ", sold out = " + foodDto.getSoldOut());
-//                                            });
-//
-//                                            RecyclerView recyclerView = binding.rvMenu;
-//                                            ManageAdapter manageAdapter = new ManageAdapter(menuList, getActivity());
-//                                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                                            recyclerView.setAdapter(manageAdapter);
-//                                        }
-//                                    });
-//                                }
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<ResultDto<List<FoodDto>>> call, Throwable t) {
-//                            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-//                            Log.e("e = ", t.getMessage());
-//                        }
-//                    });
-//                }
-//            }.start();
-//
-//        } catch (Exception e) {
-//            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-//            Log.e("e = ", e.getMessage());
-//        }
-//    }
-//
+    public void getStoreIcon(){
+        Log.e("매장정보액티비티의 매장아이콘", String.valueOf(UserInfo.getStoreIcon()));
+        String storeIconURL = String.valueOf(UserInfo.getStoreIcon());
+        Glide.with(this).load(storeIconURL).into(binding.ivStoreIcon);
+    }
+
+
+    // 서버에 매장 대표 메뉴 이미지 저장하는 함수
+    private void putStoreSigMenu() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/background_image/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // RequestBody 객체 생성
+        fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile_icon);
+        // RequestBody로 Multipart.Part 객체 생성
+        MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
+        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+        Call<ResultDto<Boolean>> call = retrofitService.putStoreSigMenu(UserInfo.getRestaurantId(), image);
+
+        call.enqueue(new Callback<ResultDto<Boolean>>() {
+            @Override
+            public void onResponse(Call<ResultDto<Boolean>> call, retrofit2.Response<ResultDto<Boolean>> response) {
+                ResultDto<Boolean> result = response.body();
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e("StoreSigMenu", "is uploaded.");
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                Toast.makeText(StoreManageActivity.this, "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("e = " , t.getMessage());
+            }
+        });
+    }
+
+    // 매장 대표메뉴 이미지 불러오기 함수
+    public void getStoreSigMenu(){
+        Log.e("매장정보액티비티의 매장대표메뉴", String.valueOf(UserInfo.getSigMenuImg()));
+        String storeIconURL = String.valueOf(UserInfo.getSigMenuImg());
+        Glide.with(this).load(storeIconURL).into(binding.ivSigmenu);
+    }
+
+
+
     // floating button = menu add button
     public void menuAdd() {
         binding.btnMenuAdd.setOnClickListener(new View.OnClickListener() {

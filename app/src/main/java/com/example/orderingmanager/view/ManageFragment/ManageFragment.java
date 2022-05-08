@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.orderingmanager.Dto.request.FoodCategory;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.R;
@@ -48,6 +49,7 @@ public class ManageFragment extends Fragment {
 
         if(UserInfo.getRestaurantId() != null) {
             initView();
+            getStoreIcon();
         }
         return view;
     }
@@ -227,6 +229,13 @@ public class ManageFragment extends Fragment {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
             return bitmap;
         }
+    }
+
+    // 매장 아이콘 불러오기 함수
+    public void getStoreIcon(){
+        Log.e("매장정보액티비티의 매장아이콘", String.valueOf(UserInfo.getStoreIcon()));
+        String storeIconURL = String.valueOf(UserInfo.getStoreIcon());
+        Glide.with(this).load(storeIconURL).into(binding.ivStoreIcon);
     }
 
 }

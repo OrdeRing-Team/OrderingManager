@@ -309,9 +309,10 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="25dp">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_storeIcon"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
                             android:src="@mipmap/ic_launcher"
                             android:layout_gravity="center" />
 
@@ -336,6 +337,7 @@
                                     android:layout_gravity="center" />
 
                                 <TextView
+                                    android:id="@+id/tv_review_count"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="리뷰 개수"
@@ -361,6 +363,7 @@
                                     android:layout_gravity="center" />
 
                                 <TextView
+                                    android:id="@+id/tv_rating_star"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="별"
