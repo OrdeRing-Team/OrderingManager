@@ -131,7 +131,7 @@ public class CreateQR extends BasicActivity {
                 @Override
                 public void run(){
                     countNumber += 1;
-                    text = "http://ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + Integer.toString(countNumber);
+                    text = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + Integer.toString(countNumber);
                     try {
                         BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200);
                         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();

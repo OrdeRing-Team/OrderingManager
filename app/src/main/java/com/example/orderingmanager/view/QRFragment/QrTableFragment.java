@@ -123,7 +123,7 @@ public class QrTableFragment extends Fragment {
 
     private Bitmap CreateTableQR(int i){
         String url;
-        url = "http://ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + i;
+        url = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + i;
         try{
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
