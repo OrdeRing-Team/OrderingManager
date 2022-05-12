@@ -57,7 +57,6 @@ public class FinishFragment extends Fragment {
 
         initButtonClickListener();
         storeInfoCheck();
-
         MaterialCalendarView materialCalendarView = view.findViewById(R.id.calendarView);
         materialCalendarView.setSelectedDate(CalendarDay.today());
 
@@ -109,7 +108,6 @@ public class FinishFragment extends Fragment {
 
         return view;
     }
-
 
 
     public void storeInfoCheck(){
