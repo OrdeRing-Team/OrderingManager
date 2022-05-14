@@ -18,10 +18,12 @@ public class WebViewActivity extends AppCompatActivity {
     {
         @JavascriptInterface
         @SuppressWarnings("unused")
-        public void processDATA(String data) {
+        public void processDATA(String data, String latitude, String longitude) {
             Bundle extra = new Bundle();
             Intent intent = new Intent();
             extra.putString("data", data);
+            extra.putDouble("latitude", Double.parseDouble(latitude));
+            extra.putDouble("longintude", Double.parseDouble(longitude));
             intent.putExtras(extra);
             setResult(RESULT_OK, intent);
             finish();
