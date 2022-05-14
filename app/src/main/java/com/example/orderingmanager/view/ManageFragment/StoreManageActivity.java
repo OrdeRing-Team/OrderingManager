@@ -22,6 +22,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
+import com.example.orderingmanager.Dto.request.SignInDto;
+import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityStoreManageBinding;
@@ -39,6 +41,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -54,6 +57,9 @@ public class StoreManageActivity extends AppCompatActivity {
     File imageFile_sig;
     RequestBody fileBody;
 
+    String storeIconInUserInfo;
+    String storeSigInUserInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +70,9 @@ public class StoreManageActivity extends AppCompatActivity {
 
         menuAdd();
 
-        getStoreIcon();
-        getStoreSigMenu();
+        // 업로드된 아이콘 및 대표메뉴 이미지 가져오기
+        getRestaurantInfo();
+
 
 
         //백버튼 이벤트
@@ -159,10 +166,12 @@ public class StoreManageActivity extends AppCompatActivity {
             BitmapDrawable drawable = (BitmapDrawable) binding.ivSigmenu.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
 
-            imageFile_icon = convertBitmapToFile(bitmap, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
+            imageFile_sig = convertBitmapToFile(bitmap, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
             Log.e("image", "imageFile is " + bitmap);
 
+            // 서버에 대표메뉴 업로드
             putStoreSigMenu();
+
 
         }
 
@@ -179,7 +188,9 @@ public class StoreManageActivity extends AppCompatActivity {
             imageFile_icon = convertBitmapToFile(bitmap, UserInfo.getOwnerName() + System.currentTimeMillis() + ".png");
             Log.e("image", "imageFile is " + imageFile_icon);
 
+            // 서버에 아이콘 업로드
             putStoreIcon();
+
 
         }
 
@@ -229,7 +240,6 @@ public class StoreManageActivity extends AppCompatActivity {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        //UserInfo.setRestrauntIcon(binding.);
                         Log.e("StoreIcon", "is uploaded.");
                     }
                 });
@@ -243,13 +253,6 @@ public class StoreManageActivity extends AppCompatActivity {
         });
     }
 
-    // 매장 아이콘 불러오기 함수
-    public void getStoreIcon(){
-        Log.e("매장정보액티비티의 매장아이콘", String.valueOf(UserInfo.getStoreIcon()));
-        String storeIconURL = String.valueOf(UserInfo.getStoreIcon());
-        Glide.with(this).load(storeIconURL).into(binding.ivStoreIcon);
-    }
-
 
     // 서버에 매장 대표 메뉴 이미지 저장하는 함수
     private void putStoreSigMenu() {
@@ -259,7 +262,7 @@ public class StoreManageActivity extends AppCompatActivity {
                 .build();
 
         // RequestBody 객체 생성
-        fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile_icon);
+        fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile_sig);
         // RequestBody로 Multipart.Part 객체 생성
         MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
@@ -282,18 +285,10 @@ public class StoreManageActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
                 Toast.makeText(StoreManageActivity.this, "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                Log.e("e = " , t.getMessage());
+                Log.e("e = ", t.getMessage());
             }
         });
     }
-
-    // 매장 대표메뉴 이미지 불러오기 함수
-    public void getStoreSigMenu(){
-        Log.e("매장정보액티비티의 매장대표메뉴", String.valueOf(UserInfo.getSigMenuImg()));
-        String storeIconURL = String.valueOf(UserInfo.getSigMenuImg());
-        Glide.with(this).load(storeIconURL).into(binding.ivSigmenu);
-    }
-
 
 
     // floating button = menu add button
@@ -306,5 +301,63 @@ public class StoreManageActivity extends AppCompatActivity {
             }
         });
     }
+
+    //getRestaurantInfo
+    private void getRestaurantInfo() {
+
+            SignInDto signInDto = new SignInDto(UserInfo.getUserId(), UserInfo.getUserPW());
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/owner/signin/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<OwnerSignInResultDto>> call = service.ownerSignIn(signInDto);
+
+                    call.enqueue(new Callback<ResultDto<OwnerSignInResultDto>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
+                            ResultDto<OwnerSignInResultDto> result = response.body();
+
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // 서버에 업로드된 이미지Url을 변수에 저장
+                                    storeIconInUserInfo = String.valueOf(result.getData().getProfileImageUrl());
+                                    storeSigInUserInfo = String.valueOf(result.getData().getBackgroundImageUrl());
+                                    Log.e("getStoreIcon : ", storeIconInUserInfo + "getStoreSig : " + storeSigInUserInfo);
+                                    UserInfo.setRestrauntIcon(result.getData());
+                                    UserInfo.setRestaurantSigMenu(result.getData());
+
+                                    // 서버에서 아이콘 이미지 값이 Null일 때
+                                    if (UserInfo.getStoreIcon() == null) {
+                                        Glide.with(StoreManageActivity.this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                                    }
+                                    else {
+                                        Glide.with(StoreManageActivity.this).load(UserInfo.getStoreIcon()).into(binding.ivStoreIcon);
+                                    }
+
+                                    // 서버에서 대표메뉴 이미지 값이 Null일 때
+                                    if (UserInfo.getSigMenuImg() == null) {
+                                        Glide.with(StoreManageActivity.this).load(R.drawable.splash).into(binding.ivSigmenu);
+                                    }
+                                    else {
+                                        Glide.with(StoreManageActivity.this).load(UserInfo.getSigMenuImg()).into(binding.ivSigmenu);
+                                    }
+                                }
+
+
+                            });
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<OwnerSignInResultDto>> call, Throwable t) {
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+    }
+
 
 }

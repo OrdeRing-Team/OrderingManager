@@ -307,26 +307,33 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="center"
-                        android:layout_marginTop="25dp">
+                        android:layout_marginTop="10dp">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
+                        <com.mikhaellopez.circularimageview.CircularImageView
                             android:id="@+id/iv_storeIcon"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:src="@mipmap/ic_launcher"
-                            android:layout_gravity="center" />
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/menumanage1_custom"
+                            android:layout_gravity="center"
+                            app:civ_shadow="true"
+                            app:civ_border="false"
+                            app:civ_shadow_radius="3dp"
+                            app:civ_shadow_color="#C1C1C1"
+                            android:layout_margin="5dp"/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:layout_marginLeft="40dp">
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="20dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:layout_marginBottom="10dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"

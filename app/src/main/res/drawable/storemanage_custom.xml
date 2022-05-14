@@ -4,13 +4,12 @@
         <layer-list>
             <item>
                 <shape android:shape="rectangle">
-                    <corners android:radius="15dip" />
-
-                    <padding android:right="7dp" />
-                    <padding android:left="5dp" />
+                    <corners
+                        android:topLeftRadius="15dip"
+                        android:topRightRadius="15dp"/>
 
                     <solid
-                        android:color = "#CCCCCC"/>
+                        android:color = "#FFFFFF"/>
                 </shape>
             </item>
 
