@@ -69,6 +69,7 @@ public class UserInfo {
     public static void setUserId(String id){
         userId = id;
     }
+    public static void setUserPW(String pw) { userPW = pw; }
 
     public static void setRestaurantId(Long id){
         restaurantId = id;
@@ -131,6 +132,7 @@ public class UserInfo {
     public static String getSigMenuImg() {
         return sigMenuImg;
     }
+
 
 
     public static FoodCategory getFoodCategory() {

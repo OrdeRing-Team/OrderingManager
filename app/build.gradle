@@ -101,6 +101,7 @@ dependencies {
 
     // Circle ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.mikhaellopez:circularimageview:4.3.0'
 
     // 임시
     implementation 'com.loopeer.library:cardstack:1.0.2'
