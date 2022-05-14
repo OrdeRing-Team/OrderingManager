@@ -134,7 +134,7 @@ public class ManageFragment extends Fragment {
                 // 이 호출함수는 나중에 돌아오면 MainActivity 의 onActivityResult 함수 에서 받는다.
                 //startActivityForResult(intent,MainActivity.MANAGEFRAGMENT);
             }
-        });
+        });//
 
         binding.viewErrorLoadStore.btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
