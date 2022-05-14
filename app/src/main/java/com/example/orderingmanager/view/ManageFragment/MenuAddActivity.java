@@ -3,6 +3,7 @@ package com.example.orderingmanager.view.ManageFragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -91,6 +92,11 @@ public class MenuAddActivity extends BasicActivity {
                 name = binding.edtName.getText().toString();
                 price = binding.edtPrice.getText().toString();
                 menuIntro = binding.edtIntro.getText().toString();
+
+                // 버튼 비활성화
+                binding.btnSubmit.setBackgroundColor(Color.parseColor("#B4B4B4"));
+                binding.btnSubmit.setEnabled(false);
+
                 if (name.length() == 0 || price.length() == 0) {
                     Toast.makeText(MenuAddActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
                 }
@@ -129,6 +135,7 @@ public class MenuAddActivity extends BasicActivity {
                                 @Override
                                 public void run() {
                                     if(result.getData() != null) {
+                                        Toast.makeText(MenuAddActivity.this, "메뉴가 추가되었습니다.", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(MenuAddActivity.this, StoreManageActivity.class));
                                         finish();
                                     }

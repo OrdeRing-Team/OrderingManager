@@ -171,6 +171,7 @@ public class StoreManageActivity extends AppCompatActivity {
 
             // 서버에 대표메뉴 업로드
             putStoreSigMenu();
+            Toast.makeText(StoreManageActivity.this, "대표메뉴 이미지가 업로드되었습니다.", Toast.LENGTH_SHORT).show();
 
 
         }
@@ -190,6 +191,7 @@ public class StoreManageActivity extends AppCompatActivity {
 
             // 서버에 아이콘 업로드
             putStoreIcon();
+            Toast.makeText(StoreManageActivity.this, "매장 아이콘이 업로드되었습니다.", Toast.LENGTH_SHORT).show();
 
 
         }
