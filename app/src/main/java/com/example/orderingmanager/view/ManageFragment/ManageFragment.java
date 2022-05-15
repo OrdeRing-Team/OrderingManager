@@ -69,10 +69,6 @@ public class ManageFragment extends Fragment {
     }
 
     private void initView() {
-        // 점주용은 닉네임 없애기로 했어! 필요 없을것 같아서 ㅎ ㅎ ㅎ.......
-        // 그래서 별명 자리에 매장명 크게 보이는게 좋을것 같아서 수정했숨당!
-        binding.tvNikname.setText(UserInfo.getRestaurantName());
-
         // 매장명
         binding.tvStoreName.setText(UserInfo.getRestaurantName());
 

@@ -68,7 +68,8 @@
         <entry key="app/src/main/res/drawable-v24/outline_equalizer_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-xxxhdpi/store_custom.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/activity_menu_item.xml" value="0.440625" />
-        <entry key="app/src/main/res/drawable/background_custom_white.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/background_custom_main_color.xml" value="0.159" />
+        <entry key="app/src/main/res/drawable/background_custom_white.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/background_splash.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/bar_chart.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/btn_back.xml" value="0.1" />
@@ -79,6 +80,8 @@
         <entry key="app/src/main/res/drawable/drawable_left_image_customise.xml" value="0.1675925925925926" />
         <entry key="app/src/main/res/drawable/ic_bar_chart.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_close_24_sizeup.xml" value="0.38177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_baseline_people_24.xml" value="0.159" />
+        <entry key="app/src/main/res/drawable/ic_baseline_qr_code_2_24.xml" value="0.159" />
         <entry key="app/src/main/res/drawable/ic_check.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/drawable/ic_menu_list.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/ic_odering_background.xml" value="0.38177083333333334" />

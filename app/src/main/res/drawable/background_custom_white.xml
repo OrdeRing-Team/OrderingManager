@@ -11,6 +11,10 @@
 
                     <solid
                         android:color = "#FFFFFF"/>
+
+                    <stroke
+                        android:width="0.7dp"
+                        android:color="#C1C1C1" />
                 </shape>
             </item>
 
