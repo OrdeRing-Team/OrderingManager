@@ -137,6 +137,9 @@ dependencies {
     // Scalars 변환기 라이브러리
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
 
+    // loading motion
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
 
 
     //twilio SMS 인증

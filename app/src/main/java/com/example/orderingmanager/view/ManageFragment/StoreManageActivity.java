@@ -1,7 +1,9 @@
 package com.example.orderingmanager.view.ManageFragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +30,8 @@ import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityStoreManageBinding;
 import com.example.orderingmanager.view.ViewPagerAdapter;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -60,6 +64,7 @@ public class StoreManageActivity extends AppCompatActivity {
     String storeIconInUserInfo;
     String storeSigInUserInfo;
 
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +73,14 @@ public class StoreManageActivity extends AppCompatActivity {
         binding = ActivityStoreManageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // floating menu add btn setting
         menuAdd();
+
+        // ProgressDialog 생성
+        creatProgress();
 
         // 업로드된 아이콘 및 대표메뉴 이미지 가져오기
         getRestaurantInfo();
-
 
 
         //백버튼 이벤트
@@ -171,9 +179,6 @@ public class StoreManageActivity extends AppCompatActivity {
 
             // 서버에 대표메뉴 업로드
             putStoreSigMenu();
-            Toast.makeText(StoreManageActivity.this, "대표메뉴 이미지가 업로드되었습니다.", Toast.LENGTH_SHORT).show();
-
-
         }
 
         // 매장 아이콘일 경우
@@ -191,11 +196,7 @@ public class StoreManageActivity extends AppCompatActivity {
 
             // 서버에 아이콘 업로드
             putStoreIcon();
-            Toast.makeText(StoreManageActivity.this, "매장 아이콘이 업로드되었습니다.", Toast.LENGTH_SHORT).show();
-
-
         }
-
     }
 
     // bitmap -> file
@@ -222,6 +223,10 @@ public class StoreManageActivity extends AppCompatActivity {
 
     // 서버에 매장 아이콘 저장하는 함수
     private void putStoreIcon() {
+
+        progressDialog.show();
+        progressDialog.setCancelable(false);  // 화면 밖 터치 시 종료되지 않게 설정
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/profile_image/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -238,13 +243,15 @@ public class StoreManageActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResultDto<Boolean>> call, retrofit2.Response<ResultDto<Boolean>> response) {
                 ResultDto<Boolean> result = response.body();
-
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         Log.e("StoreIcon", "is uploaded.");
+                        deleteProgress();
                     }
                 });
+
+
             }
 
             @Override
@@ -258,6 +265,10 @@ public class StoreManageActivity extends AppCompatActivity {
 
     // 서버에 매장 대표 메뉴 이미지 저장하는 함수
     private void putStoreSigMenu() {
+
+        progressDialog.show();
+        progressDialog.setCancelable(false);  // 화면 밖 터치 시 종료되지 않게 설정
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/background_image/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -279,6 +290,7 @@ public class StoreManageActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Log.e("StoreSigMenu", "is uploaded.");
+                        deleteProgress();
 
                     }
                 });
@@ -349,7 +361,6 @@ public class StoreManageActivity extends AppCompatActivity {
                                     }
                                 }
 
-
                             });
 
                         }
@@ -361,5 +372,40 @@ public class StoreManageActivity extends AppCompatActivity {
                     });
     }
 
+    // ProgressDialog 생성
+    public void creatProgress() {
+        progressDialog = new ProgressDialog(this, R.style.SpinKitViewUpload);
+        progressDialog.setMessage("Image Uploading ...");
+        Sprite anim = new ThreeBounce();
+        anim.setColor(Color.rgb(227, 85, 85));
+        progressDialog.setIndeterminateDrawable(anim);
+
+
+        // 취소 버튼
+//        progressDialog.setButton(ProgressDialog.BUTTON_NEGATIVE, "취소",
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Log.e("취소버튼", "클릭됨.");
+//                    }
+//                }
+//        );
+    }
+
+    // ProgressDialog 없애기
+    public void deleteProgress() {
+        // 지연 처리
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                progressDialog.dismiss();
+//                Toast.makeText(StoreManageActivity.this, "업로드되었습니다.", Toast.LENGTH_SHORT).show();
+//            }
+//        },3000);
+
+        progressDialog.dismiss();
+        Toast.makeText(StoreManageActivity.this, "업로드되었습니다.", Toast.LENGTH_SHORT).show();
+
+    }
 
 }
