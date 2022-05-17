@@ -60,8 +60,6 @@ public class FinishFragment extends Fragment {
     Boolean storeInitInfo;
 
     int displayMonth;
-    int selectedRange;
-    int selectedDate;
 
     int startMonth;
     int endMonth;
@@ -109,10 +107,6 @@ public class FinishFragment extends Fragment {
         int nextYear;
         int nextMonth;
 
-//        String date = getDate();
-        //@SuppressLint("SimpleDateFormat") SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM");
-//        long mNow = System.currentTimeMillis();
-//        Date mDate = new Date(mNow);
         LocalDate now = LocalDate.now();
         currentYear = now.getYear();
         nextYear = currentYear;
@@ -130,22 +124,6 @@ public class FinishFragment extends Fragment {
         getSalesRequestFromServer(from2Server, before2Server);
 
         Log.e("start, end", String.valueOf(startMonth) + String.valueOf(endMonth));
-
-//        Log.e("selected", String.valueOf(selectedRange) + String.valueOf(selectedDate));
-//
-//        if ((selectedRange == 0 && selectedDate != 0) || (selectedRange != 0 && selectedDate == 0)) {
-//            Log.e("selectedRange is", "0");
-//            getSalesRequestFromServer(from2Server, before2Server);
-//        }
-//
-//        else {
-//            Log.e("selectedRange is", "not 0");
-//            Log.e("selectedRange Sales is", String.valueOf(startYear) + String.valueOf(startMonth));
-//            String start = String.format("%s-%s", startYear, startMonth < 10 ? "0" + startMonth : startMonth);
-//            String end = String.format("%s-%s", endYear, endMonth < 10 ? "0" + endMonth : endMonth);
-//            getSalesRequestFromServer(start, end);
-//        }
-
 
     }
 
@@ -242,10 +220,6 @@ public class FinishFragment extends Fragment {
         materialCalendarView.setOnRangeSelectedListener(new OnRangeSelectedListener() {
             @Override
             public void onRangeSelected(@NonNull MaterialCalendarView widget, @NonNull List<CalendarDay> dates) {
-
-                selectedRange += 1;
-                selectedDate = 0;
-
                 // 선택한 시작 날짜 ~ 마지막 날짜
                 String startDay = dates.get(0).getDate().toString();
                 String endDay = dates.get(dates.size() - 1).getDate().toString();
@@ -282,10 +256,6 @@ public class FinishFragment extends Fragment {
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
-                selectedRange = 0;
-                selectedDate += 1;
-
                 String selectedDate = date.getDate().toString();
                 int selectedMonth = date.getMonth();
                 int selectedDay = date.getDay();
