@@ -3,8 +3,10 @@ package com.example.orderingmanager.Dto;
 import com.example.orderingmanager.Dto.request.OwnerSignUpDto;
 import com.example.orderingmanager.Dto.request.PasswordChangeDto;
 import com.example.orderingmanager.Dto.request.PhoneNumberDto;
+import com.example.orderingmanager.Dto.request.SalesRequestDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
+import com.example.orderingmanager.Dto.response.DailySalesDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
 import java.util.List;
@@ -86,4 +88,8 @@ public interface RetrofitService {
 	// 회원탈퇴
 	@DELETE("/api/owner/{ownerId}")
 	Call<ResultDto<Boolean>> deleteaccount(@Path("ownerId") Long ownerId);
+
+	// 매장 한달 매출 불러오기
+	@POST("/api/restaurant/{restaurantId}/sales")
+	Call<ResultDto<List<DailySalesDto>>> getSales(@Path("restaurantId") Long restaurant_id, @Body SalesRequestDto salesRequestDto);
 }

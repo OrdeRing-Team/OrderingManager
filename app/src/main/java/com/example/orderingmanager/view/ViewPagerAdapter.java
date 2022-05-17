@@ -25,8 +25,8 @@ public class  ViewPagerAdapter extends FragmentStateAdapter {
         if (num == 0) {
             switch (position) {
                 case 0:
-                    return new MenuManageFragment();
 
+                    return new MenuManageFragment();
 
                 default:
                     return new ReviewManageFragment();

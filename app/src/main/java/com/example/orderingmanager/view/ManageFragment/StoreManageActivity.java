@@ -345,19 +345,19 @@ public class StoreManageActivity extends AppCompatActivity {
                                     UserInfo.setRestaurantSigMenu(result.getData());
 
                                     // 서버에서 아이콘 이미지 값이 Null일 때
-                                    if (UserInfo.getStoreIcon() == null) {
+                                    if (storeIconInUserInfo == null) {
                                         Glide.with(StoreManageActivity.this).load(R.drawable.icon).into(binding.ivStoreIcon);
                                     }
                                     else {
-                                        Glide.with(StoreManageActivity.this).load(UserInfo.getStoreIcon()).into(binding.ivStoreIcon);
+                                        Glide.with(StoreManageActivity.this).load(storeIconInUserInfo).into(binding.ivStoreIcon);
                                     }
 
                                     // 서버에서 대표메뉴 이미지 값이 Null일 때
-                                    if (UserInfo.getSigMenuImg() == null) {
+                                    if (storeSigInUserInfo == null) {
                                         Glide.with(StoreManageActivity.this).load(R.drawable.splash).into(binding.ivSigmenu);
                                     }
                                     else {
-                                        Glide.with(StoreManageActivity.this).load(UserInfo.getSigMenuImg()).into(binding.ivSigmenu);
+                                        Glide.with(StoreManageActivity.this).load(storeSigInUserInfo).into(binding.ivSigmenu);
                                     }
                                 }
 
