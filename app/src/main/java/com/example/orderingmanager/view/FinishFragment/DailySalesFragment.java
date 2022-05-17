@@ -39,8 +39,11 @@ public class DailySalesFragment extends Fragment {
 
         configureChartAppearance(); // BarChart의 기본적인 것들을 세팅해준다
 
+
         return view;
     }
+
+
 
     private void configureChartAppearance() {
 

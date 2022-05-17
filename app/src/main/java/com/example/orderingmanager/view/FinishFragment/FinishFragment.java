@@ -1,18 +1,26 @@
 package com.example.orderingmanager.view.FinishFragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
+import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.RetrofitService;
+import com.example.orderingmanager.Dto.request.SalesRequestDto;
+import com.example.orderingmanager.Dto.response.DailySalesDto;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentFinishBinding;
@@ -25,21 +33,36 @@ import com.prolificinteractive.materialcalendarview.OnRangeSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class FinishFragment extends Fragment {
-
-    // private static MaterialCalendarView materialCalendarView;
-
     private View view;
     private FragmentFinishBinding binding;
     private MaterialCalendarView calendarView;
     public TextView diaryTextView;
     private Button btn_graph;
 
+    String from, before, firstday;
+    ArrayList<String> salesListFinal = new ArrayList<>();
+
     Bundle extra;
 
     Boolean storeInitInfo;
+
+    int displayMonth;
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,7 +70,7 @@ public class FinishFragment extends Fragment {
         view = binding.getRoot();
 
         extra = this.getArguments();
-        if(extra != null) {
+        if (extra != null) {
             extra = getArguments();
 
             /* 이곳에 받아올 데이터를 추가하십셩 */
@@ -58,6 +81,137 @@ public class FinishFragment extends Fragment {
         initButtonClickListener();
         storeInfoCheck();
 
+        displayMonth = LocalDate.now().getMonthValue();
+        initData(LocalDate.now().getMonthValue());
+
+        getDate();
+        // try catch
+        //서버에서 데이터 불러오는 함수 만들어서 arraylist 생성해서 담아주기.
+
+        Log.e("restaurantId", String.valueOf(UserInfo.getRestaurantId()));
+
+        return view;
+    }
+
+    @SuppressLint("DefaultLocale")
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void initData(int currentMonth){
+        int currentYear;
+        //int currentMonth;
+        int nextYear;
+        int nextMonth;
+
+//        String date = getDate();
+        //@SuppressLint("SimpleDateFormat") SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM");
+//        long mNow = System.currentTimeMillis();
+//        Date mDate = new Date(mNow);
+        LocalDate now = LocalDate.now();
+        currentYear = now.getYear();
+        nextYear = currentYear;
+        //currentMonth = now.getMonthValue();
+        currentMonth = displayMonth;
+        nextMonth = currentMonth + 1;
+        if (currentMonth == 12) {
+            nextMonth = 1;
+            nextYear++;
+        }
+
+        String from2Server = String.format("%s-%s", currentYear, currentMonth < 10 ? "0" + currentMonth : currentMonth);
+        String before2Server = String.format("%s-%s", nextYear, nextMonth < 10 ? "0" + nextMonth : nextMonth);
+        getSalesRequestFromServer(from2Server, before2Server);
+
+
+
+    }
+
+    @SuppressLint("DefaultLocale")
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void getSalesRequestFromServer(String from2Server, String before2Server) {
+        ArrayList<String> salesList = new ArrayList<>();
+        // 매장 한달 매출 불러오기
+        try {
+            Log.e("sales1", from2Server + before2Server);
+            SalesRequestDto salesRequestDto = new SalesRequestDto(from2Server, before2Server);
+
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/sales/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<List<DailySalesDto>>> call = service.getSales(UserInfo.getRestaurantId(), salesRequestDto);
+
+                    call.enqueue(new Callback<ResultDto<List<DailySalesDto>>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<List<DailySalesDto>>> call, Response<ResultDto<List<DailySalesDto>>> response) {
+                            ResultDto<List<DailySalesDto>> result = response.body();
+
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    result.getData().forEach(dailySalesDto -> {
+                                        salesList.add(dailySalesDto.getSales());
+                                        Log.e("sales list", String.valueOf(salesList));
+                                    });
+
+                                    int sum = 0;
+                                    for(int i=0; i < salesList.size(); i++) {
+                                        int salesOfInt = Integer.valueOf(salesList.get(i));
+                                        sum += salesOfInt;
+                                    }
+
+                                    salesListFinal = salesList;
+
+                                    LocalDate now = LocalDate.now();
+                                    int currentMonth = now.getMonthValue();
+                                    int currentDay = now.getDayOfMonth();
+                                    Log.e("total date sales", String.valueOf(sum));
+                                    Log.e("currentMonth", String.valueOf(currentMonth));
+                                    Log.e("displayMonth", String.valueOf(displayMonth));
+                                    String selectedSales = salesList.get(currentDay - 1);
+
+                                    if (String.valueOf(currentMonth) == String.valueOf(displayMonth)) {
+                                        Log.e("same", "same");
+                                        binding.diaryTextView.setText(from2Server + "-" + currentDay);
+                                        binding.selectedView.setText(displayMonth + "월 " + currentDay + "일 매출 : " + selectedSales + "원");
+                                        binding.monthView.setText(displayMonth + "월 총 매출 : " + sum + "원");
+                                    }
+
+                                    else {
+                                        Log.e("different", "different");
+                                        binding.diaryTextView.setText(from2Server + "-" + currentDay);
+                                        binding.monthView.setText(displayMonth + "월 총 매출 : " + sum + "원");
+                                    }
+
+
+                                    //binding.monthView.setText(from2Server + "월 총 매출 : " + sum + "원");
+
+
+                                }
+
+
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<List<DailySalesDto>>> call, Throwable t) {
+                            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+        }
+    }
+
+    public void getDate() {
         MaterialCalendarView materialCalendarView = view.findViewById(R.id.calendarView);
         materialCalendarView.setSelectedDate(CalendarDay.today());
 
@@ -78,10 +232,21 @@ public class FinishFragment extends Fragment {
                 int startDate = dates.get(0).getDay();
                 int endDate = dates.get(dates.size() - 1).getDay();
 
+
                 Log.e("DATE", "시작일 : " + startDay + ", 종료일 : " + endDay);
+                from = startDay;
+                before = endDay;
+
+                int sum = 0;
+                for(int i= Integer.valueOf(startDate) - 1; i < Integer.valueOf(endDate); i++) {
+                    int salesOfInt = Integer.valueOf(salesListFinal.get(i));
+                    sum += salesOfInt;
+                }
+
                 binding.diaryTextView.setText(startDay + " ~ " + endDay);
-                binding.selectedView.setText(startMonth+ "월 " + startDate + "일 - " + endMonth + "월 " + endDate + "일 매출 : ");
-                binding.monthView.setText(startMonth + "월 총 매출 : ");
+                binding.selectedView.setText(startMonth + "월 " + startDate + "일 - " + endMonth + "월 " + endDate + "일 매출 : " + sum + "원");
+                //binding.monthView.setText(startMonth + "월 총 매출 : ");
+
             }
         });
 
@@ -92,36 +257,43 @@ public class FinishFragment extends Fragment {
                 int selectedMonth = date.getMonth();
                 int selectedDay = date.getDay();
 
+                firstday = selectedDate;
 
                 Log.e("DATE", selectedDate);
                 binding.diaryTextView.setText(selectedDate);
                 binding.selectedView.setText(selectedMonth + "월 " + selectedDay + "일 매출 : ");
-                binding.monthView.setText(selectedMonth + "월 총 매출 : ");
+                //binding.monthView.setText(selectedMonth + "월 총 매출 : ");
+
+                Log.e("selected date sales", String.valueOf(salesListFinal.get(selectedDay - 1)));
+
+                String selectedSales = salesListFinal.get(selectedDay - 1);
+                binding.selectedView.setText(selectedMonth + "월 " + selectedDay + "일 매출 : " + selectedSales + "원");
+
             }
         });
 
         materialCalendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+
+                displayMonth = date.getMonth();
+                Log.e("select month", String.valueOf(displayMonth));
+                initData(displayMonth);
             }
         });
 
-
-        return view;
     }
 
-
-
-    public void storeInfoCheck(){
+    public void storeInfoCheck() {
         storeInitInfo = UserInfo.getRestaurantId() != null;
-        if(!storeInitInfo){
-            Log.e("FinishFragment",storeInitInfo.toString());
+        if (!storeInitInfo) {
+            Log.e("FinishFragment", storeInitInfo.toString());
             binding.viewErrorLoadStore.errorNotFound.setVisibility(View.VISIBLE);
             binding.finishFragment.setVisibility(View.GONE);
             //binding.refreshImageButton.setOnClickListener(onClickListener);
-        }
-        else{
-            Log.e("FinishFragment",storeInitInfo.toString());
+        } else {
+            Log.e("FinishFragment", storeInitInfo.toString());
             binding.viewErrorLoadStore.errorNotFound.setVisibility(View.GONE);
             binding.finishFragment.setVisibility(View.VISIBLE);
         }
@@ -133,7 +305,7 @@ public class FinishFragment extends Fragment {
         binding = null;
     }
 
-    public void initButtonClickListener(){
+    public void initButtonClickListener() {
         binding.viewErrorLoadStore.btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
