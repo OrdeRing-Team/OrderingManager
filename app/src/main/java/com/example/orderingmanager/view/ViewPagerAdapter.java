@@ -25,7 +25,6 @@ public class  ViewPagerAdapter extends FragmentStateAdapter {
         if (num == 0) {
             switch (position) {
                 case 0:
-
                     return new MenuManageFragment();
 
                 default:
@@ -48,4 +47,6 @@ public class  ViewPagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return count;
     }
+
+    
 }

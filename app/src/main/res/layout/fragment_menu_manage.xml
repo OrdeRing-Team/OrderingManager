@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,18 +7,21 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <com.orderingmanager.NestedScrollableHost
+<!--    <com.orderingmanager.NestedScrollableHost-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rv_menu"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
+
+<!--    </com.orderingmanager.NestedScrollableHost>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_menu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_menu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.orderingmanager.NestedScrollableHost>
+        android:layout_height="match_parent" />
 
 
-
-
-</FrameLayout>
+</RelativeLayout>

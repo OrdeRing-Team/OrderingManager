@@ -19,7 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingmanager.Dto.ResultDto;
@@ -110,21 +109,21 @@ public class StoreManageActivity extends AppCompatActivity {
 
 
         //뷰페이저 세팅
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        ViewPager2 viewPager2 = findViewById(R.id.vp_manage);
         ViewPagerAdapter adapter = new ViewPagerAdapter(this, 0,2);
-        viewPager2.setAdapter(adapter);
+        binding.vpManage.setAdapter(adapter);
 
-        new TabLayoutMediator(tabLayout, viewPager2,
+        new TabLayoutMediator(binding.tabLayout, binding.vpManage,
                 new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                         //tab.setText("Tab" + (position + 1));
-                        if (position == 0) {
-                            tab.setText("메뉴관리");
-                        }
-                        else {
-                            tab.setText("리뷰관리");
+                        switch (position){
+                            case 0:
+                                tab.setText("메뉴관리");
+                                break;
+                            default:
+                                tab.setText("리뷰관리");
+                                break;
                         }
                     }
                 }).attach();
@@ -310,8 +309,7 @@ public class StoreManageActivity extends AppCompatActivity {
         binding.btnMenuAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(StoreManageActivity.this, MenuAddActivity.class));
-                finish();
+
             }
         });
     }
