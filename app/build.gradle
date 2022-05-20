@@ -84,7 +84,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
 
     //RecyclerView
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+     
 
     //swipe
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'

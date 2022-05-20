@@ -309,7 +309,8 @@ public class StoreManageActivity extends AppCompatActivity {
         binding.btnMenuAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(StoreManageActivity.this, MenuAddActivity.class));
+                finish();
             }
         });
     }
@@ -336,25 +337,29 @@ public class StoreManageActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     // 서버에 업로드된 이미지Url을 변수에 저장
-                                    storeIconInUserInfo = String.valueOf(result.getData().getProfileImageUrl());
-                                    storeSigInUserInfo = String.valueOf(result.getData().getBackgroundImageUrl());
-                                    Log.e("getStoreIcon : ", storeIconInUserInfo + "getStoreSig : " + storeSigInUserInfo);
+                                    storeIconInUserInfo = result.getData().getProfileImageUrl();
+                                    storeSigInUserInfo = result.getData().getBackgroundImageUrl();
+                                    Log.e("getStoreIcon", storeIconInUserInfo + "getStoreSig : " + storeSigInUserInfo);
                                     UserInfo.setRestrauntIcon(result.getData());
                                     UserInfo.setRestaurantSigMenu(result.getData());
 
                                     // 서버에서 아이콘 이미지 값이 Null일 때
                                     if (storeIconInUserInfo == null) {
+                                        Log.e("storeIconInServer", "is null" + storeIconInUserInfo);
                                         Glide.with(StoreManageActivity.this).load(R.drawable.icon).into(binding.ivStoreIcon);
                                     }
                                     else {
+                                        Log.e("storeIconInServer", "is not null" + storeIconInUserInfo);
                                         Glide.with(StoreManageActivity.this).load(storeIconInUserInfo).into(binding.ivStoreIcon);
                                     }
 
                                     // 서버에서 대표메뉴 이미지 값이 Null일 때
                                     if (storeSigInUserInfo == null) {
+                                        Log.e("storeSigInServer", "is null" + storeSigInUserInfo);
                                         Glide.with(StoreManageActivity.this).load(R.drawable.splash).into(binding.ivSigmenu);
                                     }
                                     else {
+                                        Log.e("storeSigInServer", "is not null" + storeSigInUserInfo);
                                         Glide.with(StoreManageActivity.this).load(storeSigInUserInfo).into(binding.ivSigmenu);
                                     }
                                 }
@@ -403,7 +408,6 @@ public class StoreManageActivity extends AppCompatActivity {
 
         progressDialog.dismiss();
         Toast.makeText(StoreManageActivity.this, "업로드되었습니다.", Toast.LENGTH_SHORT).show();
-
     }
 
 }
