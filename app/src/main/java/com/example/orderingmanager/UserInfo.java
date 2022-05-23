@@ -23,6 +23,11 @@ public class UserInfo {
     private static FoodCategory foodCategory;
     private static RestaurantType restaurantType;
     private static String userId;
+    private static String userPW;
+
+    private static String storeIcon;
+    private static String sigMenuImg;
+
     // food
     private static Long foodId;
     private static String menuName;
@@ -48,6 +53,14 @@ public class UserInfo {
         restaurantType = dto.getRestaurantType();
     }
 
+    public static void setRestrauntIcon(OwnerSignInResultDto dto) {
+        storeIcon = dto.getProfileImageUrl();
+    }
+
+    public static void setRestaurantSigMenu(OwnerSignInResultDto dto) {
+        sigMenuImg = dto.getBackgroundImageUrl();
+    }
+
     public static void setUserInfo(OwnerSignInResultDto dto){
         ownerId = dto.getOwnerId();
         restaurantId = dto.getRestaurantId();
@@ -56,6 +69,7 @@ public class UserInfo {
     public static void setUserId(String id){
         userId = id;
     }
+    public static void setUserPW(String pw) { userPW = pw; }
 
     public static void setRestaurantId(Long id){
         restaurantId = id;
@@ -71,7 +85,6 @@ public class UserInfo {
 
 
     public static void init(){
-
         ownerId = null;
         restaurantName = null;
         ownerName = null;
@@ -85,6 +98,8 @@ public class UserInfo {
         menuIntro = null;
     }
     public static String getUserId() { return userId; }
+
+    public static String getUserPW() { return userPW; }
 
     public static Long getOwnerId() {
         return ownerId;
@@ -109,6 +124,16 @@ public class UserInfo {
     public static int getTableCount() {
         return tableCount;
     }
+
+    public static String getStoreIcon() {
+        return storeIcon;
+    }
+
+    public static String getSigMenuImg() {
+        return sigMenuImg;
+    }
+
+
 
     public static FoodCategory getFoodCategory() {
         return foodCategory;

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +13,13 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.FoodCategory;
 import com.example.orderingmanager.Dto.request.RestaurantType;
+import com.example.orderingmanager.Dto.request.SignInDto;
+import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentManageBinding;
@@ -24,6 +31,12 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ManageFragment extends Fragment {
 
@@ -48,15 +61,14 @@ public class ManageFragment extends Fragment {
 
         if(UserInfo.getRestaurantId() != null) {
             initView();
+
+
+            getStoreIcon();
         }
         return view;
     }
 
     private void initView() {
-        // 점주용은 닉네임 없애기로 했어! 필요 없을것 같아서 ㅎ ㅎ ㅎ.......
-        // 그래서 별명 자리에 매장명 크게 보이는게 좋을것 같아서 수정했숨당!
-        binding.tvNikname.setText(UserInfo.getRestaurantName());
-
         // 매장명
         binding.tvStoreName.setText(UserInfo.getRestaurantName());
 
@@ -118,7 +130,7 @@ public class ManageFragment extends Fragment {
                 // 이 호출함수는 나중에 돌아오면 MainActivity 의 onActivityResult 함수 에서 받는다.
                 //startActivityForResult(intent,MainActivity.MANAGEFRAGMENT);
             }
-        });
+        });//
 
         binding.viewErrorLoadStore.btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +164,7 @@ public class ManageFragment extends Fragment {
         if(UserInfo.getRestaurantId() != null) {
             initView();
             initQrList();
+            getStoreIcon();
         }
     }
 
@@ -215,7 +228,7 @@ public class ManageFragment extends Fragment {
 
     private Bitmap CreateTableQR(int i){
         String url;
-        url = "http://ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + i;
+        url = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + i;
         try{
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
@@ -228,5 +241,54 @@ public class ManageFragment extends Fragment {
             return bitmap;
         }
     }
+
+    //getRestaurantInfo
+    private void getStoreIcon() {
+
+        SignInDto signInDto = new SignInDto(UserInfo.getUserId(), UserInfo.getUserPW());
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.ordering.ml/api/owner/signin/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RetrofitService service = retrofit.create(RetrofitService.class);
+        Call<ResultDto<OwnerSignInResultDto>> call = service.ownerSignIn(signInDto);
+
+        call.enqueue(new Callback<ResultDto<OwnerSignInResultDto>>() {
+            @Override
+            public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
+                ResultDto<OwnerSignInResultDto> result = response.body();
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 서버에 업로드된 이미지Url을 변수에 저장
+                        String storeIconInUserInfo = result.getData().getProfileImageUrl();
+
+                        if (storeIconInUserInfo == null) {
+                            Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
+                        }
+                        else {
+                            Glide.with(getActivity()).load(storeIconInUserInfo).into(binding.ivStoreIcon);
+                        }
+                    }
+
+
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<ResultDto<OwnerSignInResultDto>> call, Throwable t) {
+                Log.e("e = ", t.getMessage());
+            }
+        });
+
+    }
+
+
+
+
 
 }

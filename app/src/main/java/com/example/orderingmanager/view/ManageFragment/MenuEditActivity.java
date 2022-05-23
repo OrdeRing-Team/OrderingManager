@@ -1,8 +1,5 @@
 package com.example.orderingmanager.view.ManageFragment;
 
-import static com.example.orderingmanager.Util.Utility.showToast;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,39 +9,25 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingmanager.Dto.FoodDto;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
-import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityMenuItemBinding;
 import com.example.orderingmanager.view.BasicActivity;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.firebase.ui.auth.data.model.User;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-import lombok.SneakyThrows;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -136,6 +119,7 @@ public class MenuEditActivity extends BasicActivity {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    Toast.makeText(MenuEditActivity.this, "메뉴 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(MenuEditActivity.this, StoreManageActivity.class));
                                     finish();
                                 }

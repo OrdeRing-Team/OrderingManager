@@ -131,7 +131,7 @@ public class CreateQR extends BasicActivity {
                 @Override
                 public void run(){
                     countNumber += 1;
-                    text = "http://ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + Integer.toString(countNumber);
+                    text = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + Integer.toString(countNumber);
                     try {
                         BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200);
                         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
@@ -164,7 +164,7 @@ public class CreateQR extends BasicActivity {
 
     private void waitForUploading(){
         binding.ivLoading.setVisibility(View.VISIBLE);
-        binding.tvMaintext.setText("QR코드를 서버에 업로드하는 중입니다.");
+        binding.tvMaintext.setText("잠시만 기다려 주세요");
         Glide.with(this).load(R.raw.uploading).into(binding.ivLoading);
         new Handler().postDelayed(new Runnable(){
             @Override
@@ -187,7 +187,7 @@ public class CreateQR extends BasicActivity {
                     showToast(CreateQR.this, "알 수 없는 오류가 발생했습니다.");
                 }
             }
-        },5000);
+        },3000);
     }
 
     private void updateProgress(){

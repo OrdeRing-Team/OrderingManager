@@ -60,7 +60,7 @@ public class QrFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        extra = this.getArguments();
+
         if(extra != null) {
             extra = getArguments();
         }
@@ -209,6 +209,7 @@ public class QrFragment extends Fragment {
         if(!storeInitInfo){
             Log.e("qrFragment",storeInitInfo.toString());
             binding.viewErrorLoadStore.errorNotFound.setVisibility(View.VISIBLE);
+            binding.btnDownloadQr.setVisibility(View.GONE);
             //binding.refreshImageButton.setOnClickListener(onClickListener);
         }
         else{

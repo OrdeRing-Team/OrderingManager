@@ -27,7 +27,6 @@ public class  ViewPagerAdapter extends FragmentStateAdapter {
                 case 0:
                     return new MenuManageFragment();
 
-
                 default:
                     return new ReviewManageFragment();
             }
@@ -48,4 +47,6 @@ public class  ViewPagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return count;
     }
+
+    
 }

@@ -84,7 +84,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
 
     //RecyclerView
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+     
 
     //swipe
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
@@ -101,6 +101,7 @@ dependencies {
 
     // Circle ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.mikhaellopez:circularimageview:4.3.0'
 
     // 임시
     implementation 'com.loopeer.library:cardstack:1.0.2'
@@ -135,6 +136,10 @@ dependencies {
 
     // Scalars 변환기 라이브러리
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+
+    // loading motion
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
 
 
 

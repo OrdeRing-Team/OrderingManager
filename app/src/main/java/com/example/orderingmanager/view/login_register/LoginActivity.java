@@ -121,13 +121,14 @@ public class LoginActivity extends BasicActivity {
 
                                             if (result.getData().getRestaurantId() == null) {
                                                 // 매장정보입력이 안되어 있을때
-                                                Log.e("getOwnerId : ", result.getData().getOwnerId().toString());
+                                                Log.e("getUserId : ", result.getData().getOwnerId().toString());
                                                 Log.e("getRestaurantId : ", result.getData().getRestaurantId() != null ? result.getData().getRestaurantId().toString() : "null");
 
                                                 //intent.putExtra("restaurantId", false);
                                             } else {
                                                 // 매장정보입력이 완료된 상태
                                                 UserInfo.setRestaurantInfo(result.getData());
+
                                             }
                                             // 자동로그인 여부
                                             if (binding.cbAutologin.isChecked()) {
@@ -141,6 +142,7 @@ public class LoginActivity extends BasicActivity {
                                                 autoLoginEdit.commit();
                                             }
                                             UserInfo.setUserId(memberId);
+                                            UserInfo.setUserPW(password);
                                             startActivity(intent);
                                             finish();
                                         }

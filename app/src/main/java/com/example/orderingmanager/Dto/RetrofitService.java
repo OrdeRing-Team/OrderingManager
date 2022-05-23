@@ -6,6 +6,7 @@ import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.request.SalesRequestDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
+import com.example.orderingmanager.Dto.response.DailySalesDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 import com.example.orderingmanager.Dto.response.SalesResponseDto;
 
@@ -47,6 +48,17 @@ public interface RetrofitService {
 	@PUT("/api/owner/{owner_id}/phone_number")
 	Call<ResultDto<Boolean>> reverify(@Path("owner_id") Long ownerId, @Body PhoneNumberDto phoneNumberDto);
 
+	// 매장 아이콘 변경
+	@Multipart
+	@PUT("/api/restaurant/{restaurant_id}/profile_image")
+	Call<ResultDto<Boolean>> putStoreIcon(@Path("restaurant_id") Long restaurantId, @Part MultipartBody.Part file);
+
+
+	// 매장 대표 메뉴 변경
+	@Multipart
+	@PUT("/api/restaurant/{restaurant_id}/background_image")
+	Call<ResultDto<Boolean>> putStoreSigMenu(@Path("restaurant_id") Long restaurantId, @Part MultipartBody.Part file);
+
 	// 메뉴 추가
    	@Multipart
    	@POST("/api/restaurant/{restaurantId}/food")
@@ -70,13 +82,17 @@ public interface RetrofitService {
 	@POST("/api/restaurant/{restaurantId}/foods")
 	Call<ResultDto<List<FoodDto>>> getFood(@Path("restaurantId") Long restaurantId);
 
-	// 서버 내 데이터 삭제
+	// 서버 내 메뉴 데이터 삭제
 	@DELETE("/api/restaurant/food/{foodId}")
 	Call<ResultDto<Boolean>> deleteFood(@Path("foodId") Long foodId);
 
 	// 회원탈퇴
 	@DELETE("/api/owner/{ownerId}")
 	Call<ResultDto<Boolean>> deleteaccount(@Path("ownerId") Long ownerId);
+
+	// 매장 한달 매출 불러오기
+	@POST("/api/restaurant/{restaurantId}/sales")
+	Call<ResultDto<List<DailySalesDto>>> getSales(@Path("restaurantId") Long restaurant_id, @Body SalesRequestDto salesRequestDto);
 
 	// 매장 특정 달의 일별 매출 불러오기
 	@POST("/api/restaurant/{restaurantId}/daily_sales")

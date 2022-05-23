@@ -24,9 +24,6 @@ public class QrCardViewAdapter extends RecyclerView.Adapter<QrCardViewAdapter.Cu
     Context context;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-        //        adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
-        //        itemView를 저장하는 custom viewHolder 생성
-        //        findViewById & 각종 event 작업
         TextView tvTableNum, tvTable, tvTitle, tvSecondary, tvSupport;
         ImageView ivQrImage;
         Button btnPreview;
@@ -34,7 +31,6 @@ public class QrCardViewAdapter extends RecyclerView.Adapter<QrCardViewAdapter.Cu
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
-            //item 에 대한 클릭 이벤트 설정
             ivQrImage = itemView.findViewById(R.id.iv_qrcode_cardview);
             tvTableNum = itemView.findViewById(R.id.tv_tableNum);
             tvTable = itemView.findViewById(R.id.tv_table);
@@ -47,12 +43,10 @@ public class QrCardViewAdapter extends RecyclerView.Adapter<QrCardViewAdapter.Cu
     }
 
     public QrCardViewAdapter(ArrayList<Bitmap> arrayList) {
-//        adapter constructor
         this.arrayList = arrayList;
     }
 
     public QrCardViewAdapter(ArrayList<Bitmap> arrayList, Context context) {
-//        adapter constructor for needing context part
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -60,8 +54,6 @@ public class QrCardViewAdapter extends RecyclerView.Adapter<QrCardViewAdapter.Cu
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        onCreateViewHolder: make xml as an object using LayoutInflater & create viewHolder with the object
-//        layoutInflater로 xml객체화. viewHolder 생성.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_qr_cardview, parent, false);
         return new CustomViewHolder(view);
     }
@@ -69,9 +61,6 @@ public class QrCardViewAdapter extends RecyclerView.Adapter<QrCardViewAdapter.Cu
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-//        onBindViewHolder: put data of item list into xml widgets
-//        xml의 위젯과 데이터를 묶는(연결하는, setting하는) 작업.
-//        position에 해당하는 data, viewHolder의 itemView에 표시함
         holder.ivQrImage.setImageBitmap(QrList.getQrBitmap(position+2));
         holder.tvTitle.setTextSize(14);
         holder.tvTitle.setText("테이블QR");

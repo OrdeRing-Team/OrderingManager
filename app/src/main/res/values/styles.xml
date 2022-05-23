@@ -24,4 +24,10 @@
         <item name="colorSecondaryContainer" >@color/light_main</item>
         <item name="colorPrimaryContainer">@color/light_main</item>
     </style>
+
+    <style name="SpinKitViewUpload" parent="Theme.AppCompat.Dialog">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">#808080</item>
+    </style>
+
 </resources>

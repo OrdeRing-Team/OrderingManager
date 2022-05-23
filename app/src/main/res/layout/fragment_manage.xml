@@ -8,370 +8,167 @@
     tools:context=".view.ManageFragment.ManageFragment">
 
     <!-- 매장정보입력 안 되어 있을 경우 -->
+    <include
+        android:id="@+id/view_error_load_store"
+        layout="@layout/view_error_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!-- 매장정보입력 되어 있을 경우 -->
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/manageFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/manageFragment">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="visible">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/extra_light_gray"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
 
                 <TextView
                     android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="13dp"
                     android:fontFamily="@font/baeminjua"
                     android:text="OrdeRing"
                     android:textColor="@color/main"
                     android:textSize="34sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <ImageButton
+                    android:id="@+id/btn_info"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_baseline_account_circle_24"
+                    android:backgroundTint="@color/main"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="17dp"
+                android:orientation="vertical"
+                android:background="@drawable/background_custom_white">
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="210dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/background_custom_white">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                    <!-- 오른쪽 정렬을 위한 View -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-                        <!-- 오른쪽 정렬을 위한 View -->
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <Button
-                        android:id="@+id/btn_info"
+                    <Button
+                        android:id="@+id/btn_manage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="개인정보수정 >"
+                        android:text="메뉴관리 >"
                         android:textColor="@color/text_gray"
-                        android:layout_marginRight="10dp"
                         android:background="@color/fui_transparent"/>
 
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="20dp"/>
-
-                    <TextView
-                        android:id="@+id/tv_nikname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="매장명"
-                        android:fontFamily="@font/baeminjua"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="18dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp" />
-
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="270dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/background_custom_white">
+                    android:layout_gravity="center">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginBottom="30dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="매장장보"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="18dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:layout_weight="1"/>
-
-                        <Button
-                            android:id="@+id/btn_store_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:text="매장정보수정 >"
-                            android:textColor="@color/text_gray"
-                            android:background="@color/fui_transparent"/>
-
-                    </LinearLayout>
-
-                    <include
-                        android:id="@+id/view_error_load_store"
-                        layout="@layout/view_error_page"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="gone"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="매장명 / 상호명 :"
-                            android:textColor="@color/black"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_storeName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="매장명 텍스트"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"
-                            android:textColor="@color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="사업자명 : "
-                            android:textColor="@color/black"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="사업자명 텍스트"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"
-                            android:textColor="@color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="매장 종류 :"
-                            android:textColor="@color/black"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_mealMethod"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="매장 종류 텍스트"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"
-                            android:textColor="@color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="음식 카테고리 :"
-                            android:textColor="@color/black"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_category"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="음식 카테고리 텍스트"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"
-                            android:textColor="@color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="7dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="매장 주소 :"
-                            android:textColor="@color/black"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="매장 주소 텍스트"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="20dp"
-                            android:textColor="@color/black"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="210dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/background_custom_white">
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <!-- 오른쪽 정렬을 위한 View -->
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:id="@+id/btn_manage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="메뉴관리 >"
-                            android:textColor="@color/text_gray"
-                            android:background="@color/fui_transparent"/>
-
-                    </LinearLayout>
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/iv_storeIcon"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/menumanage1_custom"
+                        android:layout_gravity="center"
+                        app:civ_shadow="true"
+                        app:civ_border="false"
+                        app:civ_shadow_radius="5dp"
+                        app:civ_shadow_color="#C1C1C1"
+                        android:layout_margin="5dp"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:layout_marginTop="25dp">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@mipmap/ic_launcher"
-                            android:layout_gravity="center" />
+                        android:layout_marginTop="15dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:layout_marginLeft="40dp">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="10dp">
 
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_weight="1">
+                                android:text="최근 리뷰 :"
+                                android:textColor="@color/black"
+                                android:textSize="15dp"
+                                android:layout_gravity="center" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="최근 리뷰 :"
-                                    android:textColor="@color/black"
-                                    android:textSize="15dp"
-                                    android:layout_gravity="center" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="리뷰 개수"
-                                    android:textColor="@color/black"
-                                    android:textSize="15dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
+                            <TextView
+                                android:id="@+id/tv_review_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_weight="1">
+                                android:text="리뷰 개수"
+                                android:textColor="@color/black"
+                                android:textSize="15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10dp"/>
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="평점 :"
-                                    android:textColor="@color/black"
-                                    android:textSize="15dp"
-                                    android:layout_gravity="center" />
+                        </LinearLayout>
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="별"
-                                    android:textColor="@color/black"
-                                    android:textSize="15dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
 
-                            </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="평점 :"
+                                android:textColor="@color/black"
+                                android:textSize="15dp"
+                                android:layout_gravity="center" />
+
+                            <TextView
+                                android:id="@+id/tv_rating_star"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="별"
+                                android:textColor="@color/black"
+                                android:textSize="15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10dp"/>
 
                         </LinearLayout>
 
@@ -381,6 +178,182 @@
 
             </LinearLayout>
 
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical"
+                android:background="@drawable/background_custom_white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="매장장보"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="18dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"/>
+
+                    <Button
+                        android:id="@+id/btn_store_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="매장정보수정 >"
+                        android:textColor="@color/text_gray"
+                        android:background="@color/fui_transparent"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="매장명 / 상호명 :"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_storeName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="매장명 텍스트"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="사업자명 : "
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="사업자명 텍스트"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="매장 종류 :"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_mealMethod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="매장 종류 텍스트"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="음식 카테고리 :"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="음식 카테고리 텍스트"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="7dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="매장 주소 :"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="매장 주소 텍스트"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
         </LinearLayout>
-    </ScrollView>
+
+    </LinearLayout>
+
 </FrameLayout>
