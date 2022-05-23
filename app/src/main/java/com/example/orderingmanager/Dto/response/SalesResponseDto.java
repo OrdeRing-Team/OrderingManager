@@ -9,12 +9,13 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access =PROTECTED)
-public class DailySalesDto {
+@NoArgsConstructor(access = PROTECTED)
+public class SalesResponseDto {
+
     private String sales;
 
-//    public String getSales() {
-//        return sales;
-//    }
+    public String getSales() {
+        return sales;
+    }
 
 }

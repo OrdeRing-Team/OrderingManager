@@ -21,6 +21,7 @@ import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.SalesRequestDto;
 import com.example.orderingmanager.Dto.response.DailySalesDto;
+import com.example.orderingmanager.Dto.response.SalesResponseDto;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentFinishBinding;
@@ -33,10 +34,8 @@ import com.prolificinteractive.materialcalendarview.OnRangeSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import lombok.SneakyThrows;
@@ -88,6 +87,8 @@ public class FinishFragment extends Fragment {
         // try catch
         //서버에서 데이터 불러오는 함수 만들어서 arraylist 생성해서 담아주기.
 
+
+
         Log.e("restaurantId", String.valueOf(UserInfo.getRestaurantId()));
 
         return view;
@@ -117,43 +118,42 @@ public class FinishFragment extends Fragment {
         }
 
         String from2Server = String.format("%s-%s", currentYear, currentMonth < 10 ? "0" + currentMonth : currentMonth);
-        String before2Server = String.format("%s-%s", nextYear, nextMonth < 10 ? "0" + nextMonth : nextMonth);
-        getSalesRequestFromServer(from2Server, before2Server);
-
-
-
+        //String before2Server = String.format("%s-%s", nextYear, nextMonth < 10 ? "0" + nextMonth : nextMonth);
+        getSalesRequestFromServer(from2Server);
     }
+
+
 
     @SuppressLint("DefaultLocale")
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void getSalesRequestFromServer(String from2Server, String before2Server) {
+    public void getSalesRequestFromServer(String from2Server) {
         ArrayList<String> salesList = new ArrayList<>();
         // 매장 한달 매출 불러오기
         try {
-            Log.e("sales1", from2Server + before2Server);
-            SalesRequestDto salesRequestDto = new SalesRequestDto(from2Server, before2Server);
+            Log.e("sales1", from2Server);
+            SalesRequestDto salesRequestDto = new SalesRequestDto(from2Server);
 
             new Thread() {
                 @SneakyThrows
                 public void run() {
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/sales/")
+                            .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/daily_sales/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<List<DailySalesDto>>> call = service.getSales(UserInfo.getRestaurantId(), salesRequestDto);
+                    Call<ResultDto<List<SalesResponseDto>>> call = service.getSales(UserInfo.getRestaurantId(), salesRequestDto);
 
-                    call.enqueue(new Callback<ResultDto<List<DailySalesDto>>>() {
+                    call.enqueue(new Callback<ResultDto<List<SalesResponseDto>>>() {
                         @Override
-                        public void onResponse(Call<ResultDto<List<DailySalesDto>>> call, Response<ResultDto<List<DailySalesDto>>> response) {
-                            ResultDto<List<DailySalesDto>> result = response.body();
+                        public void onResponse(Call<ResultDto<List<SalesResponseDto>>> call, Response<ResultDto<List<SalesResponseDto>>> response) {
+                            ResultDto<List<SalesResponseDto>> result = response.body();
 
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    result.getData().forEach(dailySalesDto -> {
-                                        salesList.add(dailySalesDto.getSales());
+                                    result.getData().forEach(SalesResponseDto -> {
+                                        salesList.add(SalesResponseDto.getSales());
                                         Log.e("sales list", String.valueOf(salesList));
                                     });
 
@@ -189,18 +189,16 @@ public class FinishFragment extends Fragment {
 
                                     //binding.monthView.setText(from2Server + "월 총 매출 : " + sum + "원");
 
-
                                 }
-
-
                             });
                         }
 
                         @Override
-                        public void onFailure(Call<ResultDto<List<DailySalesDto>>> call, Throwable t) {
+                        public void onFailure(Call<ResultDto<List<SalesResponseDto>>> call, Throwable t) {
                             Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
                         }
+
                     });
                 }
             }.start();
@@ -220,6 +218,7 @@ public class FinishFragment extends Fragment {
         materialCalendarView.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
 
         materialCalendarView.setOnRangeSelectedListener(new OnRangeSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onRangeSelected(@NonNull MaterialCalendarView widget, @NonNull List<CalendarDay> dates) {
                 // 선택한 시작 날짜 ~ 마지막 날짜
@@ -243,8 +242,21 @@ public class FinishFragment extends Fragment {
                     sum += salesOfInt;
                 }
 
+                LocalDate now = LocalDate.now();
+                int currentMonth = now.getMonthValue();
+
+                Log.e("current", String.valueOf(currentMonth));
+                Log.e("display", String.valueOf(displayMonth));
+
+                if (String.valueOf(startMonth) != String.valueOf(endMonth)) {
+                    Log.e("month changed", "month changed");
+                    binding.selectedView.setText("기간 매출은 동일 달 안에서만 확인 가능합니다.");
+                }
+                else {
+                    binding.selectedView.setText(startMonth + "월 " + startDate + "일 - " + endMonth + "월 " + endDate + "일 매출 : " + sum + "원");
+                }
+
                 binding.diaryTextView.setText(startDay + " ~ " + endDay);
-                binding.selectedView.setText(startMonth + "월 " + startDate + "일 - " + endMonth + "월 " + endDate + "일 매출 : " + sum + "원");
                 //binding.monthView.setText(startMonth + "월 총 매출 : ");
 
             }
@@ -279,7 +291,10 @@ public class FinishFragment extends Fragment {
 
                 displayMonth = date.getMonth();
                 Log.e("select month", String.valueOf(displayMonth));
+
                 initData(displayMonth);
+
+
             }
         });
 

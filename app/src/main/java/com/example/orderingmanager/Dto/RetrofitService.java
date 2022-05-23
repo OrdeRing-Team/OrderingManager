@@ -6,8 +6,8 @@ import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.request.SalesRequestDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
-import com.example.orderingmanager.Dto.response.DailySalesDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
+import com.example.orderingmanager.Dto.response.SalesResponseDto;
 
 import java.util.List;
 
@@ -78,7 +78,10 @@ public interface RetrofitService {
 	@DELETE("/api/owner/{ownerId}")
 	Call<ResultDto<Boolean>> deleteaccount(@Path("ownerId") Long ownerId);
 
-	// 매장 한달 매출 불러오기
-	@POST("/api/restaurant/{restaurantId}/sales")
-	Call<ResultDto<List<DailySalesDto>>> getSales(@Path("restaurantId") Long restaurant_id, @Body SalesRequestDto salesRequestDto);
+	// 매장 특정 달의 일별 매출 불러오기
+	@POST("/api/restaurant/{restaurantId}/daily_sales")
+	Call<ResultDto<List<SalesResponseDto>>> getSales(@Path("restaurantId") Long restaurantId, @Body SalesRequestDto salesRequestDto);
+
+
+
 }
