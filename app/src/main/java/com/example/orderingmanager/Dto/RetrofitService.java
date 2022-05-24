@@ -91,12 +91,12 @@ public interface RetrofitService {
 	Call<ResultDto<Boolean>> deleteaccount(@Path("ownerId") Long ownerId);
 
 	// 매장 한달 매출 불러오기
-	@POST("/api/restaurant/{restaurantId}/sales")
-	Call<ResultDto<List<DailySalesDto>>> getSales(@Path("restaurantId") Long restaurant_id, @Body SalesRequestDto salesRequestDto);
+	@POST("/api/restaurant/{restaurantId}/monthly_sales")
+	Call<ResultDto<List<SalesResponseDto>>> getSalesMontly(@Path("restaurantId") Long restaurant_id, @Body SalesRequestDto salesRequestDto);
 
 	// 매장 특정 달의 일별 매출 불러오기
 	@POST("/api/restaurant/{restaurantId}/daily_sales")
-	Call<ResultDto<List<SalesResponseDto>>> getSales(@Path("restaurantId") Long restaurantId, @Body SalesRequestDto salesRequestDto);
+	Call<ResultDto<List<SalesResponseDto>>> getSalesDaily(@Path("restaurantId") Long restaurantId, @Body SalesRequestDto salesRequestDto);
 
 
 

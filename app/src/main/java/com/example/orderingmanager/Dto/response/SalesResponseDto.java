@@ -17,5 +17,9 @@ public class SalesResponseDto {
     public String getSales() {
         return sales;
     }
+    public String setSales(String sales){
+        this.sales = sales;
+        return sales;
+    }
 
 }

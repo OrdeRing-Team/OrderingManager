@@ -142,7 +142,7 @@ public class FinishFragment extends Fragment {
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<List<SalesResponseDto>>> call = service.getSales(UserInfo.getRestaurantId(), salesRequestDto);
+                    Call<ResultDto<List<SalesResponseDto>>> call = service.getSalesDaily(UserInfo.getRestaurantId(), salesRequestDto);
 
                     call.enqueue(new Callback<ResultDto<List<SalesResponseDto>>>() {
                         @Override

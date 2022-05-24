@@ -139,8 +139,6 @@
         <entry key="app/src/main/res/layout/fragment_monthly_sales.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_order.xml" value="0.23324275362318841" />
         <entry key="app/src/main/res/layout/fragment_qr.xml" value="0.17300724637681159" />
-        <entry key="app/src/main/res/layout/fragment_qr_table.xml" value="0.19934143870314083" />
-        <entry key="app/src/main/res/layout/fragment_qr_takeout.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_review_manage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_reviewmanage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/item_list.xml" value="0.25" />
