@@ -59,7 +59,6 @@ public class LoginActivity extends BasicActivity {
         }
 
         initButtonClickListener();
-
     }
 
     private void initButtonClickListener() {

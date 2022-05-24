@@ -5,31 +5,45 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.RetrofitService;
+import com.example.orderingmanager.Dto.request.SalesRequestDto;
+import com.example.orderingmanager.Dto.response.DailySalesDto;
+import com.example.orderingmanager.Dto.response.SalesResponseDto;
 import com.example.orderingmanager.R;
+import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentDailySalesBinding;
-import com.example.orderingmanager.databinding.FragmentMonthlySalesBinding;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DailySalesFragment extends Fragment {
 
     private View view;
     private FragmentDailySalesBinding binding;
+    ArrayList<String> salesListFinal;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,10 +51,12 @@ public class DailySalesFragment extends Fragment {
         binding = FragmentDailySalesBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+        //getSalesRequestFromServer("2022-05","2022-06");
         configureChartAppearance(); // BarChart의 기본적인 것들을 세팅해준다
 
         return view;
     }
+
 
     private void configureChartAppearance() {
 
@@ -59,68 +75,98 @@ public class DailySalesFragment extends Fragment {
                 Color.rgb(105, 141, 203),
                 Color.rgb(105, 174, 203)};
 
-        //샘플 데이터
-        ArrayList<BarEntry> sales = new ArrayList<>();
-        sales.add(new BarEntry(1, 10000));
-        sales.add(new BarEntry(2, 20000));
-        sales.add(new BarEntry(3, 30000));
-        sales.add(new BarEntry(4, 40000));
-        sales.add(new BarEntry(5, 50000));
-        sales.add(new BarEntry(6, 60000));
-        sales.add(new BarEntry(7, 40000));
-        sales.add(new BarEntry(8, 50000));
-        sales.add(new BarEntry(9, 60000));
+        ArrayList<String> salesList = new ArrayList<>();
+        // 매장 한달 매출 불러오기
+        try {
+            //Log.e("sales1", from2Server + before2Server);
+            SalesRequestDto salesRequestDto = new SalesRequestDto("2022-05");
 
-        sales.add(new BarEntry(10, 50000));
-        sales.add(new BarEntry(11, 40000));
-        sales.add(new BarEntry(12, 30000));
-        sales.add(new BarEntry(13, 40000));
-        sales.add(new BarEntry(14, 50000));
-        sales.add(new BarEntry(15, 60000));
-        sales.add(new BarEntry(16, 40000));
-        sales.add(new BarEntry(17, 50000));
-        sales.add(new BarEntry(18, 60000));
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/sales/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
 
-        sales.add(new BarEntry(19, 10000));
-        sales.add(new BarEntry(20, 20000));
-        sales.add(new BarEntry(21, 30000));
-        sales.add(new BarEntry(22, 40000));
-        sales.add(new BarEntry(23, 50000));
-        sales.add(new BarEntry(24, 60000));
-        sales.add(new BarEntry(25, 40000));
-        sales.add(new BarEntry(26, 50000));
-        sales.add(new BarEntry(27, 60000));
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<List<SalesResponseDto>>> call = service.getSales(UserInfo.getRestaurantId(), salesRequestDto);
 
+                    call.enqueue(new Callback<ResultDto<List<SalesResponseDto>>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<List<SalesResponseDto>>> call, Response<ResultDto<List<SalesResponseDto>>> response) {
+                            ResultDto<List<SalesResponseDto>> result = response.body();
 
-        BarDataSet barDataSet = new BarDataSet(sales, "일별 매출");
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    result.getData().forEach(SalesResponseDto -> {
+                                        salesList.add(SalesResponseDto.getSales());
+                                        Log.e("sales list", String.valueOf(salesList));
+                                    });
 
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+//                                    ArrayList<String> xLabel = new ArrayList<>();
+//                                    for (int i = 0; i < salesList.size(); i++) {
+//                                        xLabel.add(String.valueOf(i));
+//                                        Log.e("xLabel", String.valueOf(xLabel));
+//                                    }
 
-        barDataSet.setDrawValues(false); //그래프 텍스트 없애기
-        barChart.setDrawValueAboveBar(false); //입력값이 차트 위or아래에 그려질건지 (true=위, false=아래)
-        barChart.setPinchZoom(false); //줌 설정
-        barChart.getLegend().setEnabled(false); // Legend는 차트의 범례
-        // barChart.setExtraOffsets(10f, 0f, 40f, 0f);
-
-
-        BarData barData = new BarData(barDataSet);
-        barDataSet.setColors(colorArray);
-
-        barChart.setFitBars(true);
-        barChart.setData(barData);
-        barChart.getDescription().setEnabled(false); // chart 밑에 description 표시 유무
-        barChart.animateY(2000);
-        barChart.setTouchEnabled(false); // 터치 유무
-        barChart.setVisibleXRangeMaximum(31); //최대 x좌표 기준으로 몇개를 보여줄 것인지
+                                    ArrayList<BarEntry> entries = new ArrayList<>();
+                                    //fit the data into a bar
+                                    for (int i = 1; i < salesList.size(); i++) {
+                                        entries.add(new BarEntry(i, Integer.valueOf(salesList.get(i))));
+                                        Log.e("entries", String.valueOf(entries));
+                                    }
 
 
+                                    BarDataSet barDataSet = new BarDataSet(entries, "일별 매출"); // 변수로 받아서 넣어줘도 됨
+                                    BarData data = new BarData(barDataSet); // 라이브러리 v3.x 사용하면 에러 발생함
 
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(11f);
-        xAxis.setDrawGridLines(false);
-        xAxis.setLabelCount(31, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+                                    barChart.setData(data);
+                                    barChart.invalidate();
+
+                                    barDataSet.setDrawValues(false); //그래프 텍스트 없애기
+                                    barChart.setDrawValueAboveBar(false); //입력값이 차트 위or아래에 그려질건지 (true=위, false=아래)
+                                    barChart.setPinchZoom(false); //줌 설정
+                                    barChart.getLegend().setEnabled(false); // Legend는 차트의 범례
+
+                                    barDataSet.setColors(colorArray);
+//
+                                    barChart.setFitBars(true);
+                                    barChart.getDescription().setEnabled(false); // chart 밑에 description 표시 유무
+                                    barChart.animateY(2000);
+                                    barChart.setTouchEnabled(false); // 터치 유무
+                                    barChart.setVisibleXRangeMaximum(salesList.size()); //최대 x좌표 기준으로 몇개를 보여줄 것인지
+
+                                    XAxis xAxis = barChart.getXAxis();
+                                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                                    xAxis.setDrawGridLines(false);
+                                    xAxis.setLabelCount(40); // x축 레이블 표시 개수
+
+                                    YAxis yAxis = barChart.getAxisLeft(); // y축 왼쪽
+                                    yAxis.setDrawGridLines(true);
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<List<SalesResponseDto>>> call, Throwable t) {
+                            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+        }
+
+
 
     }
 
 }
+

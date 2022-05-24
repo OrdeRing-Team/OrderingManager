@@ -71,37 +71,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab_layout_sales" />
 
-<!--    &lt;!&ndash;스크롤뷰 안에는 오직 1개의 View만 추가가 가능함&ndash;&gt;-->
-<!--    &lt;!&ndash;여러개를 추가하려면 안에 Layout같은 ViewGroup을 놓고 그 안에 View들을 추가해야함&ndash;&gt;-->
-<!--    <HorizontalScrollView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/toolbar"-->
-<!--        tools:ignore="MissingConstraints">-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="50dp"-->
-<!--            android:orientation="horizontal">-->
-
-
-<!--            <com.github.mikephil.charting.charts.BarChart-->
-<!--                android:id="@+id/barChart"-->
-<!--                android:layout_width="800dp"-->
-<!--                android:layout_height="500dp"-->
-<!--                android:layout_marginStart="5dp"-->
-<!--                android:layout_marginEnd="5dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.495"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintVertical_bias="0.471" />-->
-
-<!--        </LinearLayout>-->
-
-<!--    </HorizontalScrollView>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
