@@ -96,11 +96,9 @@ public class WaitingCallDialog extends DialogFragment {
         binding.tvCustomerPhoneNum.setText(waitingPhoneNum);
         binding.tvWaitingTime.setText(waitingTime + " 분");
 
-        //waitingTime = binding.tv.getText().toString();
-
     }
 
-    // 웨이팅 취소하기
+    // 웨이팅 내역 지우기 -> 웨이팅 호출 후 서버에서 삭제해야하기 떄문.
     private void deleteData() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.ordering.ml/api/waiting/" + UserInfo.getWaitingId() + "/")
@@ -120,7 +118,7 @@ public class WaitingCallDialog extends DialogFragment {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(), "웨이팅이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "웨이팅 고객에게 호출을 보냈어요! (해당 웨이팅 정보가 삭제되었어요.)", Toast.LENGTH_SHORT).show();
                         dismiss();
 
                         //뷰페이저 재세팅
