@@ -6,10 +6,9 @@ import com.example.orderingmanager.Dto.request.PhoneNumberDto;
 import com.example.orderingmanager.Dto.request.SalesRequestDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
-import com.example.orderingmanager.Dto.request.WaitingTimeDto;
 import com.example.orderingmanager.Dto.response.DailySalesDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
-import com.example.orderingmanager.Dto.response.WaitingPreviewDto;
+import com.example.orderingmanager.Dto.response.SalesResponseDto;
 
 import java.util.List;
 
@@ -92,18 +91,13 @@ public interface RetrofitService {
 	Call<ResultDto<Boolean>> deleteaccount(@Path("ownerId") Long ownerId);
 
 	// 매장 한달 매출 불러오기
-	@POST("/api/restaurant/{restaurantId}/sales")
-	Call<ResultDto<List<DailySalesDto>>> getSales(@Path("restaurantId") Long restaurant_id, @Body SalesRequestDto salesRequestDto);
+	@POST("/api/restaurant/{restaurantId}/monthly_sales")
+	Call<ResultDto<List<SalesResponseDto>>> getSalesMontly(@Path("restaurantId") Long restaurant_id, @Body SalesRequestDto salesRequestDto);
 
-	// 웨이팅 요청 리스트 불러오기
-	@POST("/api/restaurant/{restaurant_id}/waitings")
-	Call<ResultDto<List<WaitingPreviewDto>>> getWaitingList(@Path("restaurant_id") Long restaurant_id);
+	// 매장 특정 달의 일별 매출 불러오기
+	@POST("/api/restaurant/{restaurantId}/daily_sales")
+	Call<ResultDto<List<SalesResponseDto>>> getSalesDaily(@Path("restaurantId") Long restaurantId, @Body SalesRequestDto salesRequestDto);
 
-	// 웨이팅 취소
-	@DELETE("/api/waiting/{waiting_id}")
-	Call<ResultDto<Boolean>> deleteWaiting(@Path("waiting_id") Long waiting_id);
 
-	// 웨이팅 시간 설정
-	@PUT("/api/restaurant/{restaurant_id}/admission_waiting_time")
-	Call<ResultDto<Boolean>> setWaitingTime(@Path("restaurant_id") Long restaurant_id, @Body WaitingTimeDto waitingTimeDto);
+
 }
