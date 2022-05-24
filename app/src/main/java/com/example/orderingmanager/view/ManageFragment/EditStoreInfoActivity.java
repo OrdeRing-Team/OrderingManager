@@ -348,7 +348,7 @@ public class EditStoreInfoActivity extends BasicActivity {
         }
         else {
             try {
-                RestaurantInfoDto restaurantInfoDto = new RestaurantInfoDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType);
+                RestaurantInfoDto restaurantInfoDto = new RestaurantInfoDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType, 0, 0);
 
                 URL url = new URL("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId().toString());
                 HttpApi httpApi = new HttpApi(url, "PUT");

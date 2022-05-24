@@ -244,9 +244,9 @@ public class InfoActivity extends BasicActivity {
         else {
             try {
                 Log.e("ads",binding.viewActivityInfo.etAddress.getText().toString());
-                RestaurantInfoDto restaurantInfoDto = new RestaurantInfoDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType);
+                RestaurantInfoDto restaurantInfoDto = new RestaurantInfoDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType, null, null);
 
-                URL url = new URL("http://www.ordering.ml/api/owner/" + UserInfo.getOwnerId().toString()+ "/restaurant");
+                URL url = new URL("http://www.ordering.ml/api/owner/" + String.valueOf(UserInfo.getOwnerId()) + "/restaurant");
                 HttpApi httpApi = new HttpApi(url, "POST");
 
                 new Thread() {

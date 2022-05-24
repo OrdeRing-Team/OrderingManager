@@ -7,11 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentOrderBinding;
 import com.example.orderingmanager.view.MainActivity;
+import com.example.orderingmanager.view.ViewPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class OrderFragment extends Fragment {
     private View view;
@@ -31,6 +35,24 @@ public class OrderFragment extends Fragment {
             extra = getArguments();
 
             /* 이곳에 받아올 데이터를 추가하십셩 */
+            //뷰페이저 세팅
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity(), 2,2);
+            binding.orderViewPager.setAdapter(adapter);
+
+            new TabLayoutMediator(binding.tabLayoutOrder, binding.orderViewPager,
+                    new TabLayoutMediator.TabConfigurationStrategy() {
+                        @Override
+                        public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                            switch (position){
+                                case 0:
+                                    tab.setText("웨이팅현황");
+                                    break;
+                                default:
+                                    tab.setText("주문현황");
+                                    break;
+                            }
+                        }
+                    }).attach();
         }
 
         initButtonClickListener();

@@ -69,7 +69,9 @@
         <entry key="app/src/main/res/drawable-xxxhdpi/store_custom.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/activity_menu_item.xml" value="0.440625" />
         <entry key="app/src/main/res/drawable/background_custom_main_color.xml" value="0.159" />
-        <entry key="app/src/main/res/drawable/background_custom_white.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/background_custom_waiting.xml" value="0.1265" />
+        <entry key="app/src/main/res/drawable/background_custom_waiting_grayline.xml" value="0.1265" />
+        <entry key="app/src/main/res/drawable/background_custom_white.xml" value="0.7214117431640625" />
         <entry key="app/src/main/res/drawable/background_splash.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/bar_chart.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/btn_back.xml" value="0.1" />
@@ -112,7 +114,7 @@
         <entry key="app/src/main/res/layout/activity_guide2.xml" value="0.16847826086956522" />
         <entry key="app/src/main/res/layout/activity_info.xml" value="0.28558052434456926" />
         <entry key="app/src/main/res/layout/activity_item.xml" value="0.3392210144927536" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1778115501519757" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/activity_menu_add.xml" value="0.3392210144927536" />
@@ -130,21 +132,27 @@
         <entry key="app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.21770833333333334" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.24728260869565216" />
         <entry key="app/src/main/res/layout/custom_dialog_store_check.xml" value="0.13697916666666668" />
+        <entry key="app/src/main/res/layout/dialog_waiting_call.xml" value="0.1935185185185185" />
+        <entry key="app/src/main/res/layout/dialog_waiting_time_set.xml" value="0.2972152709960938" />
         <entry key="app/src/main/res/layout/fragment_daily_sales.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_finish.xml" value="0.1830044781720197" />
-        <entry key="app/src/main/res/layout/fragment_manage.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_manage.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_menu_bottom_sheet.xml" value="0.276268115942029" />
         <entry key="app/src/main/res/layout/fragment_menu_manage.xml" value="0.1021987915039062" />
         <entry key="app/src/main/res/layout/fragment_menumanage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_monthly_sales.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_order.xml" value="0.23324275362318841" />
+        <entry key="app/src/main/res/layout/fragment_order.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_order_list.xml" value="0.275" />
         <entry key="app/src/main/res/layout/fragment_qr.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/fragment_qr_table.xml" value="0.19934143870314083" />
         <entry key="app/src/main/res/layout/fragment_qr_takeout.xml" value="0.31567028985507245" />
+        <entry key="app/src/main/res/layout/fragment_request_order.xml" value="0.1953125" />
         <entry key="app/src/main/res/layout/fragment_review_manage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_reviewmanage.xml" value="0.32472826086956524" />
+        <entry key="app/src/main/res/layout/fragment_waiting_list.xml" value="0.209375" />
         <entry key="app/src/main/res/layout/item_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_menu.xml" value="0.15545196533203126" />
+        <entry key="app/src/main/res/layout/item_order_waiting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_qr.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/item_qr_cardview.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/item_swipe.xml" value="0.3224043715846995" />
@@ -162,6 +170,7 @@
         <entry key="app/src/main/res/layout/view_qr_takeout.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/view_qr_waiting.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/view_store_info.xml" value="0.37397404570729936" />
+        <entry key="app/src/main/res/layout/waiting_bottom_dialog.xml" value="0.21458333333333332" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.335" />
         <entry key="app/src/main/res/menu/menu_actions.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/menu/menu_qr.xml" value="0.23229166666666667" />

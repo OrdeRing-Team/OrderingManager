@@ -63,7 +63,7 @@ public class ManageFragment extends Fragment {
             initView();
 
 
-            getStoreIcon();
+            getDataFromServer();
         }
         return view;
     }
@@ -139,6 +139,19 @@ public class ManageFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+
+        binding.btnSettingWaitingTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Bundle에 담아서 WaitingBottomDialog로 보낸다.
+                WaitingTimeSetDialog waitingTimeSetDialog = new WaitingTimeSetDialog();
+                Bundle waitingData = new Bundle();
+                waitingData.putString("waitingTime", String.valueOf(binding.tvWaitingTime.getText()));
+                waitingTimeSetDialog.setArguments(waitingData);
+                waitingTimeSetDialog.show((getActivity()).getSupportFragmentManager(), "WaitingTimeSetDialog");
+            }
+        });
     }
 
     public void storeInfoCheck(){
@@ -164,7 +177,7 @@ public class ManageFragment extends Fragment {
         if(UserInfo.getRestaurantId() != null) {
             initView();
             initQrList();
-            getStoreIcon();
+            getDataFromServer();
         }
     }
 
@@ -243,7 +256,7 @@ public class ManageFragment extends Fragment {
     }
 
     //getRestaurantInfo
-    private void getStoreIcon() {
+    private void getDataFromServer() {
 
         SignInDto signInDto = new SignInDto(UserInfo.getUserId(), UserInfo.getUserPW());
 
@@ -272,6 +285,11 @@ public class ManageFragment extends Fragment {
                         else {
                             Glide.with(getActivity()).load(storeIconInUserInfo).into(binding.ivStoreIcon);
                         }
+
+                        // 서버에 업로드된 웨이팅 시간 저장
+                        Integer waitingTime = result.getData().getAdmissionWaitingTime();
+                        UserInfo.setAdmissionWaitingTime(waitingTime);
+                        binding.tvWaitingTime.setText(String.valueOf(waitingTime));
                     }
 
 

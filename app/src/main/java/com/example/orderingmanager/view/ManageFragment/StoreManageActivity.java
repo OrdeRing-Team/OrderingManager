@@ -81,6 +81,8 @@ public class StoreManageActivity extends AppCompatActivity {
         // 업로드된 아이콘 및 대표메뉴 이미지 가져오기
         getRestaurantInfo();
 
+        Log.e("매장 아이디", String.valueOf(UserInfo.getRestaurantId()));
+
 
         //백버튼 이벤트
         ImageButton btnBack = findViewById(R.id.btn_backToManageFrag);
