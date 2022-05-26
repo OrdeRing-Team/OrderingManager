@@ -152,7 +152,7 @@ public class MonthlySalesFragment extends Fragment {
                                     barChart.getLegend().setEnabled(false); // Legend는 차트의 범례
                                     barChart.setFitBars(true);
                                     barChart.setTouchEnabled(false); // 터치 유무
-                                    barChart.setVisibleXRangeMaximum(salesMonth.size()); //최대 x좌표 기준으로 몇개를 보여줄 것인지
+                                    barChart.setVisibleXRangeMaximum(entries.size()); //최대 x좌표 기준으로 몇개를 보여줄 것인지
 
                                     XAxis xAxis = barChart.getXAxis();
                                     xAxis.setGranularity(1f);

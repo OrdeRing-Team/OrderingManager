@@ -152,10 +152,14 @@ public class FinishFragment extends Fragment {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    result.getData().forEach(SalesResponseDto -> {
-                                        salesList.add(SalesResponseDto.getSales());
-                                        Log.e("sales list", String.valueOf(salesList));
-                                    });
+//                                    result.getData().forEach(SalesResponseDto -> {
+//                                        salesList.add(SalesResponseDto.getSales());
+//                                        Log.e("sales list", String.valueOf(salesList));
+//                                    });
+
+                                    for(int i = 1; i<32; i++){
+                                        salesList.add(Integer.toString(i*5000));
+                                    }
 
                                     int sum = 0;
                                     for(int i=0; i < salesList.size(); i++) {
@@ -293,7 +297,6 @@ public class FinishFragment extends Fragment {
                 Log.e("select month", String.valueOf(displayMonth));
 
                 initData(displayMonth);
-
 
             }
         });

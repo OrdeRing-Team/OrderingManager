@@ -24,12 +24,6 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="n">
         <activity
-            android:name=".view.FinishFragment.MonthlySalesFragment"
-            android:exported="false" />
-        <activity
-            android:name=".view.FinishFragment.DailySalesFragment"
-            android:exported="false" />
-        <activity
             android:name=".view.ManageFragment.EditStoreInfoActivity"
             android:exported="false" />
         <activity
@@ -104,6 +98,19 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+        <service
+            android:name=".FCM_Service.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/icon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
     </application>
 
 </manifest>
