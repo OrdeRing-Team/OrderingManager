@@ -28,7 +28,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    final String CHANNEL_ID = "FCMCHANNEL";
+    final String CHANNEL_ID = "ORDER";
     final String CHANNEL_NAME = "FCMCHANNELNAME";
 
     @Override
@@ -65,9 +65,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.e("title : ", remoteMessage.getData().get("title"));
 
-        String Channel = "CHANNELTAKEOUT";
 
         Intent intent = new Intent(this, AuthActivity.class);
 
@@ -80,6 +78,28 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
         String title = remoteMessage.getData().get("title");
         String message = remoteMessage.getData().get("body");
+        String channel = remoteMessage.getData().get("Channel_id");
+
+
+        Log.e("//=======//","===================================//");
+        Log.e("   Title  :" , remoteMessage.getData().get("title"));
+        Log.e("//=======//","===================================//");
+
+        Log.e("//=======//","===================================//");
+        Log.e("   body   :" , remoteMessage.getData().get("body"));
+        Log.e("//=======//","===================================//");
+
+//        switch (channel){
+//            case "ORDER":
+//                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_order");
+//                break;
+//            case "TAKEOUT":
+//                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
+//                break;
+//            case "WAITING":
+//                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_waiting");
+//                break;
+//        }
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final String CHANNEL_DESCRIPTION = "ChannerDescription";
@@ -95,35 +115,80 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                Channel = "CHANNELTAKEOUT";
 //                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
 //            }
-            Log.e("asdasd", sound.toString());
+            Log.e("//=======//","===================================//");
+            Log.e("   Sound  :", sound.toString());
+            Log.e("//=======//","===================================//");
 
             // add in API level 26
-            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
-            mChannel.setDescription(CHANNEL_DESCRIPTION);
-            mChannel.enableLights(true);
-            mChannel.enableVibration(true);
-            mChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
-            mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-            mChannel.setSound(sound, attributes);
-            notificationManager.createNotificationChannel(mChannel);
+
+            if(channel.equals("ORDER")) {
+                Log.e("//=======//","===================================//");
+                Log.e("CHANNELT TYPE :" , "ORDER");
+                Log.e("//=======//","===================================//");
+                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_order");
+
+                NotificationChannel mChannel = new NotificationChannel("ORDER", "CHANNEL_OD", importance);
+                mChannel.setDescription(CHANNEL_DESCRIPTION);
+                mChannel.enableLights(true);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
+                mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+                mChannel.setSound(sound, attributes);
+                notificationManager.createNotificationChannel(mChannel);
+            }else if(channel.equals("TAKEOUT")){
+                Log.e("//=======//","===================================//");
+                Log.e("CHANNELT TYPE :" , "TAKEOUT");
+                Log.e("//=======//","===================================//");
+
+                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
+
+                NotificationChannel mChannel = new NotificationChannel("TAKEOUT", "CHANNEL_TO", importance);
+                mChannel.setDescription(CHANNEL_DESCRIPTION);
+                mChannel.enableLights(true);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
+                mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+                mChannel.setSound(sound, attributes);
+                notificationManager.createNotificationChannel(mChannel);
+            }
+            else if(channel.equals("WAITING")) {
+                Log.e("//=======//","===================================//");
+                Log.e("CHANNELT TYPE :" , "WAITING");
+                Log.e("//=======//","===================================//");
+
+                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_waiting");
+
+                NotificationChannel mChannel = new NotificationChannel("WAITING", "CHANNEL_WT", importance);
+                mChannel.setDescription(CHANNEL_DESCRIPTION);
+                mChannel.enableLights(true);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
+                mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+                mChannel.setSound(sound, attributes);
+                notificationManager.createNotificationChannel(mChannel);
+            }
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-        builder.setSmallIcon(R.drawable.ic_launcher_background);
-        builder.setAutoCancel(true);
-        builder.setDefaults(Notification.DEFAULT_ALL);
-        builder.setWhen(System.currentTimeMillis());
-        builder.setSmallIcon(R.drawable.notify_logo);
-        builder.setContentTitle(title);
-        builder.setContentText(message);
-        builder.setSound(sound);
-        builder.setContentIntent(pendingIntent);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channel)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.notify_logo)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setSound(sound)
+                .setContentIntent(pendingIntent);
+
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             builder.setContentTitle(title);
             builder.setVibrate(new long[]{500, 500});
         }
-        notificationManager.notify(0, builder.build());
+//        notificationManager.notify(Integer.parseInt(remoteMessage.getData().get("Type")), builder.build());
+        notificationManager.notify((int)System.currentTimeMillis()/1000, builder.build());
+
     }
 
     private RemoteViews getCustomDesign(String title, String message) {
