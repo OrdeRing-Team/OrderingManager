@@ -14,8 +14,8 @@ public class SalesResponseDto {
 
     private String sales;
 
-    public String getSales() {
-        return sales;
-    }
+    //public String getSales() {
+        //return sales;
+    //}
 
 }
