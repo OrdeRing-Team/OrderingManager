@@ -93,11 +93,13 @@ public interface RetrofitService {
 
 	// 매장 한달 매출 불러오기
 	@POST("/api/restaurant/{restaurantId}/monthly_sales")
-	Call<ResultDto<List<SalesResponseDto>>> getSalesMontly(@Path("restaurantId") Long restaurant_id, @Body SalesRequestDto salesRequestDto);
+	Call<ResultDto<List<SalesResponseDto>>> getSalesMontly(@Path("restaurantId") Long restaurantId, @Body SalesRequestDto salesRequestDto);
 
 	// 매장 특정 달의 일별 매출 불러오기
 	@POST("/api/restaurant/{restaurantId}/daily_sales")
 	Call<ResultDto<List<SalesResponseDto>>> getSalesDaily(@Path("restaurantId") Long restaurantId, @Body SalesRequestDto salesRequestDto);
+
+
 
 	// 웨이팅 요청 리스트 불러오기
 	@POST("/api/restaurant/{restaurant_id}/waitings")

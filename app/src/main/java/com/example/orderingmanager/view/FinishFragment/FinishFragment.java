@@ -158,8 +158,9 @@ public class FinishFragment extends Fragment {
 //                                    });
 
                                     for(int i = 1; i<32; i++){
-                                        salesList.add(Integer.toString(i*5000));
+                                        salesList.add(Integer.toString(i*2000));
                                     }
+
 
                                     int sum = 0;
                                     for(int i=0; i < salesList.size(); i++) {

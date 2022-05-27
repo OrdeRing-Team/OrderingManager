@@ -1,6 +1,7 @@
 package com.example.orderingmanager.view.FinishFragment;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -98,25 +99,42 @@ public class MonthlySalesFragment extends Fragment {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    result.getData().forEach(SalesResponseDto -> {
-                                        salesList.add(SalesResponseDto.getSales());
-                                        Log.e("sales list", String.valueOf(salesList));
-                                    });
+//                                    result.getData().forEach(SalesResponseDto -> {
+//                                        salesList.add(SalesResponseDto.getSales());
+//                                        Log.e("sales list", String.valueOf(salesList));
+//                                    });
 
                                     //한달 매출 합계
                                     int sum = 0;
                                     for (int i = 0; i < salesList.size(); i++) {
                                         int salesOfInt = Integer.valueOf(salesList.get(i));
                                         sum += salesOfInt;
+                                        //salesMonth.add(sum);
                                         Log.e("sum", String.valueOf(sum));
-
                                     }
 
+//                                    salesListFinal = salesList;
+//                                    Log.e("salesListFinal", String.valueOf(salesListFinal));
                                     salesMonth.add(sum);
+                                    //arrayMonthTemp += String.valueOf(sum);
                                     Log.e("salesMonth", String.valueOf(salesMonth));
                                     Log.e("salesMonth 크기", String.valueOf(salesMonth.size()));
 
                                     BarChart barChart = view.findViewById(R.id.barChart);
+
+                                    int[] colorArray = new int[]{
+                                            Color.rgb(219, 167, 95),
+                                            Color.rgb(218, 133, 95),
+                                            Color.rgb(217, 100, 94),
+                                            Color.rgb(217, 98, 127),
+                                            Color.rgb(217, 98, 158),
+                                            Color.rgb(217, 98, 191),
+                                            Color.rgb(197, 98, 204),
+                                            Color.rgb(160, 98, 204),
+                                            Color.rgb(127, 98, 205),
+                                            Color.rgb(103, 108, 205),
+                                            Color.rgb(105, 141, 203),
+                                            Color.rgb(105, 174, 203)};
 
 
                                     Log.e("!!!!", String.valueOf(salesMonth));
@@ -134,6 +152,10 @@ public class MonthlySalesFragment extends Fragment {
                                     entries.add(new BarEntry(10, 100000));
                                     entries.add(new BarEntry(11, 110000));
                                     entries.add(new BarEntry(12, 120000));
+                                    //fit the data into a bar
+//                                    for (int i = 1; i < salesMonth.size(); i++) {
+//                                        entries.add(new BarEntry(i, Integer.valueOf(salesMonth.get(i))));
+//                                    }
 
                                     Log.e("!!!", String.valueOf(entries));
 
@@ -144,21 +166,38 @@ public class MonthlySalesFragment extends Fragment {
 
                                     barChart.setFitBars(true);
                                     barChart.setData(data);
-                                    barChart.getDescription().setText("월별 매출");
+                                    //barChart.getDescription().setText("월별 매출");
                                     barChart.animateY(1000);
-                                    barChart.invalidate();
-                                    barChart.setDrawValueAboveBar(false); //입력값이 차트 위or아래에 그려질건지 (true=위, false=아래)
-                                    barChart.setPinchZoom(false); //줌 설정
+                                    //data.setBarWidth(0.2f);
+
+//                                    barChart.setData(data);
+//
+//                                    barChart.invalidate();
+//
+//                                    barChart.setDrawValueAboveBar(false); //입력값이 차트 위or아래에 그려질건지 (true=위, false=아래)
+//                                    barChart.setPinchZoom(false); //줌 설정
                                     barChart.getLegend().setEnabled(false); // Legend는 차트의 범례
-                                    barChart.setFitBars(true);
+//
+                                    barDataSet.setColors(colorArray);
+////
+//                                    barChart.setFitBars(true);
+                                    barChart.getDescription().setEnabled(false); // chart 밑에 description 표시 유무
+//                                    barChart.animateY(2000);
                                     barChart.setTouchEnabled(false); // 터치 유무
-                                    barChart.setVisibleXRangeMaximum(entries.size()); //최대 x좌표 기준으로 몇개를 보여줄 것인지
+//                                    barChart.setVisibleXRangeMaximum(salesMonth.size()); //최대 x좌표 기준으로 몇개를 보여줄 것인지
+
 
                                     XAxis xAxis = barChart.getXAxis();
                                     xAxis.setGranularity(1f);
                                     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                                     xAxis.setDrawGridLines(false);
                                     xAxis.setLabelCount(40); // x축 레이블 표시 개수
+//
+                                    YAxis yAxis = barChart.getAxisLeft(); // y축 왼쪽
+                                    yAxis.setDrawGridLines(true);
+
+
+                                    //configureChartAppearance(); // BarChart의 기본적인 것들을 세팅해준다
 
                                 }
                             });
