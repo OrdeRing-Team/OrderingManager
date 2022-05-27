@@ -1,6 +1,5 @@
 package com.example.orderingmanager.view.ManageFragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,17 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.orderingmanager.Dto.FoodStatusDto;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
-import com.example.orderingmanager.Dto.request.PasswordChangeDto;
 import com.example.orderingmanager.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -111,6 +106,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment{
         startActivity(intent);
         getActivity().finish();
     }
+
 
     // 서버에서 데이터를 삭제하는 함수
     private void deleteData() {

@@ -56,7 +56,7 @@ public class WaitingAdapter extends RecyclerView.Adapter<WaitingAdapter.CustomVi
                         waitingData.putString("waitingPhoneNum", String.valueOf(arrayList.get(position).getPhoneNumber()));
                         waitingData.putString("waitingRequestTime", String.valueOf(arrayList.get(position).getWaitingRequestTime()));
                         Byte countPeople = arrayList.get(position).getNumOfTeamMembers();
-                        waitingData.putString("waitingTime", String.valueOf(UserInfo.getAdmissionWaitingTime() * countPeople.intValue()));
+                        waitingData.putString("waitingTime", String.valueOf(UserInfo.getAdmissionWaitingTime() * (getItemCount() - (position + 1))));
 
                         waitingTimeSetDialog.setArguments(waitingData);
                         waitingTimeSetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "WaitingCallDialog");
@@ -105,7 +105,7 @@ public class WaitingAdapter extends RecyclerView.Adapter<WaitingAdapter.CustomVi
         holder.tv_teamOfPeople.setText(String.valueOf(arrayList.get(position).getNumOfTeamMembers()) + "명");
         Byte countPeople = arrayList.get(position).getNumOfTeamMembers();
         holder.tv_nowTime.setText(String.valueOf(arrayList.get(position).getWaitingRequestTime()));
-        holder.tv_waitingState.setText(String.valueOf(UserInfo.getAdmissionWaitingTime() * countPeople.intValue()) + "분");
+        holder.tv_waitingState.setText(String.valueOf(UserInfo.getAdmissionWaitingTime() * (getItemCount() - (position + 1))) + "분");
         Log.e("대기시간 계산", String.valueOf(UserInfo.getAdmissionWaitingTime() * countPeople.intValue()));
     }
 
