@@ -70,7 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this, AuthActivity.class);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
@@ -127,7 +127,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Log.e("//=======//","===================================//");
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_order");
 
-                NotificationChannel mChannel = new NotificationChannel("ORDER", "CHANNEL_OD", importance);
+                NotificationChannel mChannel = new NotificationChannel("ORDER", "매장주문 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
@@ -142,7 +142,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
 
-                NotificationChannel mChannel = new NotificationChannel("TAKEOUT", "CHANNEL_TO", importance);
+                NotificationChannel mChannel = new NotificationChannel("TAKEOUT", "포장주문 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
@@ -158,7 +158,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_waiting");
 
-                NotificationChannel mChannel = new NotificationChannel("WAITING", "CHANNEL_WT", importance);
+                NotificationChannel mChannel = new NotificationChannel("WAITING", "웨이팅 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
