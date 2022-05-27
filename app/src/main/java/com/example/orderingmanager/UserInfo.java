@@ -28,6 +28,10 @@ public class UserInfo {
     private static String storeIcon;
     private static String sigMenuImg;
 
+    private static Integer admissionWaitingTime;
+    private static Integer orderingWaitingTime;
+    private static Long waitingId;
+
     // food
     private static Long foodId;
     private static String menuName;
@@ -42,6 +46,8 @@ public class UserInfo {
         tableCount = dto.getTableCount();
         foodCategory = dto.getFoodCategory();
         restaurantType = dto.getRestaurantType();
+        admissionWaitingTime = dto.getAdmissionWaitingTime();
+        orderingWaitingTime =dto.getOrderingWaitingTime();
     }
     public static void initRestaurantInfo(Long ownerId, RestaurantInfoDto dto) {
         ownerId = ownerId;
@@ -74,6 +80,8 @@ public class UserInfo {
     public static void setRestaurantId(Long id){
         restaurantId = id;
     }
+
+    public static void setAdmissionWaitingTime(Integer time) { admissionWaitingTime = time; }
 
     public static void setFood(FoodDto dto) {
         foodId = dto.getFoodId();
@@ -133,6 +141,10 @@ public class UserInfo {
         return sigMenuImg;
     }
 
+    public static Integer getAdmissionWaitingTime() { return admissionWaitingTime; }
+
+    public static void setWaitingId(Long id){waitingId = id;}
+    public static Long getWaitingId(){return waitingId;}
 
 
     public static FoodCategory getFoodCategory() {
@@ -148,4 +160,7 @@ public class UserInfo {
     public static Long getFoodId() {
         return foodId;
     }
+
+
+
 }

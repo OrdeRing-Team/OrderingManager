@@ -31,8 +31,11 @@ import com.example.orderingmanager.databinding.ActivityStoreManageBinding;
 import com.example.orderingmanager.view.ViewPagerAdapter;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -81,6 +84,8 @@ public class StoreManageActivity extends AppCompatActivity {
         // 업로드된 아이콘 및 대표메뉴 이미지 가져오기
         getRestaurantInfo();
 
+        Log.e("매장 아이디", String.valueOf(UserInfo.getRestaurantId()));
+
 
         //백버튼 이벤트
         ImageButton btnBack = findViewById(R.id.btn_backToManageFrag);
@@ -109,7 +114,7 @@ public class StoreManageActivity extends AppCompatActivity {
 
 
         //뷰페이저 세팅
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this, 0,2);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this, 0, 2);
         binding.vpManage.setAdapter(adapter);
 
         new TabLayoutMediator(binding.tabLayout, binding.vpManage,
@@ -117,7 +122,7 @@ public class StoreManageActivity extends AppCompatActivity {
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                         //tab.setText("Tab" + (position + 1));
-                        switch (position){
+                        switch (position) {
                             case 0:
                                 tab.setText("메뉴관리");
                                 break;
@@ -140,7 +145,7 @@ public class StoreManageActivity extends AppCompatActivity {
         });
 
         // 매장 아이콘 업로드
-       binding.ivStoreIcon.setOnClickListener(new View.OnClickListener() {
+        binding.ivStoreIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -153,8 +158,8 @@ public class StoreManageActivity extends AppCompatActivity {
         binding.tvStoreName.setText(UserInfo.getRestaurantName());
         int storeNameLength = UserInfo.getRestaurantName().length();
         // 매장명의 길이가 길 경우 textsize 조절
-        if(storeNameLength > 11 && storeNameLength < 14) binding.tvStoreName.setTextSize(16.f);
-        else if(storeNameLength > 13) binding.tvStoreName.setTextSize(14.f);
+        if (storeNameLength > 11 && storeNameLength < 14) binding.tvStoreName.setTextSize(16.f);
+        else if (storeNameLength > 13) binding.tvStoreName.setTextSize(14.f);
     }
 
 
@@ -213,9 +218,9 @@ public class StoreManageActivity extends AppCompatActivity {
             out.close();
             return tempFile;
         } catch (FileNotFoundException e) {
-            Log.e("Image","FileNotFoundException : " + e.getMessage());
+            Log.e("Image", "FileNotFoundException : " + e.getMessage());
         } catch (IOException e) {
-            Log.e("Image","IOException : " + e.getMessage());
+            Log.e("Image", "IOException : " + e.getMessage());
         }
         return null;
     }
@@ -256,7 +261,7 @@ public class StoreManageActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
                 Toast.makeText(StoreManageActivity.this, "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                Log.e("e = " , t.getMessage());
+                Log.e("e = ", t.getMessage());
             }
         });
     }
@@ -317,62 +322,75 @@ public class StoreManageActivity extends AppCompatActivity {
 
     //getRestaurantInfo
     private void getRestaurantInfo() {
-
-            SignInDto signInDto = new SignInDto(UserInfo.getUserId(), UserInfo.getUserPW());
-
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/owner/signin/")
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
-
-                    RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<OwnerSignInResultDto>> call = service.ownerSignIn(signInDto);
-
-                    call.enqueue(new Callback<ResultDto<OwnerSignInResultDto>>() {
-                        @Override
-                        public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
-                            ResultDto<OwnerSignInResultDto> result = response.body();
-
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // 서버에 업로드된 이미지Url을 변수에 저장
-                                    storeIconInUserInfo = result.getData().getProfileImageUrl();
-                                    storeSigInUserInfo = result.getData().getBackgroundImageUrl();
-                                    Log.e("getStoreIcon", storeIconInUserInfo + "getStoreSig : " + storeSigInUserInfo);
-                                    UserInfo.setRestrauntIcon(result.getData());
-                                    UserInfo.setRestaurantSigMenu(result.getData());
-
-                                    // 서버에서 아이콘 이미지 값이 Null일 때
-                                    if (storeIconInUserInfo == null) {
-                                        Log.e("storeIconInServer", "is null" + storeIconInUserInfo);
-                                        Glide.with(StoreManageActivity.this).load(R.drawable.icon).into(binding.ivStoreIcon);
-                                    }
-                                    else {
-                                        Log.e("storeIconInServer", "is not null" + storeIconInUserInfo);
-                                        Glide.with(StoreManageActivity.this).load(storeIconInUserInfo).into(binding.ivStoreIcon);
-                                    }
-
-                                    // 서버에서 대표메뉴 이미지 값이 Null일 때
-                                    if (storeSigInUserInfo == null) {
-                                        Log.e("storeSigInServer", "is null" + storeSigInUserInfo);
-                                        Glide.with(StoreManageActivity.this).load(R.drawable.splash).into(binding.ivSigmenu);
-                                    }
-                                    else {
-                                        Log.e("storeSigInServer", "is not null" + storeSigInUserInfo);
-                                        Glide.with(StoreManageActivity.this).load(storeSigInUserInfo).into(binding.ivSigmenu);
-                                    }
-                                }
-
-                            });
-
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("토큰 조회", "Fetching FCM registration token failed", task.getException());
+                            return;
                         }
 
-                        @Override
-                        public void onFailure(Call<ResultDto<OwnerSignInResultDto>> call, Throwable t) {
-                            Log.e("e = ", t.getMessage());
-                        }
-                    });
+                        String token = task.getResult();
+
+                        SignInDto signInDto = new SignInDto(UserInfo.getUserId(), UserInfo.getUserPW(), token);
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://www.ordering.ml/api/owner/signin/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        RetrofitService service = retrofit.create(RetrofitService.class);
+                        Call<ResultDto<OwnerSignInResultDto>> call = service.ownerSignIn(signInDto);
+
+                        call.enqueue(new Callback<ResultDto<OwnerSignInResultDto>>() {
+                            @Override
+                            public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
+                                ResultDto<OwnerSignInResultDto> result = response.body();
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 서버에 업로드된 이미지Url을 변수에 저장
+                                        storeIconInUserInfo = result.getData().getProfileImageUrl();
+                                        storeSigInUserInfo = result.getData().getBackgroundImageUrl();
+                                        Log.e("getStoreIcon", storeIconInUserInfo + "getStoreSig : " + storeSigInUserInfo);
+                                        UserInfo.setRestrauntIcon(result.getData());
+                                        UserInfo.setRestaurantSigMenu(result.getData());
+
+                                        // 서버에서 아이콘 이미지 값이 Null일 때
+                                        if (storeIconInUserInfo == null) {
+                                            Log.e("storeIconInServer", "is null" + storeIconInUserInfo);
+                                            Glide.with(StoreManageActivity.this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                                        } else {
+                                            Log.e("storeIconInServer", "is not null" + storeIconInUserInfo);
+                                            Glide.with(StoreManageActivity.this).load(storeIconInUserInfo).into(binding.ivStoreIcon);
+                                        }
+
+                                        // 서버에서 대표메뉴 이미지 값이 Null일 때
+                                        if (storeSigInUserInfo == null) {
+                                            Log.e("storeSigInServer", "is null" + storeSigInUserInfo);
+                                            Glide.with(StoreManageActivity.this).load(R.drawable.splash).into(binding.ivSigmenu);
+                                        } else {
+                                            Log.e("storeSigInServer", "is not null" + storeSigInUserInfo);
+                                            Glide.with(StoreManageActivity.this).load(storeSigInUserInfo).into(binding.ivSigmenu);
+                                        }
+                                    }
+
+                                });
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResultDto<OwnerSignInResultDto>> call, Throwable t) {
+                                Log.e("e = ", t.getMessage());
+                            }
+                        });
+
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.e("token Log", msg);
+                    }
+                });
     }
 
     // ProgressDialog 생성

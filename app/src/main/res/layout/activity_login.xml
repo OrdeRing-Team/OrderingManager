@@ -66,12 +66,14 @@
 
     <CheckBox
         android:id="@+id/cb_autologin"
-        app:layout_constraintStart_toStartOf="@id/et_password"
-        app:layout_constraintTop_toBottomOf="@id/et_password"
-        app:layout_constraintBottom_toTopOf="@id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="@color/main"/>
+        android:buttonTint="@color/main"
+        app:layout_constraintBottom_toTopOf="@id/btn_login"
+        app:layout_constraintStart_toStartOf="@id/et_password"
+        app:layout_constraintTop_toBottomOf="@id/et_password"
+        app:layout_constraintVertical_bias="0.562" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,8 +82,7 @@
         app:layout_constraintBottom_toBottomOf="@id/cb_autologin"
         android:textColor="@color/black"
         android:text="자동로그인"
-        android:textSize="14sp"
-        android:textStyle="bold"/>
+        android:textSize="14sp" />
 
 
     <TextView
@@ -101,7 +102,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="32dp"
         android:background="@color/main"
         android:text="로그인"
@@ -120,6 +121,7 @@
         android:outlineProvider="none"
         android:shadowColor="#FFFFFF"
         android:text="회원가입 >"
+        android:textStyle="bold"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />

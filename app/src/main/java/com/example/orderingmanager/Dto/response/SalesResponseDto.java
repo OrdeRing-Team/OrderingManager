@@ -14,8 +14,12 @@ public class SalesResponseDto {
 
     private String sales;
 
-    //public String getSales() {
-        //return sales;
-    //}
+    public String getSales() {
+        return sales;
+    }
+    public String setSales(String sales){
+        this.sales = sales;
+        return sales;
+    }
 
 }

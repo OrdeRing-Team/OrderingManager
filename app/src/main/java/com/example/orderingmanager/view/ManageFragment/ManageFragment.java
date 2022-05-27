@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,9 @@ import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentManageBinding;
 import com.example.orderingmanager.view.MainActivity;
 import com.example.orderingmanager.view.QRFragment.QrList;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -59,11 +63,11 @@ public class ManageFragment extends Fragment {
 
         storeInfoCheck();
 
-        if(UserInfo.getRestaurantId() != null) {
+        if (UserInfo.getRestaurantId() != null) {
             initView();
 
 
-            getStoreIcon();
+            getDataFromServer();
         }
         return view;
     }
@@ -91,17 +95,39 @@ public class ManageFragment extends Fragment {
         // 카테고리
         FoodCategory foodCategory = UserInfo.getFoodCategory();
         switch (foodCategory) {
-            case PIZZA: binding.tvCategory.setText("피자");break;
-            case BUNSIK: binding.tvCategory.setText("분식");break;
-            case CHICKEN: binding.tvCategory.setText("치킨");break;
-            case KOREAN_FOOD: binding.tvCategory.setText("한식");break;
-            case CAFE_DESSERT: binding.tvCategory.setText("카페/디저트");break;
-            case PORK_CUTLET_ROW_FISH_SUSHI: binding.tvCategory.setText("돈가스/회/초밥");break;
-            case FAST_FOOD: binding.tvCategory.setText("패스트푸드");break;
-            case JJIM_TANG: binding.tvCategory.setText("찜/탕");break;
-            case CHINESE_FOOD: binding.tvCategory.setText("중국집");break;
-            case JOKBAL_BOSSAM: binding.tvCategory.setText("족발/보쌈");break;
-            case ASIAN_FOOD_WESTERN_FOOD: binding.tvCategory.setText("아시안/양식");break;
+            case PIZZA:
+                binding.tvCategory.setText("피자");
+                break;
+            case BUNSIK:
+                binding.tvCategory.setText("분식");
+                break;
+            case CHICKEN:
+                binding.tvCategory.setText("치킨");
+                break;
+            case KOREAN_FOOD:
+                binding.tvCategory.setText("한식");
+                break;
+            case CAFE_DESSERT:
+                binding.tvCategory.setText("카페/디저트");
+                break;
+            case PORK_CUTLET_ROW_FISH_SUSHI:
+                binding.tvCategory.setText("돈가스/회/초밥");
+                break;
+            case FAST_FOOD:
+                binding.tvCategory.setText("패스트푸드");
+                break;
+            case JJIM_TANG:
+                binding.tvCategory.setText("찜/탕");
+                break;
+            case CHINESE_FOOD:
+                binding.tvCategory.setText("중국집");
+                break;
+            case JOKBAL_BOSSAM:
+                binding.tvCategory.setText("족발/보쌈");
+                break;
+            case ASIAN_FOOD_WESTERN_FOOD:
+                binding.tvCategory.setText("아시안/양식");
+                break;
         }
     }
 
@@ -139,17 +165,29 @@ public class ManageFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+
+        binding.btnSettingWaitingTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Bundle에 담아서 WaitingBottomDialog로 보낸다.
+                WaitingTimeSetDialog waitingTimeSetDialog = new WaitingTimeSetDialog();
+                Bundle waitingData = new Bundle();
+                waitingData.putString("waitingTime", String.valueOf(binding.tvWaitingTime.getText()));
+                waitingTimeSetDialog.setArguments(waitingData);
+                waitingTimeSetDialog.show((getActivity()).getSupportFragmentManager(), "WaitingTimeSetDialog");
+            }
+        });
     }
 
-    public void storeInfoCheck(){
+    public void storeInfoCheck() {
         storeInitInfo = UserInfo.getRestaurantId() != null;
-        if(!storeInitInfo){
-            Log.e("ManageFragment",storeInitInfo.toString());
+        if (!storeInitInfo) {
+            Log.e("ManageFragment", storeInitInfo.toString());
             binding.viewErrorLoadStore.errorNotFound.setVisibility(View.VISIBLE);
             binding.manageFragment.setVisibility(View.GONE);
-        }
-        else{
-            Log.e("ManageFragment",storeInitInfo.toString());
+        } else {
+            Log.e("ManageFragment", storeInitInfo.toString());
             binding.viewErrorLoadStore.errorNotFound.setVisibility(View.GONE);
             binding.manageFragment.setVisibility(View.VISIBLE);
         }
@@ -161,10 +199,10 @@ public class ManageFragment extends Fragment {
         // 정보 수정이 이루어지고 fragment 로 다시 돌아왔을때는 onResume 이 호출된다
         // 뷰를 새로 다시 세팅해준다.
 
-        if(UserInfo.getRestaurantId() != null) {
+        if (UserInfo.getRestaurantId() != null) {
             initView();
             initQrList();
-            getStoreIcon();
+            getDataFromServer();
         }
     }
 
@@ -174,7 +212,7 @@ public class ManageFragment extends Fragment {
         binding = null;
     }
 
-    public void initQrList(){
+    public void initQrList() {
         // MainActivity가 실행되면 QrList를 초기화한 뒤 UserInfo에 입력된 tableCount를 가져오고
         // QrList에 포장Qr,웨이팅Qr,테이블Qr Bitmap을 저장한다.
         // static 클래스에 저장되기 때문에 앱이 실행종료 되기전까지 리스트는 유효함
@@ -185,7 +223,7 @@ public class ManageFragment extends Fragment {
         qrArrayList.add(CreateTakeoutQR());
         qrArrayList.add(CreateWaitingQR());
 
-        if(tableCount != 0) {
+        if (tableCount != 0) {
             for (int i = 1; i < tableCount + 1; i++) {
                 qrArrayList.add(CreateTableQR(i));
             }
@@ -193,6 +231,7 @@ public class ManageFragment extends Fragment {
 
         QrList qrList = new QrList(qrArrayList);
     }
+
     private Bitmap CreateTakeoutQR() {
         String url;
         url = "http://www.ordering.ml/" + UserInfo.getRestaurantId() + "/takeout";
@@ -210,85 +249,100 @@ public class ManageFragment extends Fragment {
             return bitmap;
         }
     }
-    private Bitmap CreateWaitingQR(){
+
+    private Bitmap CreateWaitingQR() {
         String url;
-        url = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/waiting";
-        try{
+        url = "http://www.ordering.ml/" + Long.toString(UserInfo.getRestaurantId()) + "/waiting";
+        try {
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
+            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 250, 250);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
             return bitmap;
-        }catch (Exception e){
+        } catch (Exception e) {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
             return bitmap;
         }
     }
 
-    private Bitmap CreateTableQR(int i){
+    private Bitmap CreateTableQR(int i) {
         String url;
-        url = "http://www.ordering.ml/"+Long.toString(UserInfo.getRestaurantId())+"/table" + i;
-        try{
+        url = "http://www.ordering.ml/" + Long.toString(UserInfo.getRestaurantId()) + "/table" + i;
+        try {
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE,250,250);
+            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 250, 250);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
             return bitmap;
-        }catch (Exception e){
+        } catch (Exception e) {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ordering_bitmap);
             return bitmap;
         }
     }
 
     //getRestaurantInfo
-    private void getStoreIcon() {
-
-        SignInDto signInDto = new SignInDto(UserInfo.getUserId(), UserInfo.getUserPW());
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.ordering.ml/api/owner/signin/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RetrofitService service = retrofit.create(RetrofitService.class);
-        Call<ResultDto<OwnerSignInResultDto>> call = service.ownerSignIn(signInDto);
-
-        call.enqueue(new Callback<ResultDto<OwnerSignInResultDto>>() {
-            @Override
-            public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
-                ResultDto<OwnerSignInResultDto> result = response.body();
-
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+    private void getDataFromServer() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
-                    public void run() {
-                        // 서버에 업로드된 이미지Url을 변수에 저장
-                        String storeIconInUserInfo = result.getData().getProfileImageUrl();
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("토큰 조회", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        String token = task.getResult();
 
-                        if (storeIconInUserInfo == null) {
-                            Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
-                        }
-                        else {
-                            Glide.with(getActivity()).load(storeIconInUserInfo).into(binding.ivStoreIcon);
-                        }
+                        SignInDto signInDto = new SignInDto(UserInfo.getUserId(), UserInfo.getUserPW(), token);
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://www.ordering.ml/api/owner/signin/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        RetrofitService service = retrofit.create(RetrofitService.class);
+                        Call<ResultDto<OwnerSignInResultDto>> call = service.ownerSignIn(signInDto);
+
+                        call.enqueue(new Callback<ResultDto<OwnerSignInResultDto>>() {
+                            @Override
+                            public void onResponse(Call<ResultDto<OwnerSignInResultDto>> call, Response<ResultDto<OwnerSignInResultDto>> response) {
+                                ResultDto<OwnerSignInResultDto> result = response.body();
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 서버에 업로드된 이미지Url을 변수에 저장
+                                        String storeIconInUserInfo = result.getData().getProfileImageUrl();
+
+                                        if (storeIconInUserInfo == null) {
+                                            Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
+                                        } else {
+                                            Glide.with(getActivity()).load(storeIconInUserInfo).into(binding.ivStoreIcon);
+                                        }
+
+                                        // 서버에 업로드된 웨이팅 시간 저장
+                                        Integer waitingTime = result.getData().getAdmissionWaitingTime();
+                                        UserInfo.setAdmissionWaitingTime(waitingTime);
+                                        binding.tvWaitingTime.setText(String.valueOf(waitingTime));
+                                    }
+
+
+                                });
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResultDto<OwnerSignInResultDto>> call, Throwable t) {
+                                Log.e("e = ", t.getMessage());
+                            }
+                        });
+
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.e("token Log", msg);
                     }
-
-
                 });
-
-            }
-
-            @Override
-            public void onFailure(Call<ResultDto<OwnerSignInResultDto>> call, Throwable t) {
-                Log.e("e = ", t.getMessage());
-            }
-        });
-
     }
-
-
-
 
 
 }
