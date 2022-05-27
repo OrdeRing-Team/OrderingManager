@@ -72,6 +72,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
                         menuData.putLong("menuId", arrayList.get(position).getFoodId());
                         menuData.putLong("position", position);
                         menuData.putBoolean("menuSoldout", arrayList.get(position).getSoldout());
+//                        menuData.putBoolean("menuRepresent", arrayList.get(position).getSoldout());
                         bottomSheetDialog.setArguments(menuData);
                     }
                 }

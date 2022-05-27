@@ -30,6 +30,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment{
 
     public static BottomSheetDialog getInstance() { return new BottomSheetDialog(); }
 
+    private LinearLayout btn_represent;
     private LinearLayout btn_soldout;
     private LinearLayout btn_edit;
     private LinearLayout btn_delete;
@@ -44,6 +45,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_dialog, container,false);
 
+        btn_represent = (LinearLayout) view.findViewById(R.id.btn_represent);
         btn_soldout = (LinearLayout) view.findViewById(R.id.btn_soldout);
         btn_edit = (LinearLayout) view.findViewById(R.id.btn_edit);
         btn_delete = (LinearLayout) view.findViewById(R.id.btn_delete);

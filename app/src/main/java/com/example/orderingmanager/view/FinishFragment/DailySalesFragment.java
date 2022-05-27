@@ -113,9 +113,13 @@ public class DailySalesFragment extends Fragment {
 
                                     ArrayList<BarEntry> entries = new ArrayList<>();
                                     //fit the data into a bar
-                                    for (int i = 1; i < salesList.size(); i++) {
-                                        entries.add(new BarEntry(i, Integer.valueOf(salesList.get(i))));
-                                        Log.e("entries", String.valueOf(entries));
+//                                    for (int i = 1; i < salesList.size(); i++) {
+//                                        entries.add(new BarEntry(i, Integer.valueOf(salesList.get(i))));
+//                                        Log.e("entries", String.valueOf(entries));
+//                                    }
+
+                                    for(int i = 1; i < 32; i++){
+                                        entries.add(new BarEntry(i, i*5000));
                                     }
 
 
