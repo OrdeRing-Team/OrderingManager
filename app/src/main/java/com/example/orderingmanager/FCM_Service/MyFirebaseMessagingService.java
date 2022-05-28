@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.orderingmanager.ENUM_CLASS.OrderType;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.view.MainActivity;
 import com.example.orderingmanager.view.login_register.AuthActivity;
@@ -78,15 +79,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
         String title = remoteMessage.getData().get("title");
         String message = remoteMessage.getData().get("body");
-        String channel = remoteMessage.getData().get("Channel_id");
+        String channel = remoteMessage.getData().get("channel_id");
 
 
         Log.e("//=======//","===================================//");
-        Log.e("   Title  :" , remoteMessage.getData().get("title"));
+        Log.e("   Title  :" , title);
         Log.e("//=======//","===================================//");
 
         Log.e("//=======//","===================================//");
-        Log.e("   body   :" , remoteMessage.getData().get("body"));
+        Log.e("   body   :" , message);
+        Log.e("//=======//","===================================//");
+
+        Log.e("//=======//","===================================//");
+        Log.e("   channel   :" , channel);
         Log.e("//=======//","===================================//");
 
 //        switch (channel){
@@ -121,13 +126,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             // add in API level 26
 
-            if(channel.equals("ORDER")) {
+            if(channel.equals("TABLE")) {
                 Log.e("//=======//","===================================//");
-                Log.e("CHANNELT TYPE :" , "ORDER");
+                Log.e("CHANNELT TYPE :" , "TABLE");
                 Log.e("//=======//","===================================//");
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_order");
 
-                NotificationChannel mChannel = new NotificationChannel("ORDER", "매장주문 알림", importance);
+                NotificationChannel mChannel = new NotificationChannel("TABLE", "매장주문 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
@@ -135,14 +140,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
                 mChannel.setSound(sound, attributes);
                 notificationManager.createNotificationChannel(mChannel);
-            }else if(channel.equals("TAKEOUT")){
+            }else if(channel.equals("PACKING")){
                 Log.e("//=======//","===================================//");
-                Log.e("CHANNELT TYPE :" , "TAKEOUT");
+                Log.e("CHANNELT TYPE :" , "PACKING");
                 Log.e("//=======//","===================================//");
 
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
 
-                NotificationChannel mChannel = new NotificationChannel("TAKEOUT", "포장주문 알림", importance);
+                NotificationChannel mChannel = new NotificationChannel("PACKING", "포장주문 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);

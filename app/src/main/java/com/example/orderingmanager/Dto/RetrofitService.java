@@ -7,6 +7,7 @@ import com.example.orderingmanager.Dto.request.SalesRequestDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
 import com.example.orderingmanager.Dto.request.WaitingTimeDto;
+import com.example.orderingmanager.Dto.response.OrderPreviewDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 import com.example.orderingmanager.Dto.response.SalesResponseDto;
 import com.example.orderingmanager.Dto.response.WaitingPreviewDto;
@@ -17,11 +18,13 @@ import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RetrofitService {
 
@@ -86,6 +89,28 @@ public interface RetrofitService {
 	// 서버 내 메뉴 데이터 삭제
 	@DELETE("/api/restaurant/food/{foodId}")
 	Call<ResultDto<Boolean>> deleteFood(@Path("foodId") Long foodId);
+
+	// 대표메뉴 추가
+	@POST("/api/restaurant/{restaurant_id}/representative")
+	Call<ResultDto<Boolean>> setRepresent(@Query(value = "food_id") Long foodId,
+											 @Path("restaurant_id") Long restaurantId);
+
+	// 대표메뉴 삭제
+	@DELETE("/api/restaurant/{restaurant_id}/representative")
+	Call<ResultDto<Boolean>> deleteRepresent(@Query(value = "food_id") Long foodId,
+											   @Path("restaurant_id") Long restaurantId);
+
+	// 대표메뉴 리스트 가져오기
+	@GET("/api/restaurant/{restaurant_id}/representatives")
+	Call<ResultDto<List<FoodDto>>> getRepresentList(@Path("restaurant_id") Long restaurantId);
+
+	// 진행중인 주문 리스트 가져오기
+	@GET("/api/restaurant/{restaurantId}/orders/ongoing")
+	Call<ResultDto<List<OrderPreviewDto>>> getOrderReceivedList(@Path("restaurantId") Long restaurantId);
+
+	// 처리된 주문 리스트 가져오기
+	@GET("/api/restaurant/{restaurantId}/orders/finished")
+	Call<ResultDto<List<OrderPreviewDto>>> getOrderProcessedList(@Path("restaurantId") Long restaurantId);
 
 	// 회원탈퇴
 	@DELETE("/api/owner/{ownerId}")

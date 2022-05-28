@@ -40,7 +40,6 @@ public class WaitingListFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_menu_manage, container, false);
         binding = FragmentWaitingListBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 

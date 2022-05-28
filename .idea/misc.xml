@@ -75,6 +75,7 @@
         <entry key="app/src/main/res/drawable/btn_back.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/btn_custom.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/btn_home.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/button_background_order_checked.xml" value="0.1175" />
         <entry key="app/src/main/res/drawable/button_round_rectangle_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/dot.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/drawable_left_image_customise.xml" value="0.1675925925925926" />
@@ -136,15 +137,20 @@
         <entry key="app/src/main/res/layout/fragment_finish.xml" value="0.1830044781720197" />
         <entry key="app/src/main/res/layout/fragment_manage.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_menu_bottom_sheet.xml" value="0.276268115942029" />
-        <entry key="app/src/main/res/layout/fragment_menu_manage.xml" value="0.1021987915039062" />
+        <entry key="app/src/main/res/layout/fragment_menu_manage.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_menumanage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_monthly_sales.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_order.xml" value="0.23324275362318841" />
+        <entry key="app/src/main/res/layout/fragment_order_list.xml" value="0.2240026943925498" />
         <entry key="app/src/main/res/layout/fragment_qr.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/fragment_qr_table.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_review_manage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_reviewmanage.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/item_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_menu.xml" value="0.30760498046875" />
+        <entry key="app/src/main/res/layout/item_order_processed.xml" value="0.24662842681442482" />
+        <entry key="app/src/main/res/layout/item_order_received.xml" value="0.2698080532792686" />
+        <entry key="app/src/main/res/layout/item_order_waiting.xml" value="0.1408514492753623" />
         <entry key="app/src/main/res/layout/item_qr.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/item_qr_cardview.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/item_swipe.xml" value="0.3224043715846995" />
