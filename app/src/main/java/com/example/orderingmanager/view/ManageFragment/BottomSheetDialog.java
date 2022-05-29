@@ -42,7 +42,8 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     private TextView tv_represent;
 
     public Bundle menuData;
-    public Long menuId;
+    public Long foodId;
+    public Long representId;
     boolean soldout, represent = false;
 
     @Nullable
@@ -56,14 +57,16 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         btn_delete = (LinearLayout) view.findViewById(R.id.btn_delete);
         tv_soldout = view.findViewById(R.id.tv_soldout);
         tv_represent = view.findViewById(R.id.tv_represent);
-        // bundle에 담긴 menuId를 Long형의 전역변수인 menuId에 선언
+        // bundle에 담긴 foodId Long형의 전역변수인 foodId에 선언
         menuData = getArguments();
-        menuId = menuData.getLong("menuId");
+        foodId = menuData.getLong("foodId");
         // bundle에 담긴 menuSoldout을 boolean형의 전역 변수인 soldout에 선언
         soldout = menuData.getBoolean("menuSoldout");
         if (menuData.getBoolean("represent")) {
             tv_represent.setText("대표메뉴 해제하기");
             represent = true;
+            representId = menuData.getLong("representId");
+
         } else {
             tv_represent.setText("대표메뉴 설정하기");
             represent = false;
@@ -122,7 +125,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
 
                         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
                         Call<ResultDto<Boolean>> call;
-                        call = retrofitService.deleteRepresent(menuId, UserInfo.getRestaurantId());
+                        call = retrofitService.deleteRepresent(representId);
 
                         call.enqueue(new Callback<ResultDto<Boolean>>() {
                             @Override
@@ -143,6 +146,8 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                                         });
                                         Log.e("result.getData() ", Boolean.toString(result.getData()));
                                     }
+                                }else{
+                                    Log.e("대표 메뉴 해제","is not Successful");
                                 }
                             }
 
@@ -167,44 +172,49 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                     public void run() {
                         String url = "http://www.ordering.ml/";
 
-//                        Retrofit retrofit = new Retrofit.Builder()
-//                                .baseUrl(url)
-//                                .addConverterFactory(GsonConverterFactory.create())
-//                                .build();
-//
-//                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-//                        Call<ResultDto<Boolean>> call;
-//                        call = retrofitService.setRepresent(menuId, UserInfo.getRestaurantId());
-//
-//                        call.enqueue(new Callback<ResultDto<Boolean>>() {
-//                            @Override
-//                            public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
-//
-//                                if (response.isSuccessful()) {
-//                             현       ResultDto<Boolean> result;
-//                                    result = response.body();
-//                                    if (result.getData()) {
-//                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                            @Override
-//                                            public void run() {
-////                                            UserInfo.setBasketCount(totalCount);
-////                                                startActivity(new Intent(getActivity(), StoreManageActivity.class));
-////                                                getActivity().finish();
-//                                                Log.e("asdasd","대표 해제 완료");
-//                                                Toast.makeText(getActivity(), "대표메뉴가 설정되었습니다", Toast.LENGTH_SHORT).show();
-//                                            }
-//                                        });
-//                                        Log.e("result.getData() ", Boolean.toString(result.getData()));
-//                                    }
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
-//                                Toast.makeText(getActivity(), "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-//                                Log.e("e = ", t.getMessage());
-//                            }
-//                        });
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(url)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+                        Call<ResultDto<Boolean>> call;
+                        call = retrofitService.setRepresent(UserInfo.getRestaurantId(), foodId);
+
+                        call.enqueue(new Callback<ResultDto<Boolean>>() {
+                            @Override
+                            public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                                if (response.isSuccessful()) {
+                                    ResultDto<Boolean> result;
+                                    result = response.body();
+                                    if (result.getData()) {
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+//                                            UserInfo.setBasketCount(totalCount);
+//                                                startActivity(new Intent(getActivity(), StoreManageActivity.class));
+//                                                getActivity().finish();
+                                                startActivity(new Intent(getActivity(), StoreManageActivity.class));
+                                                getActivity().finish();
+                                                Log.e("asdasd","대표메뉴 설정 완료 FoodId : " + foodId);
+                                                Toast.makeText(getActivity(), "대표메뉴가 설정되었습니다", Toast.LENGTH_SHORT).show();
+                                                dismiss();
+                                            }
+                                        });
+                                        Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                    }
+                                }else{
+                                    Log.e("대표메뉴 설정", "is not Successful");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                Toast.makeText(getActivity(), "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                Log.e("e = ", t.getMessage());
+                            }
+                        });
                     }
                 }.start();
 
@@ -230,7 +240,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         intent.putExtra("menuPrice", price);
         intent.putExtra("menuImage", imageUrl);
         intent.putExtra("menuIntro", intro);
-        intent.putExtra("menuId", menuId);
+        intent.putExtra("foodId", foodId);
         startActivity(intent);
         getActivity().finish();
     }
@@ -238,14 +248,14 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     // 서버에서 데이터를 삭제하는 함수
     private void deleteData() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.ordering.ml/api/restaurant/food/" + menuId + "/")
+                .baseUrl("http://www.ordering.ml/api/restaurant/food/" + foodId + "/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         // RequestBody 객체 생성
         Call<ResultDto<Boolean>> call;
         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-        call = retrofitService.deleteFood(menuId);
+        call = retrofitService.deleteFood(foodId);
 
         call.enqueue(new Callback<ResultDto<Boolean>>() {
             @Override
@@ -276,13 +286,13 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         FoodStatusDto foodStatusDto = new FoodStatusDto(soldout);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.ordering.ml/api/restaurant/food/" + menuId + "/status/")
+                .baseUrl("http://www.ordering.ml/api/restaurant/food/" + foodId + "/status/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         // RequestBody 객체 생성
         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-        Call<ResultDto<Boolean>> call = retrofitService.putSoldout(menuId, foodStatusDto);
+        Call<ResultDto<Boolean>> call = retrofitService.putSoldout(foodId, foodStatusDto);
 
         call.enqueue(new Callback<ResultDto<Boolean>>() {
             @Override

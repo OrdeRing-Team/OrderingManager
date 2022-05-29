@@ -65,8 +65,6 @@ public class MainActivity extends BasicActivity {
         Log.e("getKeyHash", ""+getKeyHash(MainActivity.this));
         bundle = new Bundle();
 
-
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
