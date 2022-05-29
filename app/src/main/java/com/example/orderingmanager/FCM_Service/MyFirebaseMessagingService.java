@@ -29,8 +29,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    final String CHANNEL_ID = "ORDER";
-    final String CHANNEL_NAME = "FCMCHANNELNAME";
+    final String PACKING_CHANNEL = "PACKING";
+    final String TABLE_CHANNEL = "TABLE";
+    final String WAITING_CHANNEL = "WAITING";
 
     @Override
     public void onNewToken(String p0) {
@@ -126,9 +127,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             // add in API level 26
 
-            if(channel.equals("TABLE")) {
+            if(channel.equals(TABLE_CHANNEL)) {
                 Log.e("//=======//","===================================//");
-                Log.e("CHANNELT TYPE :" , "TABLE");
+                Log.e("CHANNELT TYPE :" , TABLE_CHANNEL);
                 Log.e("//=======//","===================================//");
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_order");
 
@@ -140,9 +141,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
                 mChannel.setSound(sound, attributes);
                 notificationManager.createNotificationChannel(mChannel);
-            }else if(channel.equals("PACKING")){
+            }else if(channel.equals(PACKING_CHANNEL)){
                 Log.e("//=======//","===================================//");
-                Log.e("CHANNELT TYPE :" , "PACKING");
+                Log.e("CHANNELT TYPE :" , PACKING_CHANNEL);
                 Log.e("//=======//","===================================//");
 
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
@@ -156,9 +157,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 mChannel.setSound(sound, attributes);
                 notificationManager.createNotificationChannel(mChannel);
             }
-            else if(channel.equals("WAITING")) {
+            else if(channel.equals(WAITING_CHANNEL)) {
                 Log.e("//=======//","===================================//");
-                Log.e("CHANNELT TYPE :" , "WAITING");
+                Log.e("CHANNELT TYPE :" , WAITING_CHANNEL);
                 Log.e("//=======//","===================================//");
 
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_waiting");

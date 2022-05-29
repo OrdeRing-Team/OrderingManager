@@ -132,6 +132,8 @@
         <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.2861562093098958" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.24728260869565216" />
+        <entry key="app/src/main/res/layout/custom_dialog_input.xml" value="0.1408514492753623" />
+        <entry key="app/src/main/res/layout/custom_dialog_order_cancel.xml" value="0.31140046050583103" />
         <entry key="app/src/main/res/layout/custom_dialog_store_check.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_daily_sales.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_finish.xml" value="0.1830044781720197" />

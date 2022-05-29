@@ -23,9 +23,51 @@ public class OrderPreviewDto {
     private String cancelOrCompletedTime;
     private String receivedTime;
     private int totalPrice;
+
     private OrderType orderType;
     private Integer tableNumber;
     private OrderStatus orderStatus;
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setMyOrderNumber(Integer myOrderNumber) {
+        this.myOrderNumber = myOrderNumber;
+    }
+
+    public void setOrderSummary(String orderSummary) {
+        this.orderSummary = orderSummary;
+    }
+
+    public void setCheckTime(String checkTime) {
+        this.checkTime = checkTime;
+    }
+
+    public void setCancelOrCompletedTime(String cancelOrCompletedTime) {
+        this.cancelOrCompletedTime = cancelOrCompletedTime;
+    }
+
+    public void setReceivedTime(String receivedTime) {
+        this.receivedTime = receivedTime;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+    public void setTableNumber(Integer tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
 
     public Long getOrderId(){
         return orderId;

@@ -31,6 +31,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OrderListFragment extends Fragment {
     private FragmentOrderListBinding binding;
+    public static List<OrderPreviewDto> processedList;
+    static RecyclerView processedRecyclerView;
     View view;
 
     @Override
@@ -45,7 +47,9 @@ public class OrderListFragment extends Fragment {
     }
 
     private void initData(){
+
         getReceivedData();
+        processedRecyclerView = binding.rvProcessedOrder;
     }
 
     private void getReceivedData(){
@@ -81,7 +85,7 @@ public class OrderListFragment extends Fragment {
                                                 binding.tvEmptyReceived.setVisibility(View.GONE);
 
                                                 RecyclerView recyclerView = binding.rvReceivedOrder;
-                                                OrderReceivedAdapter orderReceivedAdapter = new OrderReceivedAdapter(result.getData(), getActivity());
+                                                OrderReceivedAdapter orderReceivedAdapter = new OrderReceivedAdapter(result.getData(), getActivity(), binding.tvReceivedCount, binding.tvProcessedCount, binding.tvEmptyReceived);
                                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                                 recyclerView.setAdapter(orderReceivedAdapter);
                                             }
@@ -109,7 +113,7 @@ public class OrderListFragment extends Fragment {
         }
     }
 
-    private void getProcessedData(){
+    public void getProcessedData(){
         try {
             new Thread() {
                 @SneakyThrows
@@ -134,16 +138,15 @@ public class OrderListFragment extends Fragment {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-
+                                            processedList = null;
                                             if (result.getData().size() > 0) {
                                                 binding.tvProcessedCount.setText(String.format("(%d)",result.getData().size()));
                                                 binding.rvProcessedOrder.setVisibility(View.VISIBLE);
                                                 binding.tvEmptyProcessed.setVisibility(View.GONE);
 
-                                                RecyclerView recyclerView = binding.rvProcessedOrder;
-                                                OrderProcessedAdapter orderProcessedAdapter = new OrderProcessedAdapter(result.getData(), getActivity());
-                                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                                recyclerView.setAdapter(orderProcessedAdapter);
+                                                processedList = result.getData();
+
+                                                setProcessedRecyclerView(processedList);
                                             }
 
                                             binding.progressbar.setVisibility(View.GONE);
@@ -168,6 +171,12 @@ public class OrderListFragment extends Fragment {
             Log.e("e = ", e.getMessage());
             binding.progressbar.setVisibility(View.GONE);
         }
+    }
+
+    public static void setProcessedRecyclerView(List<OrderPreviewDto> processedList){
+        OrderProcessedAdapter orderProcessedAdapter = new OrderProcessedAdapter(processedList, processedRecyclerView.getContext());
+        processedRecyclerView.setLayoutManager(new LinearLayoutManager(processedRecyclerView.getContext()));
+        processedRecyclerView.setAdapter(orderProcessedAdapter);
     }
 
     @Override

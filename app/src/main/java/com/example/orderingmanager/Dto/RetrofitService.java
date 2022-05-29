@@ -1,5 +1,6 @@
 package com.example.orderingmanager.Dto;
 
+import com.example.orderingmanager.Dto.request.MessageDto;
 import com.example.orderingmanager.Dto.request.OwnerSignUpDto;
 import com.example.orderingmanager.Dto.request.PasswordChangeDto;
 import com.example.orderingmanager.Dto.request.PhoneNumberDto;
@@ -111,6 +112,18 @@ public interface RetrofitService {
 	// 처리된 주문 리스트 가져오기
 	@GET("/api/restaurant/{restaurantId}/orders/finished")
 	Call<ResultDto<List<OrderPreviewDto>>> getOrderProcessedList(@Path("restaurantId") Long restaurantId);
+
+	// 점주 주문 취소
+	@POST("/api/order/{order_id}/owner_cancel")
+	Call<ResultDto<Boolean>> cancelOrder(@Path("order_id") Long orderId, @Body MessageDto messageDto);
+
+	// 점주 주문 체크(승인)
+	@POST("/api/order/{order_id}/check")
+	Call<ResultDto<Boolean>> acceptOrder(@Path("order_id") Long orderId);
+
+	// 점주 주문 완료처리
+	@POST("/api/order/{order_id}/complete")
+	Call<ResultDto<Boolean>> completeOrder(@Path("order_id") Long orderId);
 
 	// 회원탈퇴
 	@DELETE("/api/owner/{ownerId}")
