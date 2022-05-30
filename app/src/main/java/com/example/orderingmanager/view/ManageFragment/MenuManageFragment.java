@@ -18,6 +18,7 @@ import com.example.orderingmanager.Dto.FoodDto;
 import com.example.orderingmanager.Dto.FoodStatusDto;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
+import com.example.orderingmanager.Dto.response.RepresentativeMenuDto;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentMenuManageBinding;
@@ -44,7 +45,7 @@ public class MenuManageFragment extends Fragment {
     private FragmentMenuManageBinding binding;
 
     ArrayList<ManageData> menuList = new ArrayList<>();
-    HashMap<Long, Integer> representMenuHashMap = new HashMap<>();
+    HashMap<Long, Long> representMenuHashMap = new HashMap<>();
     public Object position;
 
 
@@ -128,21 +129,22 @@ public class MenuManageFragment extends Fragment {
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<List<FoodDto>>> call = service.getRepresentList(UserInfo.getRestaurantId());
+                    Call<ResultDto<List<RepresentativeMenuDto>>> call = service.getRepresentList(UserInfo.getRestaurantId());
 
-                    call.enqueue(new Callback<ResultDto<List<FoodDto>>>() {
+                    call.enqueue(new Callback<ResultDto<List<RepresentativeMenuDto>>>() {
                         @Override
-                        public void onResponse(Call<ResultDto<List<FoodDto>>> call, Response<ResultDto<List<FoodDto>>> response) {
+                        public void onResponse(Call<ResultDto<List<RepresentativeMenuDto>>> call, Response<ResultDto<List<RepresentativeMenuDto>>> response) {
 
                             if (response.isSuccessful()) {
-                                ResultDto<List<FoodDto>> result;
+                                ResultDto<List<RepresentativeMenuDto>> result;
                                 result = response.body();
                                 if (result.getData() != null) {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            result.getData().forEach(foodDto ->{
-                                                representMenuHashMap.put(foodDto.getFoodId(), 1);
+                                            result.getData().forEach(RepresentativeMenuDto ->{
+                                                representMenuHashMap.put(RepresentativeMenuDto.getFoodId(), RepresentativeMenuDto.getRepresentativeMenuId());
+                                                Log.e("대표 메뉴 리스트 받아오기 FoodId() :", Long.toString(RepresentativeMenuDto.getFoodId()));
                                             });
 
                                             RecyclerView recyclerView = binding.rvMenu;
@@ -158,7 +160,7 @@ public class MenuManageFragment extends Fragment {
                         }
 
                         @Override
-                        public void onFailure(Call<ResultDto<List<FoodDto>>> call, Throwable t) {
+                        public void onFailure(Call<ResultDto<List<RepresentativeMenuDto>>> call, Throwable t) {
                             Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
                             binding.menuProgressbar.setVisibility(View.GONE);

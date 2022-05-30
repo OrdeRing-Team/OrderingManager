@@ -169,16 +169,16 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
                                         .build();
 
                                 RetrofitService service = retrofit.create(RetrofitService.class);
-                                Call<ResultDto<Boolean>> call = service.acceptOrder(orderId);
+                                Call<ResultDto<OrderPreviewDto>> call = service.acceptOrder(orderId);
 
-                                call.enqueue(new Callback<ResultDto<Boolean>>() {
+                                call.enqueue(new Callback<ResultDto<OrderPreviewDto>>() {
                                     @Override
-                                    public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+                                    public void onResponse(Call<ResultDto<OrderPreviewDto>> call, Response<ResultDto<OrderPreviewDto>> response) {
 
                                         if (response.isSuccessful()) {
-                                            ResultDto<Boolean> result;
+                                            ResultDto<OrderPreviewDto> result;
                                             result = response.body();
-                                            if (result.getData()) {
+                                            if (result.getData() != null) {
                                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                     @SuppressLint("DefaultLocale")
                                                     @Override
@@ -191,7 +191,9 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
                                                         holder.tv_checkedTime.setVisibility(View.VISIBLE);
                                                         holder.tv_checkedTime.setText(arrayList.get(holder.getAbsoluteAdapterPosition()).getCheckTime());
                                                         holder.btn_order_accept.setText("완료 처리");
-
+                                                        holder.tv_checkedTime_Header.setVisibility(View.VISIBLE);
+                                                        holder.tv_checkedTime.setVisibility(View.VISIBLE);
+                                                        holder.tv_checkedTime.setText(result.getData().getCheckTime());
 //                                                        holder.tv_orderId.setVisibility(View.VISIBLE);
 //                                                        holder.tv_orderId.setText(String.format(
 //                                                                "주문번호 : %d번",
@@ -216,7 +218,7 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
                                     }
 
                                     @Override
-                                    public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                    public void onFailure(Call<ResultDto<OrderPreviewDto>> call, Throwable t) {
 //                                    holder.progressBar.setVisibility(View.GONE);
                                         MainActivity.progressBar.setVisibility(View.GONE);
 
@@ -250,16 +252,16 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
                                         .build();
 
                                 RetrofitService service = retrofit.create(RetrofitService.class);
-                                Call<ResultDto<Boolean>> call = service.completeOrder(orderId);
+                                Call<ResultDto<OrderPreviewDto>> call = service.completeOrder(orderId);
 
-                                call.enqueue(new Callback<ResultDto<Boolean>>() {
+                                call.enqueue(new Callback<ResultDto<OrderPreviewDto>>() {
                                     @Override
-                                    public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+                                    public void onResponse(Call<ResultDto<OrderPreviewDto>> call, Response<ResultDto<OrderPreviewDto>> response) {
 
                                         if (response.isSuccessful()) {
-                                            ResultDto<Boolean> result;
+                                            ResultDto<OrderPreviewDto> result;
                                             result = response.body();
-                                            if (result.getData()) {
+                                            if (result.getData() != null) {
                                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                     @SuppressLint("DefaultLocale")
                                                     @Override
@@ -267,7 +269,7 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
                                                         Log.e("주문완료", "성공");
 //                                                    holder.progressBar.setVisibility(View.GONE);
                                                         MainActivity.progressBar.setVisibility(View.GONE);
-
+                                                        updateProcessedRecyclerView(result.getData(), true);
                                                         arrayList.remove(holder.getAbsoluteAdapterPosition());
                                                         if(arrayList.size() == 0){
                                                             emptyreceived.setVisibility(View.VISIBLE);
@@ -295,7 +297,7 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
                                     }
 
                                     @Override
-                                    public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                    public void onFailure(Call<ResultDto<OrderPreviewDto>> call, Throwable t) {
 //                                    holder.progressBar.setVisibility(View.GONE);
                                         MainActivity.progressBar.setVisibility(View.GONE);
 
@@ -351,23 +353,23 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
                                     .build();
 
                             RetrofitService service = retrofit.create(RetrofitService.class);
-                            Call<ResultDto<Boolean>> call = service.cancelOrder(orderId, messageDto);
+                            Call<ResultDto<OrderPreviewDto>> call = service.cancelOrder(orderId, messageDto);
 
-                            call.enqueue(new Callback<ResultDto<Boolean>>() {
+                            call.enqueue(new Callback<ResultDto<OrderPreviewDto>>() {
                                 @Override
-                                public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+                                public void onResponse(Call<ResultDto<OrderPreviewDto>> call, Response<ResultDto<OrderPreviewDto>> response) {
 
                                     if (response.isSuccessful()) {
-                                        ResultDto<Boolean> result;
+                                        ResultDto<OrderPreviewDto> result;
                                         result = response.body();
-                                        if (result.getData()) {
+                                        if (result.getData() != null) {
                                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                 @SuppressLint("DefaultLocale")
                                                 @Override
                                                 public void run() {
                                                     Log.e("주문취소", "성공");
                                                     customDialogOrderCancel.hideProgress();
-                                                    updateProcessedRecyclerView(arrayList.get(canceledPosition),false);
+                                                    updateProcessedRecyclerView(result.getData(),false);
                                                     arrayList.remove(canceledPosition);
                                                     if(arrayList.size() == 0){
                                                         emptyreceived.setVisibility(View.VISIBLE);
@@ -393,7 +395,7 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
                                 }
 
                                 @Override
-                                public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                public void onFailure(Call<ResultDto<OrderPreviewDto>> call, Throwable t) {
                                     customDialogOrderCancel.hideProgress();
 
                                     Toast.makeText(context, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
@@ -434,6 +436,8 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
     public void updateProcessedRecyclerView(OrderPreviewDto orderPreviewDto, boolean isOrderComplete){
         if(!isOrderComplete) {
             orderPreviewDto.setOrderStatus(OrderStatus.CANCELED);
+        }else{
+            orderPreviewDto.setOrderStatus(OrderStatus.COMPLETED);
         }
         List<OrderPreviewDto> tmpList = new ArrayList<OrderPreviewDto>();
         tmpList.add(orderPreviewDto);

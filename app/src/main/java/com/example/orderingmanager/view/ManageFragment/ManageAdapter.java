@@ -36,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomViewHolder> {
     ArrayList<ManageData> arrayList;
-    HashMap<Long, Integer> representMenuHashMap;
+    HashMap<Long, Long> representMenuHashMap;
     Context context;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -45,7 +45,6 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         //        findViewById & 각종 event 작업
         TextView tvName, tvPrice, tvIntro, tvSoldout, tvRepresent;
         ImageView ivMenu;
-
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,34 +56,6 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
             ivMenu = itemView.findViewById(R.id.item_image);
             tvSoldout = itemView.findViewById(R.id.item_soldout);
             tvRepresent = itemView.findViewById(R.id.tv_represent);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-
-                        // Bundle에 담아서 BottomSheetDialog로 보낸다.
-                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
-                        bottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(),"bottomSheet");
-
-                        Bundle menuData = new Bundle();
-                        menuData.putString("menuName", arrayList.get(position).getName());
-                        menuData.putString("menuPrice", arrayList.get(position).getPrice());
-                        menuData.putString("menuImage", arrayList.get(position).getIv_menu());
-                        menuData.putString("menuIntro", arrayList.get(position).getIntro());
-                        menuData.putLong("menuId", arrayList.get(position).getFoodId());
-                        menuData.putLong("position", position);
-                        menuData.putBoolean("menuSoldout", arrayList.get(position).getSoldout());
-                        if(representMenuHashMap.containsKey(arrayList.get(position).getFoodId())) {
-                            menuData.putBoolean("represent", true);
-                        }else{
-                            menuData.putBoolean("represent", false);
-                        }
-                        bottomSheetDialog.setArguments(menuData);
-                    }
-                }
-            });
         }
     }
 
@@ -93,16 +64,12 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         this.arrayList = arrayList;
     }
 
-
-    public ManageAdapter(ArrayList<ManageData> arrayList, HashMap<Long, Integer> representMenuHashMap, Context context) {
+    public ManageAdapter(ArrayList<ManageData> arrayList, HashMap<Long, Long> representMenuHashMap, Context context) {
     // adapter constructor for needing context part
         this.arrayList = arrayList;
         this.context = context;
         this.representMenuHashMap = representMenuHashMap;
     }
-
-
-
 
     @NonNull
     @Override
@@ -122,7 +89,6 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         holder.tvName.setText(arrayList.get(position).getName());
         holder.tvPrice.setText(String.valueOf(arrayList.get(position).getPrice()));
         holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
-        holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
 
         if(representMenuHashMap.containsKey(arrayList.get(position).getFoodId())){
             holder.tvRepresent.setVisibility(View.VISIBLE);
@@ -137,6 +103,34 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
             holder.tvSoldout.setVisibility(View.VISIBLE);
             holder.tvSoldout.setText("품절");
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (position != RecyclerView.NO_POSITION) {
+
+                    // Bundle에 담아서 BottomSheetDialog로 보낸다.
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
+                    bottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(),"bottomSheet");
+
+                    Bundle menuData = new Bundle();
+                    menuData.putString("menuName", arrayList.get(position).getName());
+                    menuData.putString("menuPrice", arrayList.get(position).getPrice());
+                    menuData.putString("menuImage", arrayList.get(position).getIv_menu());
+                    menuData.putString("menuIntro", arrayList.get(position).getIntro());
+                    menuData.putLong("foodId", arrayList.get(position).getFoodId());
+                    menuData.putLong("position", position);
+                    menuData.putBoolean("menuSoldout", arrayList.get(position).getSoldout());
+                    if(representMenuHashMap.containsKey(arrayList.get(position).getFoodId())) {
+                        menuData.putBoolean("represent", true);
+                        menuData.putLong("representId", representMenuHashMap.get(arrayList.get(position).getFoodId()));
+                    }else{
+                        menuData.putBoolean("represent", false);
+                    }
+                    bottomSheetDialog.setArguments(menuData);
+                }
+            }
+        });
     }
 
     @Override

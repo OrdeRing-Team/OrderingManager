@@ -10,6 +10,7 @@ import com.example.orderingmanager.Dto.request.VerificationDto;
 import com.example.orderingmanager.Dto.request.WaitingTimeDto;
 import com.example.orderingmanager.Dto.response.OrderPreviewDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
+import com.example.orderingmanager.Dto.response.RepresentativeMenuDto;
 import com.example.orderingmanager.Dto.response.SalesResponseDto;
 import com.example.orderingmanager.Dto.response.WaitingPreviewDto;
 
@@ -93,17 +94,16 @@ public interface RetrofitService {
 
 	// 대표메뉴 추가
 	@POST("/api/restaurant/{restaurant_id}/representative")
-	Call<ResultDto<Boolean>> setRepresent(@Query(value = "food_id") Long foodId,
-											 @Path("restaurant_id") Long restaurantId);
+	Call<ResultDto<Boolean>> setRepresent(@Path("restaurant_id") Long restaurantId,
+											@Query(value = "food_id") Long foodId);
 
 	// 대표메뉴 삭제
-	@DELETE("/api/restaurant/{restaurant_id}/representative")
-	Call<ResultDto<Boolean>> deleteRepresent(@Query(value = "food_id") Long foodId,
-											   @Path("restaurant_id") Long restaurantId);
+	@DELETE("/api/restaurant/representative/{representative_id}")
+	Call<ResultDto<Boolean>> deleteRepresent(@Path("representative_id") Long representativeId);
 
 	// 대표메뉴 리스트 가져오기
 	@GET("/api/restaurant/{restaurant_id}/representatives")
-	Call<ResultDto<List<FoodDto>>> getRepresentList(@Path("restaurant_id") Long restaurantId);
+	Call<ResultDto<List<RepresentativeMenuDto>>> getRepresentList(@Path("restaurant_id") Long restaurantId);
 
 	// 진행중인 주문 리스트 가져오기
 	@GET("/api/restaurant/{restaurantId}/orders/ongoing")
@@ -115,15 +115,15 @@ public interface RetrofitService {
 
 	// 점주 주문 취소
 	@POST("/api/order/{order_id}/owner_cancel")
-	Call<ResultDto<Boolean>> cancelOrder(@Path("order_id") Long orderId, @Body MessageDto messageDto);
+	Call<ResultDto<OrderPreviewDto>> cancelOrder(@Path("order_id") Long orderId, @Body MessageDto messageDto);
 
 	// 점주 주문 체크(승인)
 	@POST("/api/order/{order_id}/check")
-	Call<ResultDto<Boolean>> acceptOrder(@Path("order_id") Long orderId);
+	Call<ResultDto<OrderPreviewDto>> acceptOrder(@Path("order_id") Long orderId);
 
 	// 점주 주문 완료처리
 	@POST("/api/order/{order_id}/complete")
-	Call<ResultDto<Boolean>> completeOrder(@Path("order_id") Long orderId);
+	Call<ResultDto<OrderPreviewDto>> completeOrder(@Path("order_id") Long orderId);
 
 	// 회원탈퇴
 	@DELETE("/api/owner/{ownerId}")
