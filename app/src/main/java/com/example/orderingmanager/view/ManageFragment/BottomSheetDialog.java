@@ -38,6 +38,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     private LinearLayout btn_soldout;
     private LinearLayout btn_edit;
     private LinearLayout btn_delete;
+
     private TextView tv_soldout;
     private TextView tv_represent;
 
@@ -54,11 +55,14 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         btn_soldout = (LinearLayout) view.findViewById(R.id.btn_soldout);
         btn_edit = (LinearLayout) view.findViewById(R.id.btn_edit);
         btn_delete = (LinearLayout) view.findViewById(R.id.btn_delete);
+
         tv_soldout = view.findViewById(R.id.tv_soldout);
         tv_represent = view.findViewById(R.id.tv_represent);
+
         // bundle에 담긴 menuId를 Long형의 전역변수인 menuId에 선언
         menuData = getArguments();
         menuId = menuData.getLong("menuId");
+
         // bundle에 담긴 menuSoldout을 boolean형의 전역 변수인 soldout에 선언
         soldout = menuData.getBoolean("menuSoldout");
         if (menuData.getBoolean("represent")) {
@@ -215,6 +219,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         }
     }
 
+
     // 리사이클러뷰의 데이터를 가져오는 함수
     private void getMenuData() {
 
@@ -235,7 +240,8 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         getActivity().finish();
     }
 
-    // 서버에서 데이터를 삭제하는 함수
+
+    // 서버에서 메뉴 데이터를 삭제하는 함수
     private void deleteData() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.ordering.ml/api/restaurant/food/" + menuId + "/")
@@ -269,6 +275,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
             }
         });
     }
+
 
     // 서버에 메뉴 품절 상태를 저장하는 함수
     private void putSoldOut() {
