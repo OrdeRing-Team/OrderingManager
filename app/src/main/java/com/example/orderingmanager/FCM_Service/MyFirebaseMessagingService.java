@@ -29,9 +29,10 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    final String PACKING_CHANNEL = "PACKING";
-    final String TABLE_CHANNEL = "TABLE";
-    final String WAITING_CHANNEL = "WAITING";
+    final String PACKING_CHANNEL = OrderType.PACKING.toString();
+    final String TABLE_CHANNEL = OrderType.TABLE.toString();
+    final String WAITING_CHANNEL = OrderType.WAITING.toString();
+    final String CANCEL_CHANNEL = OrderType.CANCEL.toString();
 
     @Override
     public void onNewToken(String p0) {
@@ -133,7 +134,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Log.e("//=======//","===================================//");
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_order");
 
-                NotificationChannel mChannel = new NotificationChannel("TABLE", "매장주문 알림", importance);
+                NotificationChannel mChannel = new NotificationChannel(TABLE_CHANNEL, "매장주문 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
@@ -148,7 +149,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
 
-                NotificationChannel mChannel = new NotificationChannel("PACKING", "포장주문 알림", importance);
+                NotificationChannel mChannel = new NotificationChannel(PACKING_CHANNEL, "포장주문 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
@@ -164,7 +165,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_waiting");
 
-                NotificationChannel mChannel = new NotificationChannel("WAITING", "웨이팅 알림", importance);
+                NotificationChannel mChannel = new NotificationChannel(WAITING_CHANNEL, "웨이팅 알림", importance);
+                mChannel.setDescription(CHANNEL_DESCRIPTION);
+                mChannel.enableLights(true);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
+                mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+                mChannel.setSound(sound, attributes);
+                notificationManager.createNotificationChannel(mChannel);
+            }
+            else if(channel.equals(CANCEL_CHANNEL)) {
+                Log.e("//=======//","===================================//");
+                Log.e("CHANNELT TYPE :" , CANCEL_CHANNEL);
+                Log.e("//=======//","===================================//");
+
+                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_cancel");
+
+                NotificationChannel mChannel = new NotificationChannel(CANCEL_CHANNEL, "주문취소 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
