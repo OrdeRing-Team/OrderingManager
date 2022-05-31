@@ -1,5 +1,6 @@
 package com.example.orderingmanager.view.ManageFragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -314,7 +315,6 @@ public class ManageFragment extends Fragment {
                                     public void run() {
                                         // 서버에 업로드된 이미지Url을 변수에 저장
                                         String storeIconInUserInfo = result.getData().getProfileImageUrl();
-
                                         if (storeIconInUserInfo == null) {
                                             Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
                                         } else {

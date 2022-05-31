@@ -2,7 +2,7 @@ package com.example.orderingmanager;
 
 import com.example.orderingmanager.Dto.FoodDto;
 import com.example.orderingmanager.Dto.request.FoodCategory;
-import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
+import com.example.orderingmanager.Dto.request.RestaurantDataDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
@@ -49,7 +49,7 @@ public class UserInfo {
         admissionWaitingTime = dto.getAdmissionWaitingTime();
         orderingWaitingTime =dto.getOrderingWaitingTime();
     }
-    public static void initRestaurantInfo(Long ownerId, RestaurantInfoDto dto) {
+    public static void initRestaurantInfo(Long ownerId, RestaurantDataDto dto) {
         ownerId = ownerId;
         restaurantName = dto.getRestaurantName();
         ownerName = dto.getOwnerName();

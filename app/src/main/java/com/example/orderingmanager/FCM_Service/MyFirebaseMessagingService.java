@@ -22,8 +22,10 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.orderingmanager.ENUM_CLASS.OrderType;
 import com.example.orderingmanager.R;
+import com.example.orderingmanager.Splash.SplashActivity;
 import com.example.orderingmanager.view.MainActivity;
 import com.example.orderingmanager.view.login_register.AuthActivity;
+import com.example.orderingmanager.view.login_register.LoginActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -70,10 +72,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
 
-        Intent intent = new Intent(this, AuthActivity.class);
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("fromFCM_Channel",remoteMessage.getData().get("channel_id"));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);

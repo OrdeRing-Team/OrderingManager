@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access =PROTECTED)
-public class RestaurantInfoWithImgUrlDto extends RestaurantInfoDto {
+public class RestaurantDataWithLocationDto extends RestaurantDataDto {
 
-    private String profileImageUrl;
-    private String backgroundImageUrl;
+    private double latitude;
+    private double longitude;
 }

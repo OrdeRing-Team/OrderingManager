@@ -46,10 +46,10 @@ public class  ViewPagerAdapter extends FragmentStateAdapter {
         else {
             switch (position) {
                 case 0:
-                    return new WaitingListFragment();
+                    return new OrderListFragment();
 
                 default:
-                    return new OrderListFragment();
+                    return new WaitingListFragment();
             }
         }
     }

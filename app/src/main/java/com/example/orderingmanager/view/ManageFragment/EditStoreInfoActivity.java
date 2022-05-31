@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.request.FoodCategory;
-import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
+import com.example.orderingmanager.Dto.request.RestaurantDataDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.KakaoMap.WebViewActivity;
@@ -348,7 +348,7 @@ public class EditStoreInfoActivity extends BasicActivity {
         }
         else {
             try {
-                RestaurantInfoDto restaurantInfoDto = new RestaurantInfoDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType, 0, 0);
+                RestaurantDataDto restaurantDataDto = new RestaurantDataDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType, 0, 0);
 
                 URL url = new URL("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId().toString());
                 HttpApi httpApi = new HttpApi(url, "PUT");
@@ -356,7 +356,7 @@ public class EditStoreInfoActivity extends BasicActivity {
                 new Thread() {
                     @SneakyThrows
                     public void run() {
-                        String json = httpApi.requestToServer(restaurantInfoDto);
+                        String json = httpApi.requestToServer(restaurantDataDto);
                         ObjectMapper mapper = new ObjectMapper();
                         ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -366,14 +366,14 @@ public class EditStoreInfoActivity extends BasicActivity {
                                     if(restaurantType == RestaurantType.ONLY_TO_GO ||
                                             UserInfo.getTableCount() == Integer.parseInt(binding.viewActivityEditStoreInfo.tablenum.getText().toString())){
                                         // 포장이 선택되었거나 테이블 수가 이전과 같다면 QR코드를 새로 생성하지 않는다.
-                                        UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantInfoDto);
+                                        UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantDataDto);
                                         initQrList();
                                         showToast(EditStoreInfoActivity.this, "매장정보가 저장되었습니다.");
                                         FinishWithAnim();
                                     }
                                     else{
                                         // 반면에 테이블 수가 변경되었다면 QR코드를 새로 생성한다.(QR코드 생성화면으로 넘어간다)
-                                        UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantInfoDto);
+                                        UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantDataDto);
                                         createQRCodes();
                                     }
                                 }

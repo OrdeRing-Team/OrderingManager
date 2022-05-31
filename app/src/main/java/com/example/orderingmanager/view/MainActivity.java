@@ -97,6 +97,15 @@ public class MainActivity extends BasicActivity {
                 } else{
                     getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new QrFragment()).commit(); //FrameLayout에 QrFragment.xml띄우기
                 }
+                if(getIntent().getStringExtra("fromFCM_Channel") != null){
+                    String getintentString = getIntent().getStringExtra("fromFCM_Channel");
+                    Log.e("getIntent 유효", getintentString);
+                    Fragment orderFragment = new OrderFragment();
+                    orderFragment.setArguments(bundle);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, orderFragment).commit();
+                }else{
+                    Log.e("fromFCM_Channel", "null");
+                }
             }
         },1000);
 
@@ -305,4 +314,17 @@ public class MainActivity extends BasicActivity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
+    // fcm 푸시알림 클릭으로 들어왔을 때 전달받는 intent
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Log.e("bundle 유효", getIntent().getStringExtra("fromFCM_Channel"));
+            Fragment orderFragment = new OrderFragment();
+            orderFragment.setArguments(extras);
+            getSupportFragmentManager().beginTransaction().add(R.id.main_frame, orderFragment).commit(); //FrameLayout에 QrFragment.xml띄우기
+        }
+    }
 }
