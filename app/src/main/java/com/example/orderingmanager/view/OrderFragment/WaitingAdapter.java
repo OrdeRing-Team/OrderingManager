@@ -50,12 +50,10 @@ public class WaitingAdapter extends RecyclerView.Adapter<WaitingAdapter.CustomVi
                         // Bundle에 담아서 WaitingBottomDialog로 보낸다.
                         WaitingCallDialog waitingTimeSetDialog = new WaitingCallDialog();
                         Bundle waitingData = new Bundle();
-                        //waitingData.putString("waitingId", String.valueOf(arrayList.get(position).getWaitinId()));
+                        waitingData.putString("waitingId", String.valueOf(arrayList.get(position).getWaitingId()));
                         waitingData.putString("waitingNum", String.valueOf(arrayList.get(position).getWaitingNum()));
                         waitingData.putString("waitingNumOfPeople", String.valueOf(arrayList.get(position).getNumOfTeamMembers()));
                         waitingData.putString("waitingPhoneNum", String.valueOf(arrayList.get(position).getPhoneNumber()));
-                        waitingData.putString("waitingRequestTime", String.valueOf(arrayList.get(position).getWaitingRequestTime()));
-                        Byte countPeople = arrayList.get(position).getNumOfTeamMembers();
                         waitingData.putString("waitingTime", String.valueOf(UserInfo.getAdmissionWaitingTime() * (getItemCount() - (position + 1))));
 
                         waitingTimeSetDialog.setArguments(waitingData);

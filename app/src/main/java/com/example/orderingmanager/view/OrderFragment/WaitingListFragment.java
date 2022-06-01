@@ -94,9 +94,8 @@ public class WaitingListFragment extends Fragment{
                                         @Override
                                         public void run() {
                                             result.getData().forEach(waitingPreviewDto ->{
-                                                waitingList.add(0, new WaitingData(waitingPreviewDto.getWaitingNumber(), waitingPreviewDto.getNumOfTeamMembers(), waitingPreviewDto.getPhoneNumber(), waitingPreviewDto.getWaitingRegisterTime()));
+                                                waitingList.add(0, new WaitingData(waitingPreviewDto.getWaitingId(), waitingPreviewDto.getWaitingNumber(), waitingPreviewDto.getNumOfTeamMembers(), waitingPreviewDto.getPhoneNumber(), waitingPreviewDto.getWaitingRegisterTime()));
                                                 Log.e("num of team members", String.valueOf(waitingPreviewDto.getNumOfTeamMembers()));
-                                                UserInfo.setWaitingId(waitingPreviewDto.getWaitingId());
                                             });
 
                                             // 웨이팅 요청 손님이 0명일 때

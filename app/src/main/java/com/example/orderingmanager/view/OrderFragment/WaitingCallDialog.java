@@ -21,7 +21,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.R;
-import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.DialogWaitingCallBinding;
 import com.example.orderingmanager.view.ViewPagerAdapter;
 
@@ -37,6 +36,7 @@ public class WaitingCallDialog extends DialogFragment {
 
     private View view;
     private DialogWaitingCallBinding binding;
+    private String waitingId;
 
 
     @Nullable
@@ -49,8 +49,8 @@ public class WaitingCallDialog extends DialogFragment {
         //Custom Dialog 배경 투명하게 -> 모서리 둥글게 커스텀했더니 각진 DialogFragment의 뒷 배경이 보이기 때문
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
 
-        initButtonListeners();
         getWaitingData();
+        initButtonListeners();
 
         return view;
 
@@ -85,11 +85,11 @@ public class WaitingCallDialog extends DialogFragment {
 
     private void getWaitingData() {
         Bundle waitingData = getArguments();
+        waitingId = waitingData.getString("waitingId");
         String waitingNum = waitingData.getString("waitingNum");
         String waitingNumOfPeople = waitingData.getString("waitingNumOfPeople");
         String waitingPhoneNum = waitingData.getString("waitingPhoneNum");
         String waitingTime = waitingData.getString("waitingTime");
-        String waitingRequestTime = waitingData.getString("waitingRequestTime");
 
         binding.tvWaitingNum.setText(waitingNum + " 번");
         binding.tvNumOfPeople.setText(waitingNumOfPeople + " 명");
@@ -101,14 +101,14 @@ public class WaitingCallDialog extends DialogFragment {
     // 웨이팅 내역 지우기 -> 웨이팅 호출 후 서버에서 삭제해야하기 떄문.
     private void deleteData() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.ordering.ml/api/waiting/" + UserInfo.getWaitingId() + "/")
+                .baseUrl("http://www.ordering.ml/api/waiting/" + Long.valueOf(waitingId) + "/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         // RequestBody 객체 생성
         Call<ResultDto<Boolean>> call;
         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-        call = retrofitService.deleteWaiting(UserInfo.getWaitingId());
+        call = retrofitService.deleteWaiting(Long.valueOf(waitingId));
 
         call.enqueue(new Callback<ResultDto<Boolean>>() {
             @Override

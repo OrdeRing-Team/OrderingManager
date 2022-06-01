@@ -30,7 +30,7 @@ public class UserInfo {
 
     private static Integer admissionWaitingTime;
     private static Integer orderingWaitingTime;
-    private static Long waitingId;
+
 
     // food
     private static Long foodId;
@@ -142,9 +142,6 @@ public class UserInfo {
     }
 
     public static Integer getAdmissionWaitingTime() { return admissionWaitingTime; }
-
-    public static void setWaitingId(Long id){waitingId = id;}
-    public static Long getWaitingId(){return waitingId;}
 
 
     public static FoodCategory getFoodCategory() {
