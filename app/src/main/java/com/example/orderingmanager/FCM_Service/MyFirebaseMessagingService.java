@@ -19,19 +19,30 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.orderingmanager.ENUM_CLASS.OrderType;
 import com.example.orderingmanager.R;
+import com.example.orderingmanager.Splash.SplashActivity;
 import com.example.orderingmanager.view.MainActivity;
+import com.example.orderingmanager.view.OrderFragment.OrderListFragment;
 import com.example.orderingmanager.view.login_register.AuthActivity;
+import com.example.orderingmanager.view.login_register.LoginActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    final String PACKING_CHANNEL = "PACKING";
-    final String TABLE_CHANNEL = "TABLE";
-    final String WAITING_CHANNEL = "WAITING";
+    final String PACKING_CHANNEL = OrderType.PACKING.toString();
+    final String TABLE_CHANNEL = OrderType.TABLE.toString();
+    final String WAITING_CHANNEL = OrderType.WAITING.toString();
+    final String CANCEL_CHANNEL = OrderType.CANCEL.toString();
+    private LocalBroadcastManager broadcastManager;
+
+    @Override
+    public void onCreate() {
+        broadcastManager = LocalBroadcastManager.getInstance(this);
+    }
 
     @Override
     public void onNewToken(String p0) {
@@ -68,9 +79,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
+        Intent intent2 = new Intent("testData");
+        intent2.putExtra("data", remoteMessage.getData().get("channel_id"));
+        broadcastManager.sendBroadcast(intent2);
 
-        Intent intent = new Intent(this, AuthActivity.class);
-
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("fromFCM_Channel",remoteMessage.getData().get("channel_id"));
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
@@ -133,7 +147,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Log.e("//=======//","===================================//");
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_order");
 
-                NotificationChannel mChannel = new NotificationChannel("TABLE", "매장주문 알림", importance);
+                NotificationChannel mChannel = new NotificationChannel(TABLE_CHANNEL, "매장주문 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
@@ -148,7 +162,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
 
-                NotificationChannel mChannel = new NotificationChannel("PACKING", "포장주문 알림", importance);
+                NotificationChannel mChannel = new NotificationChannel(PACKING_CHANNEL, "포장주문 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
@@ -164,7 +178,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_waiting");
 
-                NotificationChannel mChannel = new NotificationChannel("WAITING", "웨이팅 알림", importance);
+                NotificationChannel mChannel = new NotificationChannel(WAITING_CHANNEL, "웨이팅 알림", importance);
+                mChannel.setDescription(CHANNEL_DESCRIPTION);
+                mChannel.enableLights(true);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
+                mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+                mChannel.setSound(sound, attributes);
+                notificationManager.createNotificationChannel(mChannel);
+            }
+            else if(channel.equals(CANCEL_CHANNEL)) {
+                Log.e("//=======//","===================================//");
+                Log.e("CHANNELT TYPE :" , CANCEL_CHANNEL);
+                Log.e("//=======//","===================================//");
+
+                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_cancel");
+
+                NotificationChannel mChannel = new NotificationChannel(CANCEL_CHANNEL, "주문취소 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
@@ -184,8 +214,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setSound(sound)
-                .setContentIntent(pendingIntent);
+                .setSound(sound);
+//                .setContentIntent(pendingIntent);
 
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {

@@ -34,7 +34,6 @@ public class OrderFragment extends Fragment {
         if(extra != null) {
             extra = getArguments();
 
-            /* 이곳에 받아올 데이터를 추가하십셩 */
             //뷰페이저 세팅
             ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity(), 2,2);
             binding.orderViewPager.setAdapter(adapter);
@@ -45,10 +44,10 @@ public class OrderFragment extends Fragment {
                         public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                             switch (position){
                                 case 0:
-                                    tab.setText("웨이팅현황");
+                                    tab.setText("주문현황");
                                     break;
                                 default:
-                                    tab.setText("주문현황");
+                                    tab.setText("웨이팅현황");
                                     break;
                             }
                         }

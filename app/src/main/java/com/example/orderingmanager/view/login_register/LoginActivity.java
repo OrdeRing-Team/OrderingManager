@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
@@ -24,6 +25,7 @@ import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityLoginBinding;
 import com.example.orderingmanager.view.BasicActivity;
 import com.example.orderingmanager.view.MainActivity;
+import com.example.orderingmanager.view.OrderFragment.OrderFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -132,7 +134,16 @@ public class LoginActivity extends BasicActivity {
                                                         @Override
                                                         public void run() {
                                                             UserInfo.setUserInfo(result.getData());
+                                                            Bundle extras = getIntent().getExtras();
+
                                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+                                                            // fcm 푸시 클릭으로 들어왔을 때 처리
+                                                            if (extras != null) {
+                                                                Log.e("bundle 유효 :: LoginActivity", getIntent().getStringExtra("fromFCM_Channel"));
+                                                                intent.putExtra("fromFCM_Channel", getIntent().getStringExtra("fromFCM_Channel"));
+                                                            }
+
 
                                                             if (result.getData().getRestaurantId() == null) {
                                                                 // 매장정보입력이 안되어 있을때

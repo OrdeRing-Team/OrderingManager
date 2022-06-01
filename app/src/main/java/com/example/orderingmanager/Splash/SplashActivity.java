@@ -27,8 +27,11 @@ public class SplashActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 Intent intent= new Intent(getApplicationContext(), LoginActivity.class);
+
+//                if(getIntent().getStringExtra("FromFCM_Channel") != null) {
+//                    intent.putExtra("fromFCM_Channel",getIntent().getStringExtra("fromFCM_Channel"));
+//                }
                 startActivity(intent);
                 finish();   //현재 액티비티 종료
             }

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access =PROTECTED)
-public class RestaurantInfoDto {
+public class RestaurantDataDto {
 
     private String restaurantName;
     private String ownerName;
