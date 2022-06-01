@@ -1,5 +1,9 @@
 package com.example.orderingmanager.view.OrderFragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -17,6 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.response.WaitingPreviewDto;
+import com.example.orderingmanager.ENUM_CLASS.OrderType;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentWaitingListBinding;
@@ -36,6 +42,7 @@ public class WaitingListFragment extends Fragment{
 
     private View view;
     private FragmentWaitingListBinding binding;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -150,6 +157,29 @@ public class WaitingListFragment extends Fragment{
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((broadcastReceiver), new IntentFilter("testData"));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String data = intent.getExtras().getString("data");
+            Log.e("BroadcastReceiver@@@@@@@@@@@@@@@",data);
+
+            if(data != OrderType.WAITING.toString()){
+                getWaitingListFromServer();
+            }
+        }
+    };
 }
 
 

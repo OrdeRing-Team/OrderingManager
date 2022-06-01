@@ -19,11 +19,13 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.orderingmanager.ENUM_CLASS.OrderType;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.Splash.SplashActivity;
 import com.example.orderingmanager.view.MainActivity;
+import com.example.orderingmanager.view.OrderFragment.OrderListFragment;
 import com.example.orderingmanager.view.login_register.AuthActivity;
 import com.example.orderingmanager.view.login_register.LoginActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -35,6 +37,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     final String TABLE_CHANNEL = OrderType.TABLE.toString();
     final String WAITING_CHANNEL = OrderType.WAITING.toString();
     final String CANCEL_CHANNEL = OrderType.CANCEL.toString();
+    private LocalBroadcastManager broadcastManager;
+
+    @Override
+    public void onCreate() {
+        broadcastManager = LocalBroadcastManager.getInstance(this);
+    }
 
     @Override
     public void onNewToken(String p0) {
@@ -71,11 +79,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
+        Intent intent2 = new Intent("testData");
+        intent2.putExtra("data", remoteMessage.getData().get("channel_id"));
+        broadcastManager.sendBroadcast(intent2);
 
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra("fromFCM_Channel",remoteMessage.getData().get("channel_id"));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
@@ -203,8 +214,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setSound(sound)
-                .setContentIntent(pendingIntent);
+                .setSound(sound);
+//                .setContentIntent(pendingIntent);
 
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
