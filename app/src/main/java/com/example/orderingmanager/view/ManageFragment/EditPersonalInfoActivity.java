@@ -240,9 +240,6 @@ public class EditPersonalInfoActivity extends BasicActivity {
     private void setData() {
         // 각 입력 항목에 기존 정보로 세팅
 
-        // 사용자명
-        binding.tvName.setText(UserInfo.getOwnerName());
-
         // 점주 아이디
         binding.tvId.setText(UserInfo.getUserId());
     }
