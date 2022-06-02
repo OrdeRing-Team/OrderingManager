@@ -66,15 +66,7 @@ public class StoreNoticeActivity extends BasicActivity {
         binding.btnSaveNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(binding.etNotice.getText().toString().equals("")){
-                    Log.e("btnSaveNotice","equals nothing");
-                    Toast.makeText(StoreNoticeActivity.this, "내용을 입력해주세요.",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Log.e("btnSaveNotice","savenotice");
-
-                    saveNotice();
-                }
+                saveNotice();
             }
         });
     }

@@ -209,7 +209,6 @@ public class ManageFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), StoreNoticeActivity.class);
                 if(notice.equals(EMPTY_NOTICE)){
                     intent.putExtra("notice", EMPTY_NOTICE);
-                    Log.e("notice333",notice);
                 }else{
                     intent.putExtra("notice", noticeSavedInstance);
                 }
@@ -411,13 +410,11 @@ public class ManageFragment extends Fragment {
                                         public void run() {
                                             binding.progressBarStoreInfo.setVisibility(View.GONE);
                                             notice = result.getData().getNotice();
-                                            if(notice != null){
+                                            if(notice != null && !notice.equals("")){
                                                 binding.tvNoticePreview.setText(notice);
                                             }else{
-                                                Log.e("notice = ", "nullllllllllll");
                                                 binding.tvNoticePreview.setText("공지사항을 작성해주세요.");
                                                 notice = EMPTY_NOTICE;
-                                                Log.e("notice222 = ", notice);
                                             }
                                         }
                                     });
