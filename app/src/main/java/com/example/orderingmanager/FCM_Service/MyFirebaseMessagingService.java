@@ -37,6 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     final String TABLE_CHANNEL = OrderType.TABLE.toString();
     final String WAITING_CHANNEL = OrderType.WAITING.toString();
     final String CANCEL_CHANNEL = OrderType.CANCEL.toString();
+
     private LocalBroadcastManager broadcastManager;
 
     @Override

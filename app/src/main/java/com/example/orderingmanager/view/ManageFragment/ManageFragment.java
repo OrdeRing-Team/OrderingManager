@@ -10,9 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingmanager.Dto.ResultDto;
@@ -21,8 +25,10 @@ import com.example.orderingmanager.Dto.request.FoodCategory;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
+import com.example.orderingmanager.Dto.response.RestaurantInfoDto;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
+import com.example.orderingmanager.databinding.ActivityStoreNoticeBinding;
 import com.example.orderingmanager.databinding.FragmentManageBinding;
 import com.example.orderingmanager.view.MainActivity;
 import com.example.orderingmanager.view.QRFragment.QrList;
@@ -35,7 +41,9 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,9 +54,9 @@ public class ManageFragment extends Fragment {
 
     private View view;
     private FragmentManageBinding binding;
-
+    public static final String EMPTY_NOTICE = "SECRETCODEFOREMPTYNOTICE";
     Boolean storeInitInfo;
-
+    String notice;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,6 +137,8 @@ public class ManageFragment extends Fragment {
                 binding.tvCategory.setText("아시안/양식");
                 break;
         }
+
+        setStoreNoticeFromServerData();
     }
 
     private void initButtonClickListener() {
@@ -188,6 +198,22 @@ public class ManageFragment extends Fragment {
                 waitingData.putString("takeoutWaitingTime", String.valueOf(binding.tvTakeOutWaitingTime.getText()));
                 takeOutwaitingTimeSetDialog.setArguments(waitingData);
                 takeOutwaitingTimeSetDialog.show((getActivity()).getSupportFragmentManager(), "TakeOutWaitingTimeSetDialog");
+            }
+        });
+
+        binding.btnStoreNotice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String noticeSavedInstance = binding.tvNoticePreview.getText().toString();
+
+                Intent intent = new Intent(getActivity(), StoreNoticeActivity.class);
+                if(notice.equals(EMPTY_NOTICE)){
+                    intent.putExtra("notice", EMPTY_NOTICE);
+                    Log.e("notice333",notice);
+                }else{
+                    intent.putExtra("notice", noticeSavedInstance);
+                }
+                startActivity(intent);
             }
         });
     }
@@ -358,5 +384,63 @@ public class ManageFragment extends Fragment {
                 });
     }
 
+    private void setStoreNoticeFromServerData(){
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
 
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/"+UserInfo.getRestaurantId()+"/info/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<RestaurantInfoDto>> call = service.getStoreNoticeAndCoordinate(UserInfo.getRestaurantId());
+
+                    call.enqueue(new Callback<ResultDto<RestaurantInfoDto>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<RestaurantInfoDto>> call, Response<ResultDto<RestaurantInfoDto>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<RestaurantInfoDto> result;
+                                result = response.body();
+                                if (result.getData() != null) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            binding.progressBarStoreInfo.setVisibility(View.GONE);
+                                            notice = result.getData().getNotice();
+                                            if(notice != null){
+                                                binding.tvNoticePreview.setText(notice);
+                                            }else{
+                                                Log.e("notice = ", "nullllllllllll");
+                                                binding.tvNoticePreview.setText("공지사항을 작성해주세요.");
+                                                notice = EMPTY_NOTICE;
+                                                Log.e("notice222 = ", notice);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<RestaurantInfoDto>> call, Throwable t) {
+                            Toast.makeText(getActivity(), "공지사항을 불러오는 중 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                            binding.progressBarStoreInfo.setVisibility(View.GONE);
+
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "공지사항을 불러오는 중 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+            binding.progressBarStoreInfo.setVisibility(View.GONE);
+
+        }
+    }
 }

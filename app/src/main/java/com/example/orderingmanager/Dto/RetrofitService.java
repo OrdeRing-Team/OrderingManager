@@ -11,6 +11,7 @@ import com.example.orderingmanager.Dto.request.WaitingTimeDto;
 import com.example.orderingmanager.Dto.response.OrderPreviewDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 import com.example.orderingmanager.Dto.response.RepresentativeMenuDto;
+import com.example.orderingmanager.Dto.response.RestaurantInfoDto;
 import com.example.orderingmanager.Dto.response.SalesResponseDto;
 import com.example.orderingmanager.Dto.response.WaitingPreviewDto;
 
@@ -87,6 +88,14 @@ public interface RetrofitService {
 	// 매장 모든 음식 불러오기
 	@POST("/api/restaurant/{restaurantId}/foods")
 	Call<ResultDto<List<FoodDto>>> getFood(@Path("restaurantId") Long restaurantId);
+
+	// 매장 공지사항, 좌표 가져오기
+	@GET("/api/restaurant/{restaurant_id}/info")
+	Call<ResultDto<RestaurantInfoDto>> getStoreNoticeAndCoordinate(@Path("restaurant_id") Long restaurantId);
+
+	// 매장 공지 작성/수정 API
+	@PUT("/api/restaurant/{restaurant_id}/notice")
+	Call<ResultDto<Boolean>> saveNotice(@Path("restaurant_id") Long restaurantId, @Body MessageDto messageDto);
 
 	// 서버 내 메뉴 데이터 삭제
 	@DELETE("/api/restaurant/food/{foodId}")

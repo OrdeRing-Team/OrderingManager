@@ -41,31 +41,6 @@ public class OrderListFragment extends Fragment {
     static RecyclerView processedRecyclerView;
     View view;
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((broadcastReceiver), new IntentFilter("testData"));
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
-    }
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String data = intent.getExtras().getString("data");
-            Log.e("BroadcastReceiver@@@@@@@@@@@@@@@",data);
-
-            if(data != OrderType.WAITING.toString()){
-                getReceivedData();
-            }
-        }
-    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -109,7 +84,6 @@ public class OrderListFragment extends Fragment {
                                         @Override
                                         public void run() {
 
-                                            // 웨이팅 요청 손님이 0명일 때
                                             if (result.getData().size() > 0) {
                                                 binding.tvReceivedCount.setText(String.format("(%d)",result.getData().size()));
                                                 binding.rvReceivedOrder.setVisibility(View.VISIBLE);
@@ -215,4 +189,28 @@ public class OrderListFragment extends Fragment {
         super.onResume();
         initData();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((broadcastReceiver), new IntentFilter("testData"));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String data = intent.getExtras().getString("data");
+            Log.e("BroadcastReceiver@@@@@@@@@@@@@@@",data);
+
+            if(data != OrderType.WAITING.toString()){
+                getReceivedData();
+            }
+        }
+    };
 }
