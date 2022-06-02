@@ -75,26 +75,34 @@
                     android:orientation="vertical"
                     android:background="@drawable/background_custom_white">
 
-
                     <LinearLayout
+                        android:id="@+id/btn_manage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp">
 
-                        <!-- 오른쪽 정렬을 위한 View -->
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="메뉴관리"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="1"/>
 
-                        <Button
-                            android:id="@+id/btn_manage"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:layout_marginRight="5dp"
-                            android:text="메뉴관리 >"
-                            android:textColor="@color/text_gray"
+                            android:text=">"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/main"
                             android:background="@color/fui_transparent"/>
 
                     </LinearLayout>
@@ -195,10 +203,13 @@
                     android:background="@drawable/background_custom_white">
 
                     <LinearLayout
+                        android:id="@+id/btn_store_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginBottom="30dp">
 
                         <TextView
@@ -206,20 +217,19 @@
                             android:layout_height="wrap_content"
                             android:text="매장정보"
                             android:textColor="@color/black"
-                            android:textStyle="bold"
                             android:textSize="18dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="4dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="bottom"
                             android:layout_weight="1"/>
 
-                        <Button
-                            android:id="@+id/btn_store_info"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:layout_marginRight="20dp"
-                            android:text="매장정보수정 >"
-                            android:textColor="@color/text_gray"
+                            android:text=">"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/main"
                             android:background="@color/fui_transparent"/>
 
                     </LinearLayout>
@@ -228,7 +238,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="10dp">
 
                         <TextView
@@ -244,7 +254,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="매장명 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"/>
@@ -254,7 +263,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="10dp">
 
                         <TextView
@@ -270,7 +279,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="사업자명 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"/>
@@ -280,7 +288,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="10dp">
 
                         <TextView
@@ -296,7 +304,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="매장 종류 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"/>
@@ -306,7 +313,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="10dp">
 
                         <TextView
@@ -322,7 +329,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="음식 카테고리 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"/>
@@ -332,7 +338,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="7dp">
 
                         <TextView
@@ -348,7 +354,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="매장 주소 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="20dp"
@@ -386,9 +391,9 @@
                                 android:layout_height="wrap_content"
                                 android:text="입장 대기시간"
                                 android:textColor="@color/black"
+                                android:textSize="16dp"
                                 android:textStyle="bold"
-                                android:textSize="14dp"
-                                android:layout_gravity="center"
+                                android:layout_gravity="bottom"
                                 android:layout_weight="1"/>
 
                             <TextView
@@ -408,6 +413,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_gravity="center"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="1">
 
                             <TextView
@@ -415,7 +421,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
-                                android:textSize="17dp"
+                                android:textSize="16dp"
                                 android:layout_gravity="center" />
 
                             <TextView
@@ -423,7 +429,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="분"
                                 android:textColor="@color/black"
-                                android:textSize="17dp"
+                                android:textSize="16dp"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"/>
 
@@ -453,11 +459,11 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="포장 대기시간"
+                                android:text="주문 대기시간"
                                 android:textColor="@color/black"
+                                android:textSize="16dp"
                                 android:textStyle="bold"
-                                android:textSize="14dp"
-                                android:layout_gravity="center"
+                                android:layout_gravity="bottom"
                                 android:layout_weight="1"/>
 
                             <TextView
@@ -477,14 +483,15 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_gravity="center"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:layout_marginBottom="10dp">
 
                             <TextView
                                 android:id="@+id/tv_take_out_waiting_time"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
-                                android:textSize="17dp"
+                                android:textSize="16dp"
                                 android:layout_gravity="center" />
 
                             <TextView
@@ -492,7 +499,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="분"
                                 android:textColor="@color/black"
-                                android:textSize="17dp"
+                                android:textSize="16dp"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"/>
 

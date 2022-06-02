@@ -183,7 +183,7 @@ public class ManageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Bundle에 담아서 WaitingBottomDialog로 보낸다.
-                TakeOutWaitingTimeSetDialog takeOutwaitingTimeSetDialog = new TakeOutWaitingTimeSetDialog();
+                OrderWaitingTimeSetDialog takeOutwaitingTimeSetDialog = new OrderWaitingTimeSetDialog();
                 Bundle waitingData = new Bundle();
                 waitingData.putString("takeoutWaitingTime", String.valueOf(binding.tvTakeOutWaitingTime.getText()));
                 takeOutwaitingTimeSetDialog.setArguments(waitingData);

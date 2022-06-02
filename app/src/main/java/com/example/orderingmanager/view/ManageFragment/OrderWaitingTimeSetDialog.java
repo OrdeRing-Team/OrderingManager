@@ -21,7 +21,7 @@ import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.WaitingTimeDto;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
-import com.example.orderingmanager.databinding.DialogTakeoutWaitingTimeSetBinding;
+import com.example.orderingmanager.databinding.DialogOrderWaitingTimeSetBinding;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,19 +29,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class TakeOutWaitingTimeSetDialog extends DialogFragment {
+public class OrderWaitingTimeSetDialog extends DialogFragment {
 
-    public static TakeOutWaitingTimeSetDialog getInstance() { return new TakeOutWaitingTimeSetDialog(); }
+    public static OrderWaitingTimeSetDialog getInstance() { return new OrderWaitingTimeSetDialog(); }
 
     private View view;
-    private DialogTakeoutWaitingTimeSetBinding binding;
+    private DialogOrderWaitingTimeSetBinding binding;
     String waitingTime;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        binding = DialogTakeoutWaitingTimeSetBinding.inflate(inflater, container, false);
+        binding = DialogOrderWaitingTimeSetBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
         //Custom Dialog 배경 투명하게 -> 모서리 둥글게 커스텀했더니 각진 DialogFragment의 뒷 배경이 보이기 때문
