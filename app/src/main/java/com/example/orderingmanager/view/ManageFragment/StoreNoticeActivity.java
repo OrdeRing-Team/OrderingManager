@@ -3,6 +3,8 @@ package com.example.orderingmanager.view.ManageFragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -12,6 +14,7 @@ import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.MessageDto;
 import com.example.orderingmanager.Dto.response.RestaurantInfoDto;
+import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityStoreNoticeBinding;
 import com.example.orderingmanager.view.BasicActivity;
@@ -39,13 +42,43 @@ public class StoreNoticeActivity extends BasicActivity {
 
         initData();
         initButtonListener();
+        initAddTextChangeListener();
     }
 
     private void initData(){
         savedNoticeInstance = getIntent().getStringExtra("notice");
         if(!savedNoticeInstance.equals(ManageFragment.EMPTY_NOTICE)){
             binding.etNotice.setText(savedNoticeInstance);
+            binding.tvInputCounter.setText(String.format("(%d/255자)",binding.etNotice.getText().length()));
+            if(binding.etNotice.getText().length() >= 255){
+                binding.tvInputCounter.setTextColor(getColor(R.color.error));
+            }
         }
+    }
+
+    private void initAddTextChangeListener(){
+        binding.etNotice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(s.length() == 255){
+                    Toast.makeText(StoreNoticeActivity.this,"255자 까지만 입력할 수 있습니다.",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                binding.tvInputCounter.setText(String.format("(%d/255자)",s.length()));   //글자수 TextView에 보여주기.
+                if(s.length() >= 255){
+                    binding.tvInputCounter.setTextColor(getColor(R.color.error));
+                }else{
+                    binding.tvInputCounter.setTextColor(getColor(R.color.gray));
+                }
+            }
+        });
     }
 
     private void initButtonListener(){
@@ -147,4 +180,5 @@ public class StoreNoticeActivity extends BasicActivity {
     private final View.OnClickListener negativeButton = view -> {
         dialog.dismiss();
     };
+
 }

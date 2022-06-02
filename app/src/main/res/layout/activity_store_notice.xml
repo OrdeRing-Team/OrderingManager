@@ -103,6 +103,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/iv_notice"
                     android:textStyle="bold"/>
                 <TextView
+                    android:id="@+id/tv_input_counter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -120,6 +121,7 @@
                     android:layout_marginTop="20dp"
                     android:background="@color/light_gray"
                     android:hint="최대 255자까지 입력 가능합니다."
+                    android:maxLength="255"
                     android:textColor="@color/black"
                     android:padding="5dp"
                     android:textColorHint="@color/gray"
