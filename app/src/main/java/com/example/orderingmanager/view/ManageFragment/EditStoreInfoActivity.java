@@ -63,9 +63,15 @@ public class EditStoreInfoActivity extends BasicActivity {
         binding = ActivityEditStoreInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        initView();
         initClickListener();
         initTextChangedListener();
         setData();
+    }
+
+    private void initView() {
+        binding.viewActivityEditStoreInfo.tvTime.setVisibility(View.GONE);
+        binding.viewActivityEditStoreInfo.llTimeSet.setVisibility(View.GONE);
     }
 
     private void initTextChangedListener(){

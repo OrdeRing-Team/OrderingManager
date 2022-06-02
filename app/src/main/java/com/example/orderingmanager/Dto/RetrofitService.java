@@ -147,8 +147,12 @@ public interface RetrofitService {
 	@DELETE("/api/waiting/{waiting_id}")
 	Call<ResultDto<Boolean>> deleteWaiting(@Path("waiting_id") Long waiting_id);
 
-	// 웨이팅 시간 설정
+	// 입장 대기 시간 설정
 	@PUT("/api/restaurant/{restaurant_id}/admission_waiting_time")
 	Call<ResultDto<Boolean>> setWaitingTime(@Path("restaurant_id") Long restaurant_id, @Body WaitingTimeDto waitingTimeDto);
+
+	// 포장주문 대기 시간 설정
+	@PUT("/api/restaurant/{restaurant_id}/order_waiting_time")
+	Call<ResultDto<Boolean>> setOrderingWaitingTime(@Path("restaurant_id") Long restaurant_id, @Body WaitingTimeDto waitingTimeDto);
 
 }

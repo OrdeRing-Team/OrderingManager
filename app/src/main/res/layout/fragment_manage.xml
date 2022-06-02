@@ -91,7 +91,8 @@
                             android:id="@+id/btn_manage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_gravity="end"
+                            android:layout_marginRight="5dp"
                             android:text="메뉴관리 >"
                             android:textColor="@color/text_gray"
                             android:background="@color/fui_transparent"/>
@@ -215,7 +216,8 @@
                             android:id="@+id/btn_store_info"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
+                            android:layout_gravity="end"
+                            android:layout_marginRight="20dp"
                             android:text="매장정보수정 >"
                             android:textColor="@color/text_gray"
                             android:background="@color/fui_transparent"/>
@@ -357,71 +359,148 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="100dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/background_custom_white">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="80dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_height="140dp"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginBottom="30dp">
+                        android:layout_marginRight="5dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_custom_white">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="대기시간"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="18dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:layout_weight="1"/>
-
-                        <Button
+                        <LinearLayout
                             android:id="@+id/btn_setting_waiting_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="입장 대기시간"
+                                android:textColor="@color/black"
+                                android:textStyle="bold"
+                                android:textSize="14dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:text=">"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/main"
+                                android:background="@color/fui_transparent"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:text="시간 설정 >"
-                            android:textColor="@color/text_gray"
-                            android:background="@color/fui_transparent"/>
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_waiting_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:textSize="17dp"
+                                android:layout_gravity="center" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="분"
+                                android:textColor="@color/black"
+                                android:textSize="17dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center">
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_custom_white">
 
-                        <TextView
-                            android:id="@+id/tv_waiting_time"
+                        <LinearLayout
+                            android:id="@+id/btn_setting_take_out_waiting_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:textSize="16dp"
-                            android:layout_gravity="center" />
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="20dp">
 
-                        <TextView
-                            android:layout_width="match_parent"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="포장 대기시간"
+                                android:textColor="@color/black"
+                                android:textStyle="bold"
+                                android:textSize="14dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:text=">"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/main"
+                                android:background="@color/fui_transparent"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="분"
-                            android:textColor="@color/black"
-                            android:textSize="16dp"
+                            android:orientation="horizontal"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"/>
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_take_out_waiting_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:textSize="17dp"
+                                android:layout_gravity="center" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="분"
+                                android:textColor="@color/black"
+                                android:textSize="17dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-
-
                 </LinearLayout>
-
 
 
             </LinearLayout>

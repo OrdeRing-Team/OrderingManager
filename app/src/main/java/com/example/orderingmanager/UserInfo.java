@@ -83,6 +83,10 @@ public class UserInfo {
 
     public static void setAdmissionWaitingTime(Integer time) { admissionWaitingTime = time; }
 
+    public static void setOrderingWaitingTime(Integer orderingWaitingTime) {
+        UserInfo.orderingWaitingTime = orderingWaitingTime;
+    }
+
     public static void setFood(FoodDto dto) {
         foodId = dto.getFoodId();
         menuName = dto.getFoodName();

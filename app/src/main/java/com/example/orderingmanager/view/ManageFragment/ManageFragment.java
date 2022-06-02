@@ -1,6 +1,5 @@
 package com.example.orderingmanager.view.ManageFragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -179,6 +178,18 @@ public class ManageFragment extends Fragment {
                 waitingTimeSetDialog.show((getActivity()).getSupportFragmentManager(), "WaitingTimeSetDialog");
             }
         });
+
+        binding.btnSettingTakeOutWaitingTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Bundle에 담아서 WaitingBottomDialog로 보낸다.
+                TakeOutWaitingTimeSetDialog takeOutwaitingTimeSetDialog = new TakeOutWaitingTimeSetDialog();
+                Bundle waitingData = new Bundle();
+                waitingData.putString("takeoutWaitingTime", String.valueOf(binding.tvTakeOutWaitingTime.getText()));
+                takeOutwaitingTimeSetDialog.setArguments(waitingData);
+                takeOutwaitingTimeSetDialog.show((getActivity()).getSupportFragmentManager(), "TakeOutWaitingTimeSetDialog");
+            }
+        });
     }
 
     public void storeInfoCheck() {
@@ -314,17 +325,20 @@ public class ManageFragment extends Fragment {
                                     @Override
                                     public void run() {
                                         // 서버에 업로드된 이미지Url을 변수에 저장
-                                        String storeIconInUserInfo = result.getData().getProfileImageUrl();
-                                        if (storeIconInUserInfo == null) {
+                                        if (result.getData().getProfileImageUrl() == null) {
                                             Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
                                         } else {
-                                            Glide.with(getActivity()).load(storeIconInUserInfo).into(binding.ivStoreIcon);
+                                            Glide.with(getActivity()).load(result.getData().getProfileImageUrl()).into(binding.ivStoreIcon);
                                         }
 
                                         // 서버에 업로드된 웨이팅 시간 저장
                                         Integer waitingTime = result.getData().getAdmissionWaitingTime();
                                         UserInfo.setAdmissionWaitingTime(waitingTime);
                                         binding.tvWaitingTime.setText(String.valueOf(waitingTime));
+
+                                        Integer takeoutWaitingTime = result.getData().getOrderingWaitingTime();
+                                        UserInfo.setOrderingWaitingTime(takeoutWaitingTime);
+                                        binding.tvTakeOutWaitingTime.setText(String.valueOf(takeoutWaitingTime));
                                     }
 
 
