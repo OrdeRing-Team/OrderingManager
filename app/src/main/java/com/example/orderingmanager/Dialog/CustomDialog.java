@@ -23,6 +23,8 @@ public class CustomDialog extends Dialog {
     String contents;
     String positiveButtonText;
     String negativeButtonText;
+    String contentsColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -63,4 +65,5 @@ public class CustomDialog extends Dialog {
         this.positiveButton = positiveButton;
         this.negativeButton = negativeButton;
     }
+
 }

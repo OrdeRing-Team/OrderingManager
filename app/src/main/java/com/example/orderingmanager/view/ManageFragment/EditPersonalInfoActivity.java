@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -73,7 +74,7 @@ public class EditPersonalInfoActivity extends BasicActivity {
         binding.btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteAccount();
+                deleteAccountDialog();
             }
         });
 
@@ -540,6 +541,34 @@ public class EditPersonalInfoActivity extends BasicActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+    // 회원탈퇴 확인 다이얼로그
+    public void deleteAccountDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AccountDeleteDialogStyle);
+
+        //dialog.show();
+        builder.setTitle("회원탈퇴를 하시겠습니까?").setMessage("회원탈퇴 이후에는 데이터를 복구할 수 없습니다.");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                deleteAccount();
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.show();
+        TextView messageText = (TextView)dialog.findViewById(android.R.id.message);
+        messageText.setTextSize(13);
+        dialog.show();
+    }
+
 
     private final View.OnClickListener positiveButton = view -> {
         showProgress();

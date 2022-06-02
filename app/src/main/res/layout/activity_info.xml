@@ -60,12 +60,12 @@
 
             <Button
                 android:id="@+id/startApp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
-                android:backgroundTint="@color/main"
-                android:text="@string/start" />
+                android:background="@color/main"
+                android:text="등록하기"
+                android:textSize="17dp"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
