@@ -89,8 +89,9 @@ public class OrderWaitingTimeSetDialog extends DialogFragment {
 
     // 대기 시간 서버 업로드
     private void setWaitingTime() {
+        waitingTime = binding.etWaitingTime.getText().toString();
         Log.e("포장 대기시간 서버업로드 함수 안의 waiting time", String.valueOf(Integer.valueOf(waitingTime)));
-        WaitingTimeDto waitingTimeDto = new WaitingTimeDto(Integer.valueOf(waitingTime));
+        WaitingTimeDto waitingTimeDto = new WaitingTimeDto(Integer.parseInt(waitingTime));
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/order_waiting_time/")
@@ -108,7 +109,7 @@ public class OrderWaitingTimeSetDialog extends DialogFragment {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.e("대기시간 서버 업로드", String.valueOf(result));
+                        Log.e("대기시간 서버 업로드", Boolean.toString(result.getData()));
                         dismiss();
                         ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new ManageFragment()).commit();
                     }
