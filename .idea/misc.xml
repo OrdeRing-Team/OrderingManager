@@ -68,6 +68,7 @@
         <entry key="app/src/main/res/drawable-v24/outline_equalizer_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-xxxhdpi/store_custom.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/activity_menu_item.xml" value="0.440625" />
+        <entry key="app/src/main/res/drawable/background_custom_lightgrayline.xml" value="0.183" />
         <entry key="app/src/main/res/drawable/background_custom_main_color.xml" value="0.159" />
         <entry key="app/src/main/res/drawable/background_custom_white.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/background_splash.xml" value="0.2604166666666667" />
@@ -127,6 +128,7 @@
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splash2.xml" value="0.1778115501519757" />
         <entry key="app/src/main/res/layout/activity_store_manage.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_store_notice.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_temp.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/activity_test_stack.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.17239583333333333" />
@@ -173,7 +175,7 @@
         <entry key="app/src/main/res/layout/view_qr_table.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/view_qr_takeout.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/view_qr_waiting.xml" value="0.2708333333333333" />
-        <entry key="app/src/main/res/layout/view_store_info.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/view_store_info.xml" value="0.165" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.335" />
         <entry key="app/src/main/res/menu/menu_actions.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/menu/menu_qr.xml" value="0.23229166666666667" />

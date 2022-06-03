@@ -217,7 +217,7 @@
                             android:layout_height="wrap_content"
                             android:text="매장 공지사항"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="18dp"
                             android:textStyle="bold"
                             android:layout_gravity="bottom"
                             android:layout_weight="1"/>
