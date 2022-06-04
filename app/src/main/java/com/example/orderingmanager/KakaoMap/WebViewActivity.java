@@ -23,7 +23,7 @@ public class WebViewActivity extends AppCompatActivity {
             Intent intent = new Intent();
             extra.putString("data", data);
             extra.putDouble("latitude", Double.parseDouble(latitude));
-            extra.putDouble("longintude", Double.parseDouble(longitude));
+            extra.putDouble("longitude", Double.parseDouble(longitude));
             intent.putExtras(extra);
             setResult(RESULT_OK, intent);
             finish();

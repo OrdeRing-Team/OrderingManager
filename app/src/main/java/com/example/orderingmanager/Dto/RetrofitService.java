@@ -4,6 +4,7 @@ import com.example.orderingmanager.Dto.request.MessageDto;
 import com.example.orderingmanager.Dto.request.OwnerSignUpDto;
 import com.example.orderingmanager.Dto.request.PasswordChangeDto;
 import com.example.orderingmanager.Dto.request.PhoneNumberDto;
+import com.example.orderingmanager.Dto.request.RestaurantDataWithLocationDto;
 import com.example.orderingmanager.Dto.request.SalesRequestDto;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.request.VerificationDto;
@@ -38,6 +39,10 @@ public interface RetrofitService {
    	// 회원가입
 	@POST("/api/owner/signup")
 	Call<ResultDto<Long>> ownerSignUp(@Body OwnerSignUpDto ownerSignUpDto);
+
+	// 매장등록
+	@POST("/api/owner/{owner_id}/restaurant")
+	Call<ResultDto<Long>> registerStore(@Path("owner_id") Long ownerId, @Body RestaurantDataWithLocationDto restaurantDataWithLocationDto);
 
 	// 인증요청
 	@POST("/api/owner/verification/get")

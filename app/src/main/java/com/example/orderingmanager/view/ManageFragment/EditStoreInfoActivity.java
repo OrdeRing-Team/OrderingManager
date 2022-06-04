@@ -372,14 +372,14 @@ public class EditStoreInfoActivity extends BasicActivity {
                                     if(restaurantType == RestaurantType.ONLY_TO_GO ||
                                             UserInfo.getTableCount() == Integer.parseInt(binding.viewActivityEditStoreInfo.tablenum.getText().toString())){
                                         // 포장이 선택되었거나 테이블 수가 이전과 같다면 QR코드를 새로 생성하지 않는다.
-                                        UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantDataDto);
+                                        UserInfo.modifyRestaurantInfo(UserInfo.getOwnerId(), restaurantDataDto);
                                         initQrList();
                                         showToast(EditStoreInfoActivity.this, "매장정보가 저장되었습니다.");
                                         FinishWithAnim();
                                     }
                                     else{
                                         // 반면에 테이블 수가 변경되었다면 QR코드를 새로 생성한다.(QR코드 생성화면으로 넘어간다)
-                                        UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantDataDto);
+                                        UserInfo.modifyRestaurantInfo(UserInfo.getOwnerId(), restaurantDataDto);
                                         createQRCodes();
                                     }
                                 }

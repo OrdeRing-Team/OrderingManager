@@ -20,4 +20,6 @@ public class RestaurantDataDto {
     private RestaurantType restaurantType;
     private Integer admissionWaitingTime;
     private Integer orderingWaitingTime;
+
+
 }
