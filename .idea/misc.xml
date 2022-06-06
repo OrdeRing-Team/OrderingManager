@@ -139,6 +139,7 @@
         <entry key="app/src/main/res/layout/custom_dialog_input.xml" value="0.1408514492753623" />
         <entry key="app/src/main/res/layout/custom_dialog_order_cancel.xml" value="0.31140046050583103" />
         <entry key="app/src/main/res/layout/custom_dialog_store_check.xml" value="0.13697916666666668" />
+        <entry key="app/src/main/res/layout/dialog_order_waiting_time_set.xml" value="0.2265625" />
         <entry key="app/src/main/res/layout/dialog_takeout_waiting_time_set.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/dialog_waiting_time_set.xml" value="0.19934143870314083" />
         <entry key="app/src/main/res/layout/fragment_daily_sales.xml" value="0.1" />
@@ -150,7 +151,7 @@
         <entry key="app/src/main/res/layout/fragment_monthly_sales.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_order.xml" value="0.23324275362318841" />
         <entry key="app/src/main/res/layout/fragment_order_list.xml" value="0.2240026943925498" />
-        <entry key="app/src/main/res/layout/fragment_qr.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/fragment_qr.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_qr_table.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_qr_takeout.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/layout/fragment_qr_waiting.xml" value="0.14583333333333334" />

@@ -9,13 +9,12 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
         android:text="주문 취소 사유를 선택해주세요. 고객에게 메세지가 전달됩니다."
-        android:textColor="@color/error"
+        android:textColor="@color/main"
         android:textSize="14sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/main"
                 android:text="주문마감"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/black" />
 
             <RadioButton
@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/main"
                 android:text="재료소진"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/black"/>
 
             <RadioButton
@@ -104,7 +105,7 @@
         android:background="#FFFFFF"
         android:gravity="center"
         android:text="주문취소"
-        android:textColor="@color/error"
+        android:textColor="@color/main"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

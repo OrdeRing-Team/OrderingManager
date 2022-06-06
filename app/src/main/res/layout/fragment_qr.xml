@@ -230,10 +230,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/baeminjua"
-                android:text="OrdeRing 매장관리시스템"
-                android:textColor="@color/black"
-                android:textSize="20dp"></TextView>
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="OrdeRing"
+                android:textColor="@color/main"
+                android:textStyle="bold"
+                android:textSize="28dp"></TextView>
 
         </androidx.appcompat.widget.Toolbar>
 
