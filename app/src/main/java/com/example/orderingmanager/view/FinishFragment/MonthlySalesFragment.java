@@ -22,6 +22,7 @@ import com.example.orderingmanager.Dto.response.SalesResponseDto;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentDailySalesBinding;
+import com.example.orderingmanager.databinding.FragmentMonthlySalesBinding;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -43,7 +44,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MonthlySalesFragment extends Fragment {
 
     private View view;
-    private FragmentDailySalesBinding binding;
+    private FragmentMonthlySalesBinding binding;
     ArrayList<String> salesListFinal;
     ArrayList<Integer> salesMonth = new ArrayList<>();
     String arrayMonthTemp;
@@ -53,7 +54,7 @@ public class MonthlySalesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentDailySalesBinding.inflate(inflater, container, false);
+        binding = FragmentMonthlySalesBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
         int currentYear;
@@ -99,10 +100,10 @@ public class MonthlySalesFragment extends Fragment {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-//                                    result.getData().forEach(SalesResponseDto -> {
-//                                        salesList.add(SalesResponseDto.getSales());
-//                                        Log.e("sales list", String.valueOf(salesList));
-//                                    });
+                                    result.getData().forEach(SalesResponseDto -> {
+                                        salesList.add(SalesResponseDto.getSales());
+                                        Log.e("sales list", String.valueOf(salesList));
+                                    });
 
                                     //한달 매출 합계
                                     int sum = 0;
@@ -113,8 +114,8 @@ public class MonthlySalesFragment extends Fragment {
                                         Log.e("sum", String.valueOf(sum));
                                     }
 
-//                                    salesListFinal = salesList;
-//                                    Log.e("salesListFinal", String.valueOf(salesListFinal));
+                                    salesListFinal = salesList;
+                                    Log.e("salesListFinal", String.valueOf(salesListFinal));
                                     salesMonth.add(sum);
                                     //arrayMonthTemp += String.valueOf(sum);
                                     Log.e("salesMonth", String.valueOf(salesMonth));
@@ -140,22 +141,22 @@ public class MonthlySalesFragment extends Fragment {
                                     Log.e("!!!!", String.valueOf(salesMonth));
 
                                     ArrayList<BarEntry> entries = new ArrayList<>();
-                                    entries.add(new BarEntry(1, 10000));
-                                    entries.add(new BarEntry(2, 20000));
-                                    entries.add(new BarEntry(3, 30000));
-                                    entries.add(new BarEntry(4, 40000));
-                                    entries.add(new BarEntry(5, 50000));
-                                    entries.add(new BarEntry(6, 60000));
-                                    entries.add(new BarEntry(7, 70000));
-                                    entries.add(new BarEntry(8, 80000));
-                                    entries.add(new BarEntry(9, 90000));
-                                    entries.add(new BarEntry(10, 100000));
-                                    entries.add(new BarEntry(11, 110000));
-                                    entries.add(new BarEntry(12, 120000));
+//                                    entries.add(new BarEntry(1, 10000));
+//                                    entries.add(new BarEntry(2, 20000));
+//                                    entries.add(new BarEntry(3, 30000));
+//                                    entries.add(new BarEntry(4, 40000));
+//                                    entries.add(new BarEntry(5, 50000));
+//                                    entries.add(new BarEntry(6, 60000));
+//                                    entries.add(new BarEntry(7, 70000));
+//                                    entries.add(new BarEntry(8, 80000));
+//                                    entries.add(new BarEntry(9, 90000));
+//                                    entries.add(new BarEntry(10, 100000));
+//                                    entries.add(new BarEntry(11, 110000));
+//                                    entries.add(new BarEntry(12, 120000));
                                     //fit the data into a bar
-//                                    for (int i = 1; i < salesMonth.size(); i++) {
-//                                        entries.add(new BarEntry(i, Integer.valueOf(salesMonth.get(i))));
-//                                    }
+                                    for (int i = 0; i < 12; i++) {
+                                        entries.add(new BarEntry(i+1, Integer.valueOf(salesListFinal.get(i))));
+                                    }
 
                                     Log.e("!!!", String.valueOf(entries));
 
@@ -179,10 +180,10 @@ public class MonthlySalesFragment extends Fragment {
                                     barChart.getLegend().setEnabled(false); // Legend는 차트의 범례
 //
                                     barDataSet.setColors(colorArray);
-////
+                                    //barChart.setDrawValueAboveBar(true);
 //                                    barChart.setFitBars(true);
                                     barChart.getDescription().setEnabled(false); // chart 밑에 description 표시 유무
-//                                    barChart.animateY(2000);
+                                    barChart.animateY(2000);                                    barChart.animateY(2000);
                                     barChart.setTouchEnabled(false); // 터치 유무
 //                                    barChart.setVisibleXRangeMaximum(salesMonth.size()); //최대 x좌표 기준으로 몇개를 보여줄 것인지
 
@@ -192,9 +193,13 @@ public class MonthlySalesFragment extends Fragment {
                                     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                                     xAxis.setDrawGridLines(false);
                                     xAxis.setLabelCount(40); // x축 레이블 표시 개수
-//
+
+                                    barDataSet.setDrawValues(true);
+
                                     YAxis yAxis = barChart.getAxisLeft(); // y축 왼쪽
                                     yAxis.setDrawGridLines(true);
+                                    YAxis yRAxis = barChart.getAxisRight();
+                                    yRAxis.setDrawLabels(false);
 
 
                                     //configureChartAppearance(); // BarChart의 기본적인 것들을 세팅해준다

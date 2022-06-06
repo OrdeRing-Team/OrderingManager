@@ -1,5 +1,6 @@
 package com.example.orderingmanager.view.FinishFragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,7 +48,7 @@ public class DailySalesFragment extends Fragment {
     private FragmentDailySalesBinding binding;
     ArrayList<String> salesListFinal;
 
-
+    @SuppressLint("DefaultLocale")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,44 +57,38 @@ public class DailySalesFragment extends Fragment {
         view = binding.getRoot();
 
         //getSalesRequestFromServer("2022-05","2022-06");
-        configureChartAppearance(); // BarChart의 기본적인 것들을 세팅해준다
+        int currentYear;
+        int index = 0;
+        int currentMonth;
+        int nextYear;
+        int nextMonth;
+        int displayMonth;
+
+
+        LocalDate now = LocalDate.now();
+        currentYear = now.getYear();
+        nextYear = currentYear;
+        //currentMonth = now.getMonthValue();
+        displayMonth = LocalDate.now().getMonthValue();
+        currentMonth = displayMonth;
+        nextMonth = currentMonth + 1;
+        if (currentMonth == 12) {
+            nextMonth = 1;
+            nextYear++;
+        }
+        String from2Server = String.format("%s-%s", currentYear, currentMonth < 10 ? "0" + currentMonth : currentMonth);
+        getSalesRequestFromServer(from2Server);
 
         return view;
     }
 
-
+    @SuppressLint("DefaultLocale")
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void configureChartAppearance() {
-
-        BarChart barChart = view.findViewById(R.id.barChart);
-        int[] colorArray = new int[]{
-                Color.rgb(219, 167, 95),
-                Color.rgb(218, 133, 95),
-                Color.rgb(217, 100, 94),
-                Color.rgb(217, 98, 127),
-                Color.rgb(217, 98, 158),
-                Color.rgb(217, 98, 191),
-                Color.rgb(197, 98, 204),
-                Color.rgb(160, 98, 204),
-                Color.rgb(127, 98, 205),
-                Color.rgb(103, 108, 205),
-                Color.rgb(105, 141, 203),
-                Color.rgb(105, 174, 203)};
-
-        int currentYear;
-        int currentMonth;
-        int index = 0;
-
-        LocalDate now = LocalDate.now();
-        currentYear = now.getYear();
-        currentMonth = now.getMonthValue();
-        String from2Server = String.format("%s-%s", currentYear, currentMonth);
-
-
+    public void getSalesRequestFromServer(String from2Server) {
         ArrayList<String> salesList = new ArrayList<>();
         // 매장 한달 매출 불러오기
         try {
-            //Log.e("sales1", from2Server + before2Server);
+            Log.e("sales1", from2Server);
             SalesRequestDto salesRequestDto = new SalesRequestDto(from2Server);
 
             new Thread() {
@@ -115,28 +110,54 @@ public class DailySalesFragment extends Fragment {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-//                                    result.getData().forEach(SalesResponseDto -> {
-//                                        salesList.add(SalesResponseDto.getSales());
-//                                        Log.e("sales list", String.valueOf(salesList));
-//                                    });
+                                    result.getData().forEach(SalesResponseDto -> {
+                                        salesList.add(SalesResponseDto.getSales());
+                                        Log.e("sales list", String.valueOf(salesList));
+                                    });
 
-//                                    ArrayList<String> xLabel = new ArrayList<>();
-//                                    for (int i = 0; i < salesList.size(); i++) {
-//                                        xLabel.add(String.valueOf(i));
-//                                        Log.e("xLabel", String.valueOf(xLabel));
+//                                    for(int i = 1; i<32; i++){
+//                                        salesList.add(Integer.toString(i*2000));
 //                                    }
+//
+
+//                                    int sum = 0;
+//                                    for(int i=0; i < salesList.size(); i++) {
+//                                        int salesOfInt = Integer.valueOf(salesList.get(i));
+//                                        sum += salesOfInt;
+//                                    }
+
+                                    salesListFinal = salesList;
+
+                                    Log.e("salesListFinal", String.valueOf(salesListFinal));
+
+                                    BarChart barChart = view.findViewById(R.id.barChart);
+
+                                    int[] colorArray = new int[]{
+                                            Color.rgb(219, 167, 95),
+                                            Color.rgb(218, 133, 95),
+                                            Color.rgb(217, 100, 94),
+                                            Color.rgb(217, 98, 127),
+                                            Color.rgb(217, 98, 158),
+                                            Color.rgb(217, 98, 191),
+                                            Color.rgb(197, 98, 204),
+                                            Color.rgb(160, 98, 204),
+                                            Color.rgb(127, 98, 205),
+                                            Color.rgb(103, 108, 205),
+                                            Color.rgb(105, 141, 203),
+                                            Color.rgb(105, 174, 203)};
+
+
+                                    Log.e("!!!!", String.valueOf(salesListFinal));
 
                                     ArrayList<BarEntry> entries = new ArrayList<>();
-                                    //fit the data into a bar
-//                                    for (int i = 1; i < salesList.size(); i++) {
-//                                        entries.add(new BarEntry(i, Integer.valueOf(salesList.get(i))));
-//                                        Log.e("entries", String.valueOf(entries));
-//                                    }
-
-                                    for(int i = 1; i < 32; i++){
-                                        entries.add(new BarEntry(i, i*5000));
+//
+                                    for (int i = 0; i < salesList.size(); i++) {
+                                        entries.add(new BarEntry(i+1, Integer.valueOf(salesList.get(i))));
+                                        Log.e("entries", String.valueOf(entries));
                                     }
 
+
+                                    Log.e("!!!", String.valueOf(entries));
 
                                     BarDataSet barDataSet = new BarDataSet(entries, "일별 매출"); // 변수로 받아서 넣어줘도 됨
                                     barDataSet.setDrawValues(false); //그래프 텍스트 없애기
@@ -161,7 +182,7 @@ public class DailySalesFragment extends Fragment {
 ////
 //                                    barChart.setFitBars(true);
                                     barChart.getDescription().setEnabled(false); // chart 밑에 description 표시 유무
-//                                    barChart.animateY(2000);
+                                    barChart.animateY(2000);
                                     barChart.setTouchEnabled(false); // 터치 유무
 //                                    barChart.setVisibleXRangeMaximum(salesMonth.size()); //최대 x좌표 기준으로 몇개를 보여줄 것인지
 
@@ -172,10 +193,11 @@ public class DailySalesFragment extends Fragment {
                                     xAxis.setDrawGridLines(false);
                                     xAxis.setLabelCount(40); // x축 레이블 표시 개수
 //
+                                    barDataSet.setDrawValues(true);
+
                                     YAxis yAxis = barChart.getAxisLeft(); // y축 왼쪽
                                     yAxis.setDrawGridLines(true);
-
-
+                                    yAxis.setDrawAxisLine(true);
                                 }
                             });
                         }
@@ -185,6 +207,7 @@ public class DailySalesFragment extends Fragment {
                             Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
                         }
+
                     });
                 }
             }.start();
@@ -193,9 +216,6 @@ public class DailySalesFragment extends Fragment {
             Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             Log.e("e = ", e.getMessage());
         }
-
-
-
     }
 
 }
