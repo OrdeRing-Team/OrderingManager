@@ -289,6 +289,7 @@ public class EditPersonalInfoActivity extends BasicActivity {
             new Thread() {
                 @SneakyThrows
                 public void run() {
+                    Log.e("asdasd","asdasd");
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://www.ordering.ml/api/owner/" + Long.toString(UserInfo.getOwnerId()) + "/password/")
                             .addConverterFactory(GsonConverterFactory.create())
@@ -310,6 +311,7 @@ public class EditPersonalInfoActivity extends BasicActivity {
                                         public void run() {
                                             showLongToast(EditPersonalInfoActivity.this,"비밀번호를 성공적으로 변경하였습니다");
                                             clearSharedPreferences();
+                                            UserInfo.setUserPW(newPw);
                                             finish();
                                         }
                                     });
