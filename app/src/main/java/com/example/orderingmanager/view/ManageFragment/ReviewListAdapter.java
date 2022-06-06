@@ -195,7 +195,10 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Cu
             }
         }catch (NullPointerException e){
             Glide.with(context).load(context.getDrawable(R.drawable.icon)).into(holder.circleImageView);
-            Log.e("SplitNickname","Null");
+            Log.e("SplitNickname",e.toString());
+        }catch (ArrayIndexOutOfBoundsException e){
+            Glide.with(context).load(context.getDrawable(R.drawable.icon)).into(holder.circleImageView);
+            Log.e("ArrayIndexOutOfBoundsException", e.toString());
         }
     }
 

@@ -101,14 +101,14 @@ public class WaitingCallDialog extends DialogFragment {
     // 웨이팅 내역 지우기 -> 웨이팅 호출 후 서버에서 삭제해야하기 떄문.
     private void deleteData() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.ordering.ml/api/waiting/" + Long.valueOf(waitingId) + "/")
+                .baseUrl("http://www.ordering.ml/api/restaurant/waiting/"+waitingId+"/call/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         // RequestBody 객체 생성
         Call<ResultDto<Boolean>> call;
         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-        call = retrofitService.deleteWaiting(Long.valueOf(waitingId));
+        call = retrofitService.callWaiting(Long.valueOf(waitingId));
 
         call.enqueue(new Callback<ResultDto<Boolean>>() {
             @Override
@@ -118,7 +118,7 @@ public class WaitingCallDialog extends DialogFragment {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(), "웨이팅 고객에게 호출을 보냈어요! (해당 웨이팅 정보가 삭제되었어요.)", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "해당 고객에게 호출 메세지를 전송했습니다.", Toast.LENGTH_SHORT).show();
                         dismiss();
 
                         //뷰페이저 재세팅
