@@ -13,6 +13,7 @@ import com.example.orderingmanager.Dto.response.OrderPreviewDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 import com.example.orderingmanager.Dto.response.RepresentativeMenuDto;
 import com.example.orderingmanager.Dto.response.RestaurantInfoDto;
+import com.example.orderingmanager.Dto.response.ReviewPreviewDto;
 import com.example.orderingmanager.Dto.response.SalesResponseDto;
 import com.example.orderingmanager.Dto.response.WaitingPreviewDto;
 
@@ -168,5 +169,9 @@ public interface RetrofitService {
 	// 포장주문 대기 시간 설정
 	@PUT("/api/restaurant/{restaurant_id}/order_waiting_time")
 	Call<ResultDto<Boolean>> setOrderingWaitingTime(@Path("restaurant_id") Long restaurant_id, @Body WaitingTimeDto waitingTimeDto);
+
+	// 매장 리뷰 리스트 조회 API
+	@GET("/api/restaurant/{restaurantId}/reviews")
+	Call<ResultDto<List<ReviewPreviewDto>>> getReviewList(@Path("restaurantId") Long restaurantId);
 
 }

@@ -25,6 +25,7 @@ import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.SignInDto;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
+import com.example.orderingmanager.Dto.response.ReviewPreviewDto;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityStoreManageBinding;
@@ -41,7 +42,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
+import lombok.SneakyThrows;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -59,6 +62,9 @@ public class StoreManageActivity extends AppCompatActivity {
     private final int GET_GALLERY_IMAGE = 200;
     private final int GET_GALLERY_IMAGE2 = 300;
 
+    public static int totalStars, oneStar, twoStars, threeStars, fourStars, fiveStars;
+    public static List<ReviewPreviewDto> reviewList;
+    public static float reviewTotalRating;
     File imageFile_icon;
     File imageFile_sig;
     RequestBody fileBody;
@@ -74,6 +80,8 @@ public class StoreManageActivity extends AppCompatActivity {
 
         binding = ActivityStoreManageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        initData();
 
         // floating menu add btn setting
         menuAdd();
@@ -162,6 +170,18 @@ public class StoreManageActivity extends AppCompatActivity {
         else if (storeNameLength > 13) binding.tvStoreName.setTextSize(14.f);
     }
 
+    private void initData(){
+        totalStars = 0;
+        oneStar = 0;
+        twoStars = 0;
+        threeStars = 0;
+        fourStars = 0;
+        fiveStars = 0;
+        reviewList =  null;
+        reviewTotalRating = 0;
+
+        initReviewRecyclerView();
+    }
 
     // 이미지 업로드 함수
     @Override
@@ -428,4 +448,84 @@ public class StoreManageActivity extends AppCompatActivity {
         Toast.makeText(StoreManageActivity.this, "업로드되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
+
+    public void setRatings(float rating, String ratingString){
+        binding.ratingBar.setRating(rating);
+        binding.tvScore.setText(ratingString);
+    }
+
+    private void initReviewRecyclerView(){
+        try{
+            new Thread(){
+                @SneakyThrows
+                public void run(){
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/reviews/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<List<ReviewPreviewDto>>> call = service.getReviewList(UserInfo.getRestaurantId());
+
+                    call.enqueue(new Callback<ResultDto<List<ReviewPreviewDto>>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<List<ReviewPreviewDto>>> call, Response<ResultDto<List<ReviewPreviewDto>>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<List<ReviewPreviewDto>> result;
+                                result = response.body();
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        for(ReviewPreviewDto i : result.getData()){
+                                            reviewTotalRating += i.getRating();
+                                            switch ((int)i.getRating()){
+                                                case 1:
+                                                    oneStar++;
+                                                    break;
+                                                case 2:
+                                                    twoStars++;
+                                                    break;
+                                                case 3:
+                                                    threeStars++;
+                                                    break;
+                                                case 4:
+                                                    fourStars++;
+                                                    break;
+                                                case 5:
+                                                    fiveStars++;
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        totalStars = oneStar + twoStars + threeStars + fourStars + fiveStars;
+                                        if(result.getData().size() != 0) {
+                                            reviewTotalRating /= result.getData().size();
+                                        }else{
+                                            reviewTotalRating = 0;
+                                        }
+                                        reviewList = result.getData();
+
+                                        setRatings(reviewTotalRating, Float.toString(reviewTotalRating));
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<List<ReviewPreviewDto>>> call, Throwable t) {
+                            Toast.makeText(StoreManageActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(StoreManageActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+        }
+    }
 }
