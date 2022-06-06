@@ -313,7 +313,11 @@ public class InfoActivity extends BasicActivity {
 
     private void createQRCodes(){
         hideKeybord();
-        startActivity(new Intent(InfoActivity.this, CreateQR.class));
+        Intent intent = new Intent(InfoActivity.this, CreateQR.class);
+        if(tableNum == 0) {
+            intent.putExtra("PackingFromInfo", true);
+        }
+        startActivity(intent);
         FinishWithAnim();
     }
 
