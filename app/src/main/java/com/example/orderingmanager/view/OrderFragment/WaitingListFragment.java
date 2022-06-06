@@ -65,7 +65,7 @@ public class WaitingListFragment extends Fragment{
     }
 
 
-    public void getWaitingListFromServer(){
+    private void getWaitingListFromServer(){
         ArrayList<WaitingData> waitingList = new ArrayList<>();
 
         // 웨이팅 정보 불러오기
@@ -101,13 +101,18 @@ public class WaitingListFragment extends Fragment{
                                             // 웨이팅 요청 손님이 0명일 때
                                             if (waitingList.size() == 0) {
                                                 Log.e("waitingList.size()", "is 0");
-                                                Toast.makeText(getActivity(), "웨이팅 신청 내역이 없습니다.", Toast.LENGTH_LONG).show();
+                                                binding.tvWaitingNone.setVisibility(View.VISIBLE);
+                                                binding.rvWaiting.setVisibility(View.GONE);
+                                                binding.tvWaitingCount.setText("(0)");
 
                                             }
                                             else {
+                                                binding.tvWaitingNone.setVisibility(View.GONE);
+                                                binding.rvWaiting.setVisibility(View.VISIBLE);
                                                 Log.e("waitingList.size()", "is not 0");
                                                 RecyclerView recyclerView = binding.rvWaiting;
                                                 WaitingAdapter waitingAdapter = new WaitingAdapter(waitingList, getActivity());
+                                                binding.tvWaitingCount.setText("(" + String.valueOf(waitingAdapter.getItemCount()) + ")");
                                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                                 recyclerView.setAdapter(waitingAdapter);
                                             }

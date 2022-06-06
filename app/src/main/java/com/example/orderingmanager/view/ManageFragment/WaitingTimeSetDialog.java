@@ -110,6 +110,7 @@ public class WaitingTimeSetDialog extends DialogFragment {
                     public void run() {
                         Log.e("대기시간 서버 업로드", String.valueOf(result));
                         dismiss();
+                        UserInfo.setAdmissionWaitingTime(Integer.parseInt(waitingTime));
                         ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new ManageFragment()).commit();
                     }
                 });

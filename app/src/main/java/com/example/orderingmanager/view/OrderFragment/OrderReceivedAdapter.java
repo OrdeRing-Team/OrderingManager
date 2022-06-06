@@ -144,7 +144,7 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
             holder.tv_checkedTime.setVisibility(View.GONE);
             holder.tv_checkedTime_Header.setVisibility(View.GONE);
 //            holder.tv_orderId.setVisibility(View.GONE);
-            holder.cl_order_received.setBackgroundColor(context.getColor(R.color.new_order));
+            holder.cl_order_received.setBackground(context.getDrawable(R.drawable.background_custom_new_order));
 
         }else{
             holder.tv_checkedTime.setText(arrayList.get(position).getCheckTime());
@@ -199,7 +199,7 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
 //                                                                "주문번호 : %d번",
 //                                                                arrayList.get(holder.getAbsoluteAdapterPosition()).getOrderId()
 //                                                        ));
-                                                        holder.cl_order_received.setBackgroundColor(context.getColor(R.color.white));
+                                                        holder.cl_order_received.setBackground(context.getDrawable(R.drawable.background_custom_waiting));
                                                     }
                                                 });
                                             }else{

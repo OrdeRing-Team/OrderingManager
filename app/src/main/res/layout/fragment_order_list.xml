@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/white"
     android:paddingBottom="70dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F1F1F1"
         tools:context=".view.OrderFragment.OrderListFragment">
 
 
@@ -17,7 +18,10 @@
             android:id="@+id/cl_received_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingBottom="20dp"
+            android:paddingTop="10dp"
+            android:background="@color/white"
+            android:elevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -39,7 +43,7 @@
                     android:layout_marginStart="10dp"
                     android:text="접수된 주문"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +56,8 @@
                     android:layout_marginStart="5dp"
                     android:text="(0)"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/tv_received_order"
                     app:layout_constraintStart_toEndOf="@id/tv_received_order"
                     app:layout_constraintTop_toTopOf="@id/tv_received_order" />
@@ -63,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +82,7 @@
                 android:gravity="center"
                 android:text="접수된 주문이 존재하지 않습니다."
                 android:textSize="16sp"
-                android:textColor="@color/black"
+                android:textColor="#636363"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_received_header" />
@@ -86,7 +92,8 @@
             android:id="@+id/cl_processed_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_received_list">
@@ -97,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:padding="10dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -108,7 +116,7 @@
                     android:layout_marginStart="10dp"
                     android:text="처리된 주문"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +129,8 @@
                     android:layout_marginStart="5dp"
                     android:text="(0)"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/tv_processed_order"
                     app:layout_constraintStart_toEndOf="@id/tv_processed_order"
                     app:layout_constraintTop_toTopOf="@id/tv_processed_order" />
@@ -144,7 +153,7 @@
                 android:gravity="center"
                 android:text="처리된 주문이 존재하지 않습니다."
                 android:textSize="16sp"
-                android:textColor="@color/black"
+                android:textColor="#636363"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_processed_header" />

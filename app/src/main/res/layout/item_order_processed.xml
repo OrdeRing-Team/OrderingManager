@@ -7,9 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="10dp"
-    android:elevation="10dp"
-    android:layout_marginTop="10dp">
+    android:padding="15dp"
+    android:elevation="5dp"
+    android:layout_marginBottom="0.7dp">
 
     <TextView
         android:id="@+id/tv_orderid"
@@ -19,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginEnd="10dp"
         android:text="주문번호 : 5번"
-        android:textStyle="bold"
         android:textColor="@color/black"/>
 
     <TextView
@@ -30,7 +29,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_orderid"
         android:text="16번 테이블"
-        android:textColor="@color/black"/>
+        android:textStyle="bold"
+        android:textColor="@color/main"/>
 
     <TextView
         android:id="@+id/tv_received_time_header"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:text="접수 일시 : "
         android:textSize="12sp"
-        android:textColor="@color/black"/>
+        android:textColor="#606060"/>
 
     <TextView
         android:id="@+id/tv_received_time"
@@ -50,9 +50,8 @@
         app:layout_constraintTop_toTopOf="@id/tv_received_time_header"
         app:layout_constraintBottom_toBottomOf="@id/tv_received_time_header"
         android:text="2020-20-20 08:44"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="14sp"/>
+        android:textColor="#606060"
+        android:textSize="13sp"/>
 
     <TextView
         android:id="@+id/tv_processed_time_header"
@@ -61,7 +60,7 @@
         app:layout_constraintStart_toStartOf="@id/tv_received_time_header"
         app:layout_constraintTop_toBottomOf="@id/tv_received_time_header"
         android:text="주문 완료 : "
-        android:textColor="@color/black"
+        android:textColor="#606060"
         android:textSize="12sp"
         android:layout_marginTop="5dp"/>
 
@@ -73,9 +72,8 @@
         app:layout_constraintTop_toTopOf="@id/tv_processed_time_header"
         app:layout_constraintBottom_toBottomOf="@id/tv_processed_time_header"
         android:text="2020-20-20 08:44"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="14sp"/>
+        android:textColor="#606060"
+        android:textSize="13sp"/>
 
     <TextView
         android:id="@+id/tv_order_header"
@@ -84,7 +82,7 @@
         app:layout_constraintStart_toStartOf="@id/tv_processed_time_header"
         app:layout_constraintTop_toBottomOf="@id/tv_processed_time_header"
         android:text="주문 내용 : "
-        android:textColor="@color/black"
+        android:textColor="#606060"
         android:layout_marginTop="10dp"
         android:textSize="12sp"/>
 
@@ -92,13 +90,12 @@
         android:id="@+id/tv_order"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:text="카페라떼(ICE): 1개, 연유라떼(ICE): 1개, 아메리카노(ICE): 1개, 헤이즐넛아메리카노(ICE): 1개, 쿠키앤크림프라페(ICE): 1개, 총 주문금액: 24600원"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@id/tv_order_header"
         app:layout_constraintTop_toTopOf="@id/tv_order_header"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textStyle="bold"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

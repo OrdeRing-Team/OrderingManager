@@ -79,7 +79,7 @@ public class StoreManageActivity extends AppCompatActivity {
         menuAdd();
 
         // ProgressDialog 생성
-        creatProgress();
+        createProgress();
 
         // 업로드된 아이콘 및 대표메뉴 이미지 가져오기
         getRestaurantInfo();
@@ -394,7 +394,7 @@ public class StoreManageActivity extends AppCompatActivity {
     }
 
     // ProgressDialog 생성
-    public void creatProgress() {
+    public void createProgress() {
         progressDialog = new ProgressDialog(this, R.style.SpinKitViewUpload);
         progressDialog.setMessage("Image Uploading ...");
         Sprite anim = new ThreeBounce();

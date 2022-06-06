@@ -17,5 +17,5 @@
     <color name="light_gray">#E4E4E4</color>
     <color name="extra_light_gray">#F6F6F6</color>
     <color name="item_represent">#93632E</color>
-    <color name="new_order">#FFFFEE55</color>
+    <color name="new_order">#F3DEDE</color>
 </resources>

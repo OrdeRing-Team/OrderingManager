@@ -192,7 +192,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
             <Button
                 android:id="@+id/btn_change_password"
                 android:layout_width="match_parent"

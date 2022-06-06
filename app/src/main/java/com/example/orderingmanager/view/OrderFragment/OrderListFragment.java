@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.response.OrderPreviewDto;
-import com.example.orderingmanager.Dto.response.WaitingPreviewDto;
 import com.example.orderingmanager.ENUM_CLASS.OrderType;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentOrderListBinding;

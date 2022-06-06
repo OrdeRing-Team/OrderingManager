@@ -19,20 +19,12 @@ import android.widget.Toast;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.FoodCategory;
-import com.example.orderingmanager.Dto.request.RestaurantDataDto;
 import com.example.orderingmanager.Dto.request.RestaurantDataWithLocationDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
-import com.example.orderingmanager.Dto.response.OrderPreviewDto;
-import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.KakaoMap.WebViewActivity;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityInfoBinding;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.net.URL;
-import java.util.List;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -291,6 +283,7 @@ public class InfoActivity extends BasicActivity {
                                             @Override
                                             public void run() {
                                                 UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantDataWithLocationDto);
+                                                UserInfo.setAdmissionWaitingTime(Integer.parseInt(admissionWaitingTime));
                                                 UserInfo.setRestaurantId(result.getData());
                                                 Log.e("restaurantId ",result.getData().toString());
                                                 Log.e("위치좌표 latitude : ", Double.toString(latitude));
