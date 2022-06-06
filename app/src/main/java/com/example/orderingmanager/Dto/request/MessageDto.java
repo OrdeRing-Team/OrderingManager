@@ -1,17 +1,16 @@
 package com.example.orderingmanager.Dto.request;
 
-import static lombok.AccessLevel.PROTECTED;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access =PROTECTED)
-public class RestaurantInfoWithImgUrlDto extends RestaurantInfoDto {
+public class MessageDto {
 
-    private String profileImageUrl;
-    private String backgroundImageUrl;
+    private String message;
 }

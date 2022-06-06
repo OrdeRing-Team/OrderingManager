@@ -2,23 +2,23 @@ package com.example.orderingmanager.view.OrderFragment;
 
 public class WaitingData {
 
-    //private Long waitingId;
+    private Long waitingId;
     private Byte numOfTeamMembers;
     private Integer waitingNum;
     private String phoneNumber;
     private String waitingRequestTime;
 
-    public WaitingData(Integer waitingNum, Byte numOfTeamMembers, String phoneNumber, String waitingRequestTime) {
-        //this.waitingId = waitingId;
+    public WaitingData(Long waitingId, Integer waitingNum, Byte numOfTeamMembers, String phoneNumber, String waitingRequestTime) {
+        this.waitingId = waitingId;
         this.waitingNum = waitingNum;
         this.numOfTeamMembers = numOfTeamMembers;
         this.phoneNumber = phoneNumber;
         this.waitingRequestTime = waitingRequestTime;
     }
 
-    //public Long getWaitinId() { return waitingId;}
+    public Long getWaitingId() { return waitingId;}
 
-    //public void setWaitingId (Long id) { this.waitingId = id; }
+    public void setWaitingId (Long id) { this.waitingId = id; }
 
     public Integer getWaitingNum() { return waitingNum;}
 

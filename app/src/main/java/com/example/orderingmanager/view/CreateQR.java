@@ -66,10 +66,8 @@ public class CreateQR extends BasicActivity {
         CreateTakeoutQR();
         CreateWaitingQR();
 
-        if(getIntentValue != EditStoreInfoActivity.EDIT_ONLY) {
-            // 포장인 경우 테이블QR을 생성할 필요가 없으므로 포장만 예외로 한다.
-            CreateTableQR();
-        }
+
+
     }
 
     private void getTableCount(){
@@ -95,6 +93,7 @@ public class CreateQR extends BasicActivity {
             binding.ivComplete1.startAnimation(complete);
 
             updateProgress();
+
         }catch (Exception e){}
     }
 
@@ -119,7 +118,11 @@ public class CreateQR extends BasicActivity {
 
             // 포장일때는 바로 업로딩 UI를 표시한다
             if(getIntentValue == EditStoreInfoActivity.EDIT_ONLY) waitForUploading();
-
+            else if(getIntent().getBooleanExtra("PackingFromInfo",false)) waitForUploading();
+            else {
+                Log.e("getIntent PackingFromInfo", Boolean.toString(getIntent().getBooleanExtra("PackingFromInfo",false)));
+                CreateTableQR();
+            }
         }catch (Exception e){}
     }
 
@@ -144,8 +147,11 @@ public class CreateQR extends BasicActivity {
                     } catch (Exception e) { countNumber = table_count+1; }
                     if(countNumber < table_count){
                         CreateTableQR();
+                        Log.e("countNumber<table_count", "true");
                     }
                     else{
+                        Log.e("countNumber<table_count", "false");
+
                         binding.progress3.setTypeface(null, Typeface.NORMAL);
                         binding.progressText3.setTypeface(null, Typeface.NORMAL);;
                         binding.progressSlash3.setTypeface(null, Typeface.NORMAL);;
@@ -158,6 +164,8 @@ public class CreateQR extends BasicActivity {
             },200);
         }else{
             finish();
+            Log.e("countNumber<table_count", "fasdasdasd");
+
         }
         if(countNumber == table_count-1) waitForUploading();
     }

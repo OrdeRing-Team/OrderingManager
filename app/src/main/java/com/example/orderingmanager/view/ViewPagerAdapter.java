@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.orderingmanager.view.ManageFragment.MenuManageFragment;
-import com.example.orderingmanager.view.ManageFragment.ReviewManageFragment;
+import com.example.orderingmanager.view.ManageFragment.StoreReviewFragment;
 import com.example.orderingmanager.view.OrderFragment.OrderListFragment;
 import com.example.orderingmanager.view.OrderFragment.WaitingListFragment;
 import com.example.orderingmanager.view.QRFragment.QrTableFragment;
@@ -30,7 +30,7 @@ public class  ViewPagerAdapter extends FragmentStateAdapter {
                     return new MenuManageFragment();
 
                 default:
-                    return new ReviewManageFragment();
+                    return new StoreReviewFragment();
             }
         }
         else if (num == 1){
@@ -46,10 +46,10 @@ public class  ViewPagerAdapter extends FragmentStateAdapter {
         else {
             switch (position) {
                 case 0:
-                    return new WaitingListFragment();
+                    return new OrderListFragment();
 
                 default:
-                    return new OrderListFragment();
+                    return new WaitingListFragment();
             }
         }
     }

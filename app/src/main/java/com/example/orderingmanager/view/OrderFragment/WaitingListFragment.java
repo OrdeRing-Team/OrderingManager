@@ -1,5 +1,9 @@
 package com.example.orderingmanager.view.OrderFragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -17,6 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.orderingmanager.Dto.ResultDto;
 import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.response.WaitingPreviewDto;
+import com.example.orderingmanager.ENUM_CLASS.OrderType;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.FragmentWaitingListBinding;
@@ -37,10 +43,10 @@ public class WaitingListFragment extends Fragment{
     private View view;
     private FragmentWaitingListBinding binding;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_menu_manage, container, false);
         binding = FragmentWaitingListBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
@@ -59,7 +65,7 @@ public class WaitingListFragment extends Fragment{
     }
 
 
-    public void getWaitingListFromServer(){
+    private void getWaitingListFromServer(){
         ArrayList<WaitingData> waitingList = new ArrayList<>();
 
         // 웨이팅 정보 불러오기
@@ -88,21 +94,25 @@ public class WaitingListFragment extends Fragment{
                                         @Override
                                         public void run() {
                                             result.getData().forEach(waitingPreviewDto ->{
-                                                waitingList.add(0, new WaitingData(waitingPreviewDto.getWaitingNumber(), waitingPreviewDto.getNumOfTeamMembers(), waitingPreviewDto.getPhoneNumber(), waitingPreviewDto.getWaitingRegisterTime()));
+                                                waitingList.add(0, new WaitingData(waitingPreviewDto.getWaitingId(), waitingPreviewDto.getWaitingNumber(), waitingPreviewDto.getNumOfTeamMembers(), waitingPreviewDto.getPhoneNumber(), waitingPreviewDto.getWaitingRegisterTime()));
                                                 Log.e("num of team members", String.valueOf(waitingPreviewDto.getNumOfTeamMembers()));
-                                                UserInfo.setWaitingId(waitingPreviewDto.getWaitingId());
                                             });
 
                                             // 웨이팅 요청 손님이 0명일 때
                                             if (waitingList.size() == 0) {
                                                 Log.e("waitingList.size()", "is 0");
-                                                Toast.makeText(getActivity(), "웨이팅 신청 내역이 없습니다.", Toast.LENGTH_LONG).show();
+                                                binding.tvWaitingNone.setVisibility(View.VISIBLE);
+                                                binding.rvWaiting.setVisibility(View.GONE);
+                                                binding.tvWaitingCount.setText("(0)");
 
                                             }
                                             else {
+                                                binding.tvWaitingNone.setVisibility(View.GONE);
+                                                binding.rvWaiting.setVisibility(View.VISIBLE);
                                                 Log.e("waitingList.size()", "is not 0");
                                                 RecyclerView recyclerView = binding.rvWaiting;
                                                 WaitingAdapter waitingAdapter = new WaitingAdapter(waitingList, getActivity());
+                                                binding.tvWaitingCount.setText("(" + String.valueOf(waitingAdapter.getItemCount()) + ")");
                                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                                 recyclerView.setAdapter(waitingAdapter);
                                             }
@@ -151,6 +161,29 @@ public class WaitingListFragment extends Fragment{
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((broadcastReceiver), new IntentFilter("testData"));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String data = intent.getExtras().getString("data");
+            Log.e("BroadcastReceiver@@@@@@@@@@@@@@@",data);
+
+            if(data != OrderType.WAITING.toString()){
+                getWaitingListFromServer();
+            }
+        }
+    };
 }
 
 

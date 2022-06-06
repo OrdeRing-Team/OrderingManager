@@ -75,25 +75,34 @@
                     android:orientation="vertical"
                     android:background="@drawable/background_custom_white">
 
-
                     <LinearLayout
+                        android:id="@+id/btn_manage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp">
 
-                        <!-- 오른쪽 정렬을 위한 View -->
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:id="@+id/btn_manage"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="메뉴관리 >"
-                            android:textColor="@color/text_gray"
+                            android:text="메뉴관리"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text=">"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/main"
                             android:background="@color/fui_transparent"/>
 
                     </LinearLayout>
@@ -182,8 +191,77 @@
 
                 </LinearLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="17dp"
+                    android:background="@drawable/background_custom_white">
 
+                    <LinearLayout
+                        android:id="@+id/btn_store_notice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="30dp">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="매장 공지사항"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text=">"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/main"
+                            android:background="@color/fui_transparent"/>
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_notice_preview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:background="@color/white"
+                        app:layout_constraintTop_toBottomOf="@id/btn_store_notice"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginBottom="30dp"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar_store_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="280dp"
@@ -194,10 +272,13 @@
                     android:background="@drawable/background_custom_white">
 
                     <LinearLayout
+                        android:id="@+id/btn_store_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginBottom="30dp">
 
                         <TextView
@@ -205,19 +286,19 @@
                             android:layout_height="wrap_content"
                             android:text="매장정보"
                             android:textColor="@color/black"
-                            android:textStyle="bold"
                             android:textSize="18dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="4dp"
+                            android:textStyle="bold"
+                            android:layout_gravity="bottom"
                             android:layout_weight="1"/>
 
-                        <Button
-                            android:id="@+id/btn_store_info"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:text="매장정보수정 >"
-                            android:textColor="@color/text_gray"
+                            android:layout_gravity="end"
+                            android:text=">"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/main"
                             android:background="@color/fui_transparent"/>
 
                     </LinearLayout>
@@ -226,7 +307,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="10dp">
 
                         <TextView
@@ -242,7 +323,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="매장명 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"/>
@@ -252,7 +332,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="10dp">
 
                         <TextView
@@ -268,7 +348,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="사업자명 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"/>
@@ -278,7 +357,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="10dp">
 
                         <TextView
@@ -294,7 +373,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="매장 종류 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"/>
@@ -304,7 +382,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="10dp">
 
                         <TextView
@@ -320,7 +398,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="음식 카테고리 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"/>
@@ -330,7 +407,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginBottom="7dp">
 
                         <TextView
@@ -346,7 +423,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="매장 주소 텍스트"
                             android:textSize="15dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="20dp"
@@ -357,71 +433,150 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="100dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/background_custom_white">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="80dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_height="140dp"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginBottom="30dp">
+                        android:layout_marginRight="5dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_custom_white">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="대기시간"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="18dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:layout_weight="1"/>
-
-                        <Button
+                        <LinearLayout
                             android:id="@+id/btn_setting_waiting_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="입장 대기시간"
+                                android:textColor="@color/black"
+                                android:textSize="16dp"
+                                android:textStyle="bold"
+                                android:layout_gravity="bottom"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:text=">"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/main"
+                                android:background="@color/fui_transparent"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:text="시간 설정 >"
-                            android:textColor="@color/text_gray"
-                            android:background="@color/fui_transparent"/>
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="10dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_waiting_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:textSize="16dp"
+                                android:layout_gravity="center" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="분"
+                                android:textColor="@color/black"
+                                android:textSize="16dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center">
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_custom_white">
 
-                        <TextView
-                            android:id="@+id/tv_waiting_time"
+                        <LinearLayout
+                            android:id="@+id/btn_setting_take_out_waiting_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:textSize="16dp"
-                            android:layout_gravity="center" />
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="20dp">
 
-                        <TextView
-                            android:layout_width="match_parent"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="주문 대기시간"
+                                android:textColor="@color/black"
+                                android:textSize="16dp"
+                                android:textStyle="bold"
+                                android:layout_gravity="bottom"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:text=">"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/main"
+                                android:background="@color/fui_transparent"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="분"
-                            android:textColor="@color/black"
-                            android:textSize="16dp"
+                            android:orientation="horizontal"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"/>
+                            android:layout_weight="1"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/tv_take_out_waiting_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:textSize="16dp"
+                                android:layout_gravity="center" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="분"
+                                android:textColor="@color/black"
+                                android:textSize="16dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-
-
                 </LinearLayout>
-
 
 
             </LinearLayout>

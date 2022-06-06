@@ -25,6 +25,8 @@ import com.example.orderingmanager.R;
 import com.example.orderingmanager.view.MainActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,15 +36,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomViewHolder> {
     ArrayList<ManageData> arrayList;
+    HashMap<Long, Long> representMenuHashMap;
     Context context;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         //        adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
         //        itemView를 저장하는 custom viewHolder 생성
         //        findViewById & 각종 event 작업
-        TextView tvName, tvPrice, tvIntro, tvSoldout;
+        TextView tvName, tvPrice, tvIntro, tvSoldout, tvRepresent;
         ImageView ivMenu;
-
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -53,30 +55,7 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
             tvIntro = itemView.findViewById(R.id.item_intro);
             ivMenu = itemView.findViewById(R.id.item_image);
             tvSoldout = itemView.findViewById(R.id.item_soldout);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-
-                        // Bundle에 담아서 BottomSheetDialog로 보낸다.
-                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
-                        bottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(),"bottomSheet");
-
-                        Bundle menuData = new Bundle();
-                        menuData.putString("menuName", arrayList.get(position).getName());
-                        menuData.putString("menuPrice", arrayList.get(position).getPrice());
-                        menuData.putString("menuImage", arrayList.get(position).getIv_menu());
-                        menuData.putString("menuIntro", arrayList.get(position).getIntro());
-                        menuData.putLong("menuId", arrayList.get(position).getFoodId());
-                        menuData.putLong("position", position);
-                        menuData.putBoolean("menuSoldout", arrayList.get(position).getSoldout());
-//                        menuData.putBoolean("menuRepresent", arrayList.get(position).getSoldout());
-                        bottomSheetDialog.setArguments(menuData);
-                    }
-                }
-            });
+            tvRepresent = itemView.findViewById(R.id.tv_represent);
         }
     }
 
@@ -85,15 +64,12 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         this.arrayList = arrayList;
     }
 
-
-    public ManageAdapter(ArrayList<ManageData> arrayList, Context context) {
+    public ManageAdapter(ArrayList<ManageData> arrayList, HashMap<Long, Long> representMenuHashMap, Context context) {
     // adapter constructor for needing context part
         this.arrayList = arrayList;
         this.context = context;
+        this.representMenuHashMap = representMenuHashMap;
     }
-
-
-
 
     @NonNull
     @Override
@@ -113,18 +89,48 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.CustomView
         holder.tvName.setText(arrayList.get(position).getName());
         holder.tvPrice.setText(String.valueOf(arrayList.get(position).getPrice()));
         holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
-        holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
 
+        if(representMenuHashMap.containsKey(arrayList.get(position).getFoodId())){
+            holder.tvRepresent.setVisibility(View.VISIBLE);
+        }
         // arrayList에 저장된 메뉴 이미지 url을 imageURL변수에 저장하고 Glide로 iv에 set
         String imageURL = String.valueOf(arrayList.get(position).getIv_menu());
         Glide.with(holder.itemView.getContext()).load(imageURL).into(holder.ivMenu);
 
         // 품절 정보 불러와서 true이면 리사이클러뷰에 "품절" 출력하기
         boolean soldout = arrayList.get(position).getSoldout();
-        if (soldout == true) {
+        if (soldout) {
             holder.tvSoldout.setVisibility(View.VISIBLE);
             holder.tvSoldout.setText("품절");
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (position != RecyclerView.NO_POSITION) {
+
+                    // Bundle에 담아서 BottomSheetDialog로 보낸다.
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
+                    bottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(),"bottomSheet");
+
+                    Bundle menuData = new Bundle();
+                    menuData.putString("menuName", arrayList.get(position).getName());
+                    menuData.putString("menuPrice", arrayList.get(position).getPrice());
+                    menuData.putString("menuImage", arrayList.get(position).getIv_menu());
+                    menuData.putString("menuIntro", arrayList.get(position).getIntro());
+                    menuData.putLong("foodId", arrayList.get(position).getFoodId());
+                    menuData.putLong("position", position);
+                    menuData.putBoolean("menuSoldout", arrayList.get(position).getSoldout());
+                    if(representMenuHashMap.containsKey(arrayList.get(position).getFoodId())) {
+                        menuData.putBoolean("represent", true);
+                        menuData.putLong("representId", representMenuHashMap.get(arrayList.get(position).getFoodId()));
+                    }else{
+                        menuData.putBoolean("represent", false);
+                    }
+                    bottomSheetDialog.setArguments(menuData);
+                }
+            }
+        });
     }
 
     @Override

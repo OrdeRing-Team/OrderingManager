@@ -17,20 +17,21 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.FoodCategory;
-import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
+import com.example.orderingmanager.Dto.request.RestaurantDataWithLocationDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
-import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.KakaoMap.WebViewActivity;
 import com.example.orderingmanager.R;
 import com.example.orderingmanager.UserInfo;
 import com.example.orderingmanager.databinding.ActivityInfoBinding;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.net.URL;
 
 import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Food Code List
@@ -61,6 +62,8 @@ public class InfoActivity extends BasicActivity {
     RestaurantType restaurantType = RestaurantType.NONE;
     FoodCategory foodCategory = FoodCategory.NONE;
     InputMethodManager imm;
+
+    Double longitude, latitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,6 +209,9 @@ public class InfoActivity extends BasicActivity {
         String address = binding.viewActivityInfo.etAddressNumber.getText().toString() + ", "
                 + binding.viewActivityInfo.etAddress.getText().toString() + ", "
                 + binding.viewActivityInfo.etAddressDetail.getText().toString();
+        String admissionWaitingTime = binding.viewActivityInfo.inputWaitingTime.getText().toString();
+        String orderingWaitingTime = binding.viewActivityInfo.inputTakeOutTime.getText().toString();
+
         //String kategorie = inputKategorie.getText().toString();
         //String nicName = inputNicname.getText().toString();
 
@@ -221,52 +227,80 @@ public class InfoActivity extends BasicActivity {
         }
 
         if ((!radio_button_only.isChecked()) && (!radio_button_both.isChecked())) {
-            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
             binding.startApp.setEnabled(true);
             hideKeybord();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         } else if (!radio_button_only.isChecked() && (tableNum == 0)) {
-            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(InfoActivity.this, "입력칸을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
             binding.startApp.setEnabled(true);
             hideKeybord();
             Log.d("isEmpty", "입력칸을 모두 채워라.");
         }
         else if(foodCategory == FoodCategory.NONE){
-            Toast.makeText(InfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(InfoActivity.this, "음식 카테고리를 1개 이상 선택해 주세요.", Toast.LENGTH_SHORT).show();
             hideKeybord();
             binding.startApp.setEnabled(true);
         }
         else if(binding.viewActivityInfo.etAddress.getText().toString().equals("") || binding.viewActivityInfo.etAddressDetail.getText().toString().equals("")){
-            Toast.makeText(InfoActivity.this, "주소를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(InfoActivity.this, "주소를 모두 입력해 주세요.", Toast.LENGTH_SHORT).show();
             hideKeybord();
             binding.startApp.setEnabled(true);
         }
+
+        else if(binding.viewActivityInfo.inputWaitingTime.getText().toString().equals("") || binding.viewActivityInfo.inputTakeOutTime.getText().toString().equals("")){
+            Toast.makeText(InfoActivity.this, "평균 대기시간을 설정해주세요.", Toast.LENGTH_SHORT).show();
+            hideKeybord();
+            binding.startApp.setEnabled(true);
+        }
+
         else {
+
             try {
-                Log.e("ads",binding.viewActivityInfo.etAddress.getText().toString());
-                RestaurantInfoDto restaurantInfoDto = new RestaurantInfoDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType, null, null);
-
-                URL url = new URL("http://www.ordering.ml/api/owner/" + String.valueOf(UserInfo.getOwnerId()) + "/restaurant");
-                HttpApi httpApi = new HttpApi(url, "POST");
-
                 new Thread() {
                     @SneakyThrows
                     public void run() {
-                        String json = httpApi.requestToServer(restaurantInfoDto);
-                        ObjectMapper mapper = new ObjectMapper();
-                        ResultDto<Long> result = mapper.readValue(json, new TypeReference<ResultDto<Long>>() {});
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        RestaurantDataWithLocationDto restaurantDataWithLocationDto = new RestaurantDataWithLocationDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType,
+                                Integer.parseInt(admissionWaitingTime), Integer.parseInt(orderingWaitingTime), latitude, longitude);
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://www.ordering.ml/api/owner/" + String.valueOf(UserInfo.getOwnerId()) + "/restaurant/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        RetrofitService service = retrofit.create(RetrofitService.class);
+                        Call<ResultDto<Long>> call = service.registerStore(UserInfo.getOwnerId(), restaurantDataWithLocationDto);
+
+                        call.enqueue(new Callback<ResultDto<Long>>() {
                             @Override
-                            public void run() {
-                                if(result.getData() != null) {
-                                    UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantInfoDto);
-                                    UserInfo.setRestaurantId(result.getData());
-                                    Log.e("restaurantId ",result.getData().toString());
-                                    createQRCodes();
+                            public void onResponse(Call<ResultDto<Long>> call, Response<ResultDto<Long>> response) {
+
+                                if (response.isSuccessful()) {
+                                    ResultDto<Long> result;
+                                    result = response.body();
+                                    if (result.getData() != null) {
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                UserInfo.initRestaurantInfo(UserInfo.getOwnerId(), restaurantDataWithLocationDto);
+                                                UserInfo.setAdmissionWaitingTime(Integer.parseInt(admissionWaitingTime));
+                                                UserInfo.setRestaurantId(result.getData());
+                                                Log.e("restaurantId ",result.getData().toString());
+                                                Log.e("위치좌표 latitude : ", Double.toString(latitude));
+                                                Log.e("위치좌표 longitude : ", Double.toString(longitude));
+                                                createQRCodes();
+                                            }
+                                        });
+                                    }
                                 }
                             }
-                        });
 
+                            @Override
+                            public void onFailure(Call<ResultDto<Long>> call, Throwable t) {
+                                showToast(InfoActivity.this,"서버 요청에 실패하였습니다.");
+                                Log.e("e = " , t.getMessage());
+                            }
+                        });
                     }
                 }.start();
 
@@ -279,7 +313,11 @@ public class InfoActivity extends BasicActivity {
 
     private void createQRCodes(){
         hideKeybord();
-        startActivity(new Intent(InfoActivity.this, CreateQR.class));
+        Intent intent = new Intent(InfoActivity.this, CreateQR.class);
+        if(tableNum == 0) {
+            intent.putExtra("PackingFromInfo", true);
+        }
+        startActivity(intent);
         FinishWithAnim();
     }
 
@@ -292,6 +330,8 @@ public class InfoActivity extends BasicActivity {
             case SEARCH_ADDRESS_ACTIVITY:
                 if (resultCode == RESULT_OK) {
                     String data = intent.getExtras().getString("data");
+                    longitude = intent.getExtras().getDouble("longitude");
+                    latitude = intent.getExtras().getDouble("latitude");
                     if (data != null) {
                         String[] address = data.split(", ");
                         binding.viewActivityInfo.etAddressNumber.setText(address[0]);;

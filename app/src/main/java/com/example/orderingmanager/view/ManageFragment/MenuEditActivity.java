@@ -144,7 +144,7 @@ public class MenuEditActivity extends BasicActivity {
         String price = getIntent().getStringExtra("menuPrice");
         String intro = getIntent().getStringExtra("menuIntro");
         String imageUrl = getIntent().getStringExtra("menuImage");
-        foodId = getIntent().getLongExtra("menuId", 0);
+        foodId = getIntent().getLongExtra("foodId", 0);
         Log.e("Selected item's foodId :", foodId.toString());
 
         binding.edtName.setText(name);

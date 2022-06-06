@@ -36,6 +36,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends BasicActivity {
 
@@ -45,6 +46,8 @@ public class MainActivity extends BasicActivity {
     public static final int MANAGEFRAGMENT = 2222;
     public static final int ORDERFRAGMENT = 3333;
     public static final int FINISHFRAGMENT = 4444;
+
+    public static HashMap<String, Integer> nickIconHashMap = new HashMap<>();
 
     private ActivityMainBinding binding;
     private CustomDialogStoreCheck dialog;
@@ -65,8 +68,6 @@ public class MainActivity extends BasicActivity {
         Log.e("getKeyHash", ""+getKeyHash(MainActivity.this));
         bundle = new Bundle();
 
-
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -80,9 +81,26 @@ public class MainActivity extends BasicActivity {
 
         initFragView();
 
+        initNickHashMapData();
         int resId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
         bottomNaviHeight = getResources().getDimensionPixelSize(resId);
     }
+
+    private void initNickHashMapData(){
+        nickIconHashMap.put("치킨",1); nickIconHashMap.put("통닭",1); nickIconHashMap.put("달걀",1); nickIconHashMap.put("닭발",1);
+        nickIconHashMap.put("국밥",2); nickIconHashMap.put("마라탕",2); nickIconHashMap.put("라면",2); nickIconHashMap.put("부대찌개",2);
+        nickIconHashMap.put("아이스크림",3); nickIconHashMap.put("치즈",3); nickIconHashMap.put("샌드위치",3); nickIconHashMap.put("케이크",3);
+        nickIconHashMap.put("샐러드",3); nickIconHashMap.put("팥빙수",3); nickIconHashMap.put("아메리카노",3);
+        nickIconHashMap.put("피자",4);
+        nickIconHashMap.put("비빔밥",5); nickIconHashMap.put("두루치기",5); nickIconHashMap.put("제육볶음",5); nickIconHashMap.put("곱창",5);
+        nickIconHashMap.put("탕수육",6); nickIconHashMap.put("짜장면",6); nickIconHashMap.put("우동",6); nickIconHashMap.put("짬뽕",6);
+        nickIconHashMap.put("떡볶이",7);
+        nickIconHashMap.put("냉면",8);
+        nickIconHashMap.put("파스타",9); nickIconHashMap.put("만두",9); nickIconHashMap.put("왕갈비",9); nickIconHashMap.put("햄버거",9);
+        nickIconHashMap.put("초밥",10); nickIconHashMap.put("회",10); nickIconHashMap.put("돈까스",10);
+        nickIconHashMap.put("족발",11); nickIconHashMap.put("통삼겹",10);
+    }
+
 
     private void initFragView(){
         // DB에서 데이터를 받아오는 시간이 있기 때문에
@@ -98,6 +116,15 @@ public class MainActivity extends BasicActivity {
                     getSupportFragmentManager().beginTransaction().add(R.id.main_frame, qrFragment).commit(); //FrameLayout에 QrFragment.xml띄우기
                 } else{
                     getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new QrFragment()).commit(); //FrameLayout에 QrFragment.xml띄우기
+                }
+                if(getIntent().getStringExtra("fromFCM_Channel") != null){
+                    String getintentString = getIntent().getStringExtra("fromFCM_Channel");
+                    Log.e("getIntent 유효", getintentString);
+                    Fragment orderFragment = new OrderFragment();
+                    orderFragment.setArguments(bundle);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, orderFragment).commit();
+                }else{
+                    Log.e("fromFCM_Channel", "null");
                 }
             }
         },1000);
@@ -307,4 +334,17 @@ public class MainActivity extends BasicActivity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
+    // fcm 푸시알림 클릭으로 들어왔을 때 전달받는 intent
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Log.e("bundle 유효", getIntent().getStringExtra("fromFCM_Channel"));
+            Fragment orderFragment = new OrderFragment();
+            orderFragment.setArguments(extras);
+            getSupportFragmentManager().beginTransaction().add(R.id.main_frame, orderFragment).commit(); //FrameLayout에 QrFragment.xml띄우기
+        }
+    }
 }

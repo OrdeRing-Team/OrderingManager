@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -23,8 +24,10 @@ public class CustomDialog extends Dialog {
     String contents;
     String positiveButtonText;
     String negativeButtonText;
+    String contentsColor;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -63,4 +66,5 @@ public class CustomDialog extends Dialog {
         this.positiveButton = positiveButton;
         this.negativeButton = negativeButton;
     }
+
 }

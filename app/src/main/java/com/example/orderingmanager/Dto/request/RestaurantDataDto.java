@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access =PROTECTED)
-public class RestaurantInfoDto {
+public class RestaurantDataDto {
 
     private String restaurantName;
     private String ownerName;
@@ -20,4 +20,6 @@ public class RestaurantInfoDto {
     private RestaurantType restaurantType;
     private Integer admissionWaitingTime;
     private Integer orderingWaitingTime;
+
+
 }

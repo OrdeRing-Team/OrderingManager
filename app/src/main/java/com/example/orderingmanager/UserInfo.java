@@ -2,7 +2,8 @@ package com.example.orderingmanager;
 
 import com.example.orderingmanager.Dto.FoodDto;
 import com.example.orderingmanager.Dto.request.FoodCategory;
-import com.example.orderingmanager.Dto.request.RestaurantInfoDto;
+import com.example.orderingmanager.Dto.request.RestaurantDataDto;
+import com.example.orderingmanager.Dto.request.RestaurantDataWithLocationDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
 import com.example.orderingmanager.Dto.response.OwnerSignInResultDto;
 
@@ -30,7 +31,7 @@ public class UserInfo {
 
     private static Integer admissionWaitingTime;
     private static Integer orderingWaitingTime;
-    private static Long waitingId;
+
 
     // food
     private static Long foodId;
@@ -49,7 +50,17 @@ public class UserInfo {
         admissionWaitingTime = dto.getAdmissionWaitingTime();
         orderingWaitingTime =dto.getOrderingWaitingTime();
     }
-    public static void initRestaurantInfo(Long ownerId, RestaurantInfoDto dto) {
+    public static void initRestaurantInfo(Long ownerId, RestaurantDataWithLocationDto dto) {
+        ownerId = ownerId;
+        restaurantName = dto.getRestaurantName();
+        ownerName = dto.getOwnerName();
+        address = dto.getAddress();
+        tableCount = dto.getTableCount();
+        foodCategory = dto.getFoodCategory();
+        restaurantType = dto.getRestaurantType();
+    }
+
+    public static void modifyRestaurantInfo(Long ownerId, RestaurantDataDto dto) {
         ownerId = ownerId;
         restaurantName = dto.getRestaurantName();
         ownerName = dto.getOwnerName();
@@ -82,6 +93,10 @@ public class UserInfo {
     }
 
     public static void setAdmissionWaitingTime(Integer time) { admissionWaitingTime = time; }
+
+    public static void setOrderingWaitingTime(Integer orderingWaitingTime) {
+        UserInfo.orderingWaitingTime = orderingWaitingTime;
+    }
 
     public static void setFood(FoodDto dto) {
         foodId = dto.getFoodId();
@@ -142,9 +157,6 @@ public class UserInfo {
     }
 
     public static Integer getAdmissionWaitingTime() { return admissionWaitingTime; }
-
-    public static void setWaitingId(Long id){waitingId = id;}
-    public static Long getWaitingId(){return waitingId;}
 
 
     public static FoodCategory getFoodCategory() {

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
     android:background="@color/white"
+    android:elevation="10dp"
     android:padding="15dp"
     tools:context=".view.ManageFragment.StoreManageActivity">
 
@@ -15,11 +17,11 @@
         android:ellipsize="end"
         android:gravity="start"
         android:textColor="@color/error"
-        app:layout_constraintStart_toStartOf="@id/item_intro"
-        app:layout_constraintBottom_toTopOf="@id/item_name"
         android:textSize="12sp"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/item_name"
+        app:layout_constraintStart_toStartOf="@id/item_intro" />
 
     <TextView
         android:id="@+id/item_name"
@@ -37,11 +39,11 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_gray"
         android:textSize="12sp"
+        app:flow_horizontalAlign="start"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_image"
-        app:flow_horizontalAlign="start"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -79,18 +81,20 @@
         app:srcCompat="@drawable/icon" />
 
     <TextView
+        android:id="@+id/tv_represent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="@color/main"
+        android:backgroundTint="@color/item_represent"
+        android:fontFamily="@font/bmeuljiro10years"
+        android:gravity="center"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:backgroundTint="@color/item_represent"
-        android:gravity="center"
         android:text="대표"
         android:textColor="@color/white"
-        android:fontFamily="@font/bmeuljiro10years"
-        android:background="@color/main"
-        android:layout_marginStart="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/item_name"
         app:layout_constraintStart_toEndOf="@id/item_name"
-        app:layout_constraintTop_toTopOf="@id/item_name"
-        app:layout_constraintBottom_toBottomOf="@id/item_name"/>
+        app:layout_constraintTop_toTopOf="@id/item_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

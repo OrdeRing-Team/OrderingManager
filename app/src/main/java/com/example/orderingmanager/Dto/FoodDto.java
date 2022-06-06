@@ -35,4 +35,8 @@ public class FoodDto {
     public void setSoldOut(boolean soldOut) {
         this.soldOut = soldOut;
     }
+
+    public Long getFoodId() {
+        return foodId;
+    }
 }
