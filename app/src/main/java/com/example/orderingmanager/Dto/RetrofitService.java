@@ -45,6 +45,10 @@ public interface RetrofitService {
 	@POST("/api/owner/{owner_id}/restaurant")
 	Call<ResultDto<Long>> registerStore(@Path("owner_id") Long ownerId, @Body RestaurantDataWithLocationDto restaurantDataWithLocationDto);
 
+	// 매장정보 변경
+	@PUT("/api/restaurant/{restaurant_id}")
+	Call<ResultDto<Boolean>> modifyStore(@Path("restaurant_id") Long restaurantId, @Body RestaurantDataWithLocationDto restaurantDataWithLocationDto);
+
 	// 인증요청
 	@POST("/api/owner/verification/get")
 	Call<ResultDto<Boolean>> phoneNumber(@Body PhoneNumberDto phoneNumberDto);

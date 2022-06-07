@@ -19,9 +19,13 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.orderingmanager.Dto.ResultDto;
+import com.example.orderingmanager.Dto.RetrofitService;
 import com.example.orderingmanager.Dto.request.FoodCategory;
+import com.example.orderingmanager.Dto.request.PasswordChangeDto;
 import com.example.orderingmanager.Dto.request.RestaurantDataDto;
+import com.example.orderingmanager.Dto.request.RestaurantDataWithLocationDto;
 import com.example.orderingmanager.Dto.request.RestaurantType;
+import com.example.orderingmanager.Dto.response.RestaurantInfoDto;
 import com.example.orderingmanager.HttpApi;
 import com.example.orderingmanager.KakaoMap.WebViewActivity;
 import com.example.orderingmanager.R;
@@ -42,6 +46,11 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EditStoreInfoActivity extends BasicActivity {
 
@@ -53,6 +62,7 @@ public class EditStoreInfoActivity extends BasicActivity {
     public static final int EDIT_BOTH = 33333;
 
     int tableNum;
+    double longitude = 0, latitude = 0;
 
     RestaurantType restaurantType = UserInfo.getRestaurantType();
     FoodCategory foodCategory = UserInfo.getFoodCategory();
@@ -312,6 +322,64 @@ public class EditStoreInfoActivity extends BasicActivity {
                 break;
         }
 
+        setRestaurantLatlng();
+
+    }
+
+    private void setRestaurantLatlng(){
+        try {
+
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Log.e("asdasd","asdasd");
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/"+ UserInfo.getRestaurantId() +"/info/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<RestaurantInfoDto>> call = service.getStoreNoticeAndCoordinate(UserInfo.getRestaurantId());
+
+                    call.enqueue(new Callback<ResultDto<RestaurantInfoDto>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<RestaurantInfoDto>> call, Response<ResultDto<RestaurantInfoDto>> response) {
+
+                            ResultDto<RestaurantInfoDto> result;
+                            result = response.body();
+                            if (response.isSuccessful()) {
+                                if (result.getData() != null) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if(result.getData().getLatitude() != 0 && result.getData().getLongitude() != 0){
+                                                latitude = result.getData().getLatitude();
+                                                longitude = result.getData().getLongitude();
+
+                                                Log.e("@@@@@@@Latitude ", Double.toString(latitude));
+                                                Log.e("@@@@@@@Longitude ", Double.toString(longitude));
+                                            }
+                                        }
+                                    });
+                                }
+                            }else{
+                                Log.e("response########","failed");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<RestaurantInfoDto>> call, Throwable t) {
+                            showLongToast(EditStoreInfoActivity.this, "일시적인 오류가 발생했습니다");
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            showLongToast(EditStoreInfoActivity.this, "일시적인 오류가 발생했습니다");
+            Log.e("e = ", e.getMessage());
+        }
     }
 
     private String[] getAddressArr(){
@@ -353,45 +421,66 @@ public class EditStoreInfoActivity extends BasicActivity {
             hideKeybord();
         }
         else {
-            try {
-                RestaurantDataDto restaurantDataDto = new RestaurantDataDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType, 0, 0);
 
-                URL url = new URL("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId().toString());
-                HttpApi httpApi = new HttpApi(url, "PUT");
+            try {
+                RestaurantDataWithLocationDto restaurantDataWithLocationDto = new RestaurantDataWithLocationDto(storeName, ownerName, address, tableNum, foodCategory, restaurantType, 0, 0, latitude, longitude);
 
                 new Thread() {
                     @SneakyThrows
                     public void run() {
-                        String json = httpApi.requestToServer(restaurantDataDto);
-                        ObjectMapper mapper = new ObjectMapper();
-                        ResultDto<Boolean> result = mapper.readValue(json, new TypeReference<ResultDto<Boolean>>() {});
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        Log.e("asdasd","asdasd");
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getRestaurantId() + "/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        RetrofitService service = retrofit.create(RetrofitService.class);
+                        Call<ResultDto<Boolean>> call = service.modifyStore(UserInfo.getRestaurantId(), restaurantDataWithLocationDto);
+
+                        call.enqueue(new Callback<ResultDto<Boolean>>() {
                             @Override
-                            public void run() {
-                                if(result.getData() != null) {
-                                    if(restaurantType == RestaurantType.ONLY_TO_GO ||
-                                            UserInfo.getTableCount() == Integer.parseInt(binding.viewActivityEditStoreInfo.tablenum.getText().toString())){
-                                        // 포장이 선택되었거나 테이블 수가 이전과 같다면 QR코드를 새로 생성하지 않는다.
-                                        UserInfo.modifyRestaurantInfo(UserInfo.getOwnerId(), restaurantDataDto);
-                                        initQrList();
-                                        showToast(EditStoreInfoActivity.this, "매장정보가 저장되었습니다.");
-                                        FinishWithAnim();
+                            public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                                ResultDto<Boolean> result;
+                                result = response.body();
+                                if (response.isSuccessful()) {
+                                    if (result.getData()) {
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if(restaurantType == RestaurantType.ONLY_TO_GO ||
+                                                        UserInfo.getTableCount() == Integer.parseInt(binding.viewActivityEditStoreInfo.tablenum.getText().toString())){
+                                                    // 포장이 선택되었거나 테이블 수가 이전과 같다면 QR코드를 새로 생성하지 않는다.
+                                                    UserInfo.modifyRestaurantInfo(UserInfo.getOwnerId(), restaurantDataWithLocationDto);
+                                                    initQrList();
+                                                    showToast(EditStoreInfoActivity.this, "매장정보가 저장되었습니다.");
+                                                    FinishWithAnim();
+                                                }
+                                                else{
+                                                    // 반면에 테이블 수가 변경되었다면 QR코드를 새로 생성한다.(QR코드 생성화면으로 넘어간다)
+                                                    UserInfo.modifyRestaurantInfo(UserInfo.getOwnerId(), restaurantDataWithLocationDto);
+                                                    createQRCodes();
+                                                }
+                                            }
+                                        });
                                     }
-                                    else{
-                                        // 반면에 테이블 수가 변경되었다면 QR코드를 새로 생성한다.(QR코드 생성화면으로 넘어간다)
-                                        UserInfo.modifyRestaurantInfo(UserInfo.getOwnerId(), restaurantDataDto);
-                                        createQRCodes();
-                                    }
+                                }else{
+                                    Log.e("response########","failed");
                                 }
                             }
-                        });
 
+                            @Override
+                            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                showLongToast(EditStoreInfoActivity.this, "일시적인 오류가 발생했습니다");
+                                Log.e("e = ", t.getMessage());
+                            }
+                        });
                     }
                 }.start();
 
             } catch (Exception e) {
-                showToast(this,"서버 요청에 실패하였습니다.");
-                Log.e("e = " , e.getMessage());
+                showLongToast(EditStoreInfoActivity.this, "일시적인 오류가 발생했습니다");
+                Log.e("e = ", e.getMessage());
             }
         }
     }
@@ -424,8 +513,10 @@ public class EditStoreInfoActivity extends BasicActivity {
 
                 case SEARCH_ADDRESS_ACTIVITY:
                     if (resultCode == RESULT_OK) {
-                        String addressExtra = data.getExtras().getString("data");
 
+                        String addressExtra = data.getExtras().getString("data");
+                        longitude = data.getExtras().getDouble("longitude");
+                        latitude = data.getExtras().getDouble("latitude");
                         Log.e("주소: ",addressExtra);
                         if (addressExtra != null) {
                             String[] address = addressExtra.split(", ");

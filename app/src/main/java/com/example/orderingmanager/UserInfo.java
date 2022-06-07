@@ -40,6 +40,10 @@ public class UserInfo {
     private static String menuIntro;
     private static ArrayList<String> menuInfo;
 
+    // location
+    private static double longitude;
+    private static double latitude;
+
     public static void setRestaurantInfo(OwnerSignInResultDto dto) {
         restaurantName = dto.getRestaurantName();
         ownerName = dto.getOwnerName();
@@ -58,9 +62,10 @@ public class UserInfo {
         tableCount = dto.getTableCount();
         foodCategory = dto.getFoodCategory();
         restaurantType = dto.getRestaurantType();
+
     }
 
-    public static void modifyRestaurantInfo(Long ownerId, RestaurantDataDto dto) {
+    public static void modifyRestaurantInfo(Long ownerId, RestaurantDataWithLocationDto dto) {
         ownerId = ownerId;
         restaurantName = dto.getRestaurantName();
         ownerName = dto.getOwnerName();
