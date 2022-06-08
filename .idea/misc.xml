@@ -116,9 +116,10 @@
         <entry key="app/src/main/res/layout/activity_edit_store_info.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_graph.xml" value="0.22093353271484378" />
         <entry key="app/src/main/res/layout/activity_guide2.xml" value="0.16847826086956522" />
-        <entry key="app/src/main/res/layout/activity_info.xml" value="0.28558052434456926" />
+        <entry key="app/src/main/res/layout/activity_info.xml" value="0.15989693059456928" />
+        <entry key="app/src/main/res/layout/activity_info22.xml" value="0.2123348386816703" />
         <entry key="app/src/main/res/layout/activity_item.xml" value="0.3392210144927536" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.2314239501953125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1778115501519757" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/activity_menu_add.xml" value="0.3392210144927536" />
@@ -127,9 +128,11 @@
         <entry key="app/src/main/res/layout/activity_menu_manage.xml" value="0.22304362919255596" />
         <entry key="app/src/main/res/layout/activity_qr_preview.xml" value="0.2667572463768116" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_signup22.xml" value="0.23605157452151404" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splash2.xml" value="0.1778115501519757" />
         <entry key="app/src/main/res/layout/activity_store_manage.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_store_manage2.xml" value="0.261650277896537" />
         <entry key="app/src/main/res/layout/activity_store_notice.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_temp.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/activity_test_stack.xml" value="0.17239583333333333" />

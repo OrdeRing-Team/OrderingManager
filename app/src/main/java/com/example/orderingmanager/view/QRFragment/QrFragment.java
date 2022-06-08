@@ -137,7 +137,7 @@ public class QrFragment extends Fragment {
     private void capture(){
         LinearLayout linearlayout = binding.viewQrCapture;
 
-        // width와  height가 null로 유지되지 않도록 보기를 미리 측정해둔다.
+        // width와  height가 null로 유지되지 않도록 View를 미리 측정해둔다.
         linearlayout.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 

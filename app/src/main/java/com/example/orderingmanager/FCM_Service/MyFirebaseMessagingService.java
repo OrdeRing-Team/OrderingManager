@@ -215,8 +215,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setContentIntent(pendingIntent)
                 .setSound(sound);
-//                .setContentIntent(pendingIntent);
 
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
