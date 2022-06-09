@@ -9,6 +9,8 @@ GNU 컴퓨터과학과 종합 설계 프로젝트 - OrdeRing 점주용 앱
 
 **OrdeRingManager**는 [**OredRing**](https://github.com/OrdeRing-Team/Ordering) (오더링 고객용 어플리케이션) 과의 DB연동을 통해 주문 접수 및 매장 관리를 할 수 있습니다.
 
+<img width="819" alt="스크린샷 2022-06-09 오후 2 57 56" src="https://user-images.githubusercontent.com/74666576/172774990-93b2a835-2576-45dd-9614-8a13ac6255ab.png">
+
 
 # Develop Languages
 <div>
