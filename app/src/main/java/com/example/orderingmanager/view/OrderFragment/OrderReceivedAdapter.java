@@ -135,7 +135,7 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
         Log.e("//==========//","//====================================================//");
 
         holder.tv_order.setText(String.valueOf(arrayList.get(position).getOrderSummary()));
-        holder.tv_orderId.setText(String.format("주문번호 : %d번", arrayList.get(position).getOrderId()));
+        holder.tv_orderId.setText(String.format("주문번호 : %d번", arrayList.get(position).getMyOrderNumber()));
         holder.tv_orderType.setText(arrayList.get(position).getOrderType() == TABLE ?
                 (Integer.toString(arrayList.get(position).getTableNumber())+"번 테이블") :
                 "포장");

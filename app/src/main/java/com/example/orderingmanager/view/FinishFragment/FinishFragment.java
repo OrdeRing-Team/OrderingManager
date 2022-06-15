@@ -98,18 +98,12 @@ public class FinishFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initData(int currentMonth){
         int currentYear;
-        //int currentMonth;
         int nextYear;
         int nextMonth;
 
-//        String date = getDate();
-        //@SuppressLint("SimpleDateFormat") SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM");
-//        long mNow = System.currentTimeMillis();
-//        Date mDate = new Date(mNow);
         LocalDate now = LocalDate.now();
         currentYear = now.getYear();
         nextYear = currentYear;
-        //currentMonth = now.getMonthValue();
         currentMonth = displayMonth;
         nextMonth = currentMonth + 1;
         if (currentMonth == 12) {
@@ -118,7 +112,6 @@ public class FinishFragment extends Fragment {
         }
 
         String from2Server = String.format("%s-%s", currentYear, currentMonth < 10 ? "0" + currentMonth : currentMonth);
-        //String before2Server = String.format("%s-%s", nextYear, nextMonth < 10 ? "0" + nextMonth : nextMonth);
         getSalesRequestFromServer(from2Server);
     }
 

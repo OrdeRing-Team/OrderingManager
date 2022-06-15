@@ -93,7 +93,7 @@ public class OrderProcessedAdapter extends RecyclerView.Adapter<OrderProcessedAd
         // xml의 위젯과 데이터를 묶는(연결하는, setting하는) 작업.
         // position에 해당하는 data, viewHolder의 itemView에 표시함
         holder.tv_order.setText(String.valueOf(arrayList.get(position).getOrderSummary()));
-        holder.tv_orderId.setText(String.format("주문번호 : %d번", arrayList.get(position).getOrderId()));
+        holder.tv_orderId.setText(String.format("주문번호 : %d번", arrayList.get(position).getMyOrderNumber()));
         holder.tv_orderType.setText(arrayList.get(position).getOrderType() == TABLE ?
                 (Integer.toString(arrayList.get(position).getTableNumber())+"번 테이블") :
                 "포장");
