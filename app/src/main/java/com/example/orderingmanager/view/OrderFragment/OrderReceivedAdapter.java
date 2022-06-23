@@ -77,7 +77,7 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
             //item 에 대한 클릭 이벤트 설정
             tv_receivedTime = itemView.findViewById(R.id.tv_received_time);
             tv_checkedTime = itemView.findViewById(R.id.tv_cheked_time);
-            tv_orderId = itemView.findViewById(R.id.tv_orderid);
+            tv_orderId = itemView.findViewById(R.id.tv_orderid_received);
             tv_orderType = itemView.findViewById(R.id.tv_order_type);
             tv_order = itemView.findViewById(R.id.tv_order);
             tv_checkedTime_Header = itemView.findViewById(R.id.tv_cheked_time_header);
@@ -195,10 +195,10 @@ public class OrderReceivedAdapter extends RecyclerView.Adapter<OrderReceivedAdap
                                                         holder.tv_checkedTime.setVisibility(View.VISIBLE);
                                                         holder.tv_checkedTime.setText(result.getData().getCheckTime());
 //                                                        holder.tv_orderId.setVisibility(View.VISIBLE);
-//                                                        holder.tv_orderId.setText(String.format(
-//                                                                "주문번호 : %d번",
-//                                                                arrayList.get(holder.getAbsoluteAdapterPosition()).getOrderId()
-//                                                        ));
+                                                        holder.tv_orderId.setText(String.format(
+                                                                "주문번호 : %d번",
+                                                                arrayList.get(holder.getAbsoluteAdapterPosition()).getMyOrderNumber()
+                                                        ));
                                                         holder.cl_order_received.setBackground(context.getDrawable(R.drawable.background_custom_waiting));
                                                     }
                                                 });

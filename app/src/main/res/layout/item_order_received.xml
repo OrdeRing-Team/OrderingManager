@@ -21,7 +21,7 @@
         android:background="@drawable/background_custom_waiting">
 
         <TextView
-            android:id="@+id/tv_orderid"
+            android:id="@+id/tv_orderid_received"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_orderid"
+            app:layout_constraintTop_toBottomOf="@id/tv_orderid_received"
             android:text="16번 테이블"
             android:textStyle="bold"
             android:textColor="@color/main"/>
