@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +61,9 @@ public class ManageFragment extends Fragment {
     public static final String EMPTY_NOTICE = "SECRETCODEFOREMPTYNOTICE";
     Boolean storeInitInfo;
     String notice;
+
+    TextView waitingTimeTextView, takeoutTimeTextView, tvNoticePreview;
+    ProgressBar progressBarStoreInfo;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -137,6 +144,11 @@ public class ManageFragment extends Fragment {
                 binding.tvCategory.setText("아시안/양식");
                 break;
         }
+
+        waitingTimeTextView = view.findViewById(R.id.tv_waiting_time);
+        takeoutTimeTextView = view.findViewById(R.id.tv_take_out_waiting_time);
+        progressBarStoreInfo = view.findViewById(R.id.progressBar_store_info);
+        tvNoticePreview = view.findViewById(R.id.tv_notice_preview);
 
         setStoreNoticeFromServerData();
     }
@@ -350,25 +362,22 @@ public class ManageFragment extends Fragment {
                                     @Override
                                     public void run() {
                                         // 서버에 업로드된 이미지Url을 변수에 저장
-                                        if (result.getData().getProfileImageUrl() == null) {
-                                            Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
-                                        } else {
-                                            Glide.with(getActivity()).load(result.getData().getProfileImageUrl()).into(binding.ivStoreIcon);
+                                        if(getActivity() != null) {
+                                            if (result.getData().getProfileImageUrl() == null) {
+                                                Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
+                                            } else {
+                                                Glide.with(getActivity()).load(result.getData().getProfileImageUrl()).into(binding.ivStoreIcon);
+                                            }
                                         }
-
                                         // 서버에 업로드된 웨이팅 시간 저장
                                         Integer waitingTime = result.getData().getAdmissionWaitingTime();
                                         UserInfo.setAdmissionWaitingTime(waitingTime);
-                                        binding.tvWaitingTime.setText(String.valueOf(waitingTime));
-
+                                        waitingTimeTextView.setText(String.valueOf(waitingTime));
                                         Integer takeoutWaitingTime = result.getData().getOrderingWaitingTime();
                                         UserInfo.setOrderingWaitingTime(takeoutWaitingTime);
-                                        binding.tvTakeOutWaitingTime.setText(String.valueOf(takeoutWaitingTime));
+                                        takeoutTimeTextView.setText(String.valueOf(takeoutWaitingTime));
                                     }
-
-
                                 });
-
                             }
 
                             @Override
@@ -408,12 +417,12 @@ public class ManageFragment extends Fragment {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            binding.progressBarStoreInfo.setVisibility(View.GONE);
+                                            progressBarStoreInfo.setVisibility(View.GONE);
                                             notice = result.getData().getNotice();
                                             if(notice != null && !notice.equals("")){
-                                                binding.tvNoticePreview.setText(notice);
+                                                tvNoticePreview.setText(notice);
                                             }else{
-                                                binding.tvNoticePreview.setText("공지사항을 작성해주세요.");
+                                                tvNoticePreview.setText("공지사항을 작성해주세요.");
                                                 notice = EMPTY_NOTICE;
                                             }
                                         }
@@ -426,7 +435,7 @@ public class ManageFragment extends Fragment {
                         public void onFailure(Call<ResultDto<RestaurantInfoDto>> call, Throwable t) {
                             Toast.makeText(getActivity(), "공지사항을 불러오는 중 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
-                            binding.progressBarStoreInfo.setVisibility(View.GONE);
+                            progressBarStoreInfo.setVisibility(View.GONE);
 
                         }
                     });
@@ -436,7 +445,7 @@ public class ManageFragment extends Fragment {
         } catch (Exception e) {
             Toast.makeText(getActivity(), "공지사항을 불러오는 중 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             Log.e("e = ", e.getMessage());
-            binding.progressBarStoreInfo.setVisibility(View.GONE);
+            progressBarStoreInfo.setVisibility(View.GONE);
 
         }
     }

@@ -49,7 +49,7 @@ public class FinishFragment extends Fragment {
     private View view;
     private FragmentFinishBinding binding;
     private MaterialCalendarView calendarView;
-    public TextView diaryTextView;
+    public TextView diaryTextView, selectedView, monthView;
     private Button btn_graph;
 
     String from, before, firstday;
@@ -113,6 +113,10 @@ public class FinishFragment extends Fragment {
 
         String from2Server = String.format("%s-%s", currentYear, currentMonth < 10 ? "0" + currentMonth : currentMonth);
         getSalesRequestFromServer(from2Server);
+
+        diaryTextView = view.findViewById(R.id.diaryTextView);
+        selectedView = view.findViewById(R.id.selectedView);
+        monthView = view.findViewById(R.id.monthView);
     }
 
 
@@ -173,15 +177,15 @@ public class FinishFragment extends Fragment {
 
                                     if (String.valueOf(currentMonth) == String.valueOf(displayMonth)) {
                                         Log.e("same", "same");
-                                        binding.diaryTextView.setText(from2Server + "-" + currentDay);
-                                        binding.selectedView.setText(displayMonth + "월 " + currentDay + "일 매출 : " + selectedSales + "원");
-                                        binding.monthView.setText(displayMonth + "월 총 매출 : " + sum + "원");
+                                        diaryTextView.setText(from2Server + "-" + currentDay);
+                                        selectedView.setText(displayMonth + "월 " + currentDay + "일 매출 : " + selectedSales + "원");
+                                        monthView.setText(displayMonth + "월 총 매출 : " + sum + "원");
                                     }
 
                                     else {
                                         Log.e("different", "different");
-                                        binding.diaryTextView.setText(from2Server + "-" + currentDay);
-                                        binding.monthView.setText(displayMonth + "월 총 매출 : " + sum + "원");
+                                        diaryTextView.setText(from2Server + "-" + currentDay);
+                                        monthView.setText(displayMonth + "월 총 매출 : " + sum + "원");
                                     }
 
 
